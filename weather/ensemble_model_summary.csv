@@ -1,0 +1,4 @@
+model,model_key,n_members,mean_member_daily_max_f,median_member_daily_max_f,p10_daily_max_f,p90_daily_max_f,p_60_to_61_rounded,n_60_to_61_rounded
+ECMWF IFS 0.25° ensemble,ecmwf_ifs025_ensemble,50,61.58200000000001,61.7,60.6,62.5,0.38,19
+DWD ICON EPS (Open-Meteo seamless),icon_seamless_eps,39,61.35897435897435,61.5,60.2,62.6,0.46153846153846156,18
+NCEP GEFS (Open-Meteo seamless),ncep_gefs_seamless,30,61.80333333333332,62.0,60.3,63.0,0.23333333333333334,7

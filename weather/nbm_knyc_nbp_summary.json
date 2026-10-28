@@ -1,0 +1,17 @@
+{
+  "fetched_at_utc": "2026-10-28T05:31:13.620319+00:00",
+  "url": "https://noaa-nbm-grib2-pds.s3.amazonaws.com/blend.20261028/01/text/blend_nbptx.t01z",
+  "station": "KNYC",
+  "cycle_utc": "2026-10-28 01:00",
+  "target_valid_time_utc": "2026-10-29 00:00",
+  "forecast_window_note": "NBM TXNMN/TXNSD are 18-hour maximum/minimum guidance; this max is valid at 00Z.",
+  "fields_first_valid_column_f": {
+    "TXNMN": 61,
+    "TXNSD": 1,
+    "TXNP1": 59,
+    "TXNP2": 60,
+    "TXNP5": 61,
+    "TXNP7": 62,
+    "TXNP9": 62
+  }
+}
