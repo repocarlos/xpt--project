@@ -1,7 +1,7 @@
 # Kalshi NYC high temperature: model snapshot
 
 **Market:** `KXHIGHNY-26OCT28`, event date October 28, 2026  
-**Data pulled:** October 28, 2026 at 05:31 UTC  
+**Data pulled:** October 28, 2026 at 05:37 UTC  
 **Forecast point:** Open-Meteo grid cell 40.75°N, 74.00°W, 44 m elevation, close to Central Park  
 **Settlement:** the selected contract rules name New York City station `CLINYC` and The Weather Company. This is the binding outcome source for this event.
 
@@ -9,7 +9,7 @@
 
 The **60–61°F** contract was quoted at 60¢ bid / 61¢ ask. NOAA's 01Z National Blend of Models bulletin for station KNYC gives a maximum-temperature mean of 61°F and standard deviation of 1°F, with rounded percentiles 59°F (10th), 60°F (25th), 61°F (median), and 62°F (75th and 90th). If those rounded mean/SD values are treated as a Gaussian and the reported high is rounded to the nearest whole degree, the estimated chance of 60–61°F is about **62.5%**. That's only 1.5 percentage points above the 61¢ ask before fees: no useful edge by itself.
 
-The global ensemble member counts put more probability on **62–63°F**: 51–67% across ICON, ECMWF and GEFS, against a 24¢ Kalshi ask. The NBM mean/SD approximation puts that range near 30%, or about 6 percentage points above the ask before fees. This is the more interesting paper-only candidate, but the size of the apparent edge depends on how the NBM's rounded statistical fields map to the contract's whole-degree settlement.
+The global ensemble member counts put more probability on **62–63°F**: 51–67% across ICON, ECMWF and GEFS, against a 25¢ Kalshi ask. The NBM mean/SD approximation puts that range near 30%, or about 5 percentage points above the ask before fees. This is the more interesting paper-only candidate, but the size of the apparent edge depends on how the NBM's rounded statistical fields map to the contract's whole-degree settlement.
 
 The **59°F or below** Yes contract was 19¢ bid / 20¢ ask (the corresponding No ask was 81¢). None of the three raw ensembles had more than 3.3% of members below 60°F; the NBM Gaussian approximation is 6.7%. This makes No a second screening candidate, with roughly 12 percentage points gross under the NBM approximation. The NBM's 10th percentile is itself reported as 59°F, however, so the cold-tail estimate is especially sensitive to rounding and distribution shape.
 
@@ -23,11 +23,28 @@ The Open-Meteo values below are the frequency of ensemble members whose local-da
 |---|---:|---:|---:|---:|---:|---:|
 | ECMWF IFS 0.25° ensemble | 50 | 61.58°F | 60.6–62.5°F | 38.0% | 62.0% | 0.0% |
 | DWD ICON EPS (Open-Meteo seamless) | 39 | 61.36°F | 60.2–62.6°F | 46.2% | 51.3% | 2.6% |
-| NCEP GEFS (Open-Meteo seamless) | 30 | 61.80°F | 60.3–63.0°F | 23.3% | 66.7% | 3.3% |
+| NCEP GEFS (Open-Meteo seamless) | 30 | 61.66°F | 60.4–62.7°F | 30.0% | 66.7% | 3.3% |
 | NOAA NBM v5.0, KNYC 01Z | — | 61°F mean, 1°F SD | q10 59°, q25 60°, q50 61°, q75 62°, q90 62° | ~62.5%* | ~30.2%* | ~6.7%* |
 | NWS hourly point forecast | deterministic | 62°F max | — | — | — | — |
 
 \* NBM range probabilities are approximate Gaussian mass reconstructed from the text bulletin's integer-rounded mean/SD and a nearest-degree settlement assumption. The NBM bulletin publishes percentiles and statistical parameters, not these exact contract-bin probabilities. Its 01Z maximum is valid at 00Z Oct 29 (20:00 EDT Oct 28), so it is close to, but not an exact match for, the event's local-day reporting window.
+
+## Combined odds/model table
+
+This is the main screening view: one row per mutually exclusive temperature range, with the market's Yes bid/ask and midpoint-implied probability alongside each model and the equal-weight average of the three global model systems. The midpoint is a reference price, not an executable quote; compare a Yes probability with the Yes ask (and No probability with the No ask) before fees. The three-model average weights model systems equally and keeps NBM separate because NBM is a calibrated blend, while these member frequencies are raw.
+
+The six Yes midpoints sum to 105.5%, so they are not a coherent normalized distribution across the whole event. That reflects separate books, spreads and quote timing. The table keeps the observed prices raw for contract-level comparison; do not use them as a normalized full-event distribution without an explicit normalization step.
+
+| Range | Kalshi Yes bid/ask (mid) | ECMWF | ICON | GEFS | Global avg | NBM approx.* |
+|---|---:|---:|---:|---:|---:|---:|
+| 59°F or below | 19¢ / 20¢ (19.5%) | 0.0% | 2.6% | 3.3% | 2.0% | 6.7% |
+| 60–61°F | 60¢ / 61¢ (60.5%) | 38.0% | 46.2% | 30.0% | 38.1% | 62.5% |
+| 62–63°F | 23¢ / 25¢ (24.0%) | 62.0% | 51.3% | 66.7% | 60.0% | 30.2% |
+| 64–65°F | 0¢ / 1¢ (0.5%) | 0.0% | 0.0% | 0.0% | 0.0% | 0.6% |
+| 66–67°F | 0¢ / 1¢ (0.5%) | 0.0% | 0.0% | 0.0% | 0.0% | <0.1% |
+| 68°F or above | 0¢ / 1¢ (0.5%) | 0.0% | 0.0% | 0.0% | 0.0% | <0.1% |
+
+*The NBM column is the approximate Gaussian probability for an integer-reported range. The underlying NBM fields are rounded, so small differences should not be treated as precise edges.* The full precision table, including gross Yes/No edges at asks before fees, is [`market_model_comparison.csv`](market_model_comparison.csv).
 
 ## Contract quotes and rough NBM screen
 
@@ -35,7 +52,7 @@ The Open-Meteo values below are the frequency of ensemble members whose local-da
 |---|---:|---:|---:|---|
 | 59°F or below | 19¢ / 20¢ | 81¢ | 6.7% | No screen: ~12 pp gross before fees |
 | 60–61°F | 60¢ / 61¢ | 40¢ | 62.5% | Near fair at the ask; ~1.5 pp gross |
-| 62–63°F | 23¢ / 24¢ | 77¢ | 30.2% | Yes screen: ~6 pp gross before fees |
+| 62–63°F | 23¢ / 25¢ | 77¢ | 30.2% | Yes screen: ~5 pp gross before fees |
 | 64–65°F | 0¢ / 1¢ | 100¢ | 0.6% | No clear edge |
 
 The contract API's ask sizes and trading volume are in `kalshi_market_rows.csv`; spreads and available size matter when turning these quotes into a tradable price. Kalshi fees vary by market, so the gross gaps above are not net expected value.
@@ -51,4 +68,4 @@ The contract API's ask sizes and trading volume are in `kalshi_market_rows.csv`;
 
 Run `python3 analyze_market.py`. The script fetches the live Kalshi event, three Open-Meteo ensemble forecasts, the NWS hourly point forecast, and the NBM 01Z text bulletin. The snapshot files preserve the exact pull so the calculations can be checked later.
 
-Before using either paper candidate, build a dated backtest: save forecast snapshots at consistent lead times, map the exact settlement station/day/window, compare forecast bins with the final Weather Company outcomes, and measure reliability and Brier/log scores by model and lead. Then subtract the market-specific fee and spread from any apparent edge. A single day cannot establish mispricing.
+For ongoing screening, save this combined table at fixed forecast run times, preserve both bid/ask and market depth, and calculate gross edge at the executable ask. Keep the equal-weight global average descriptive until model probabilities are calibrated; do not blend it with NBM until out-of-sample scoring justifies weights. Before using either paper candidate, build a dated backtest: save forecast snapshots at consistent lead times, map the exact settlement station/day/window, compare forecast bins with the final Weather Company outcomes, and measure reliability and Brier/log scores by model and lead. Then subtract the market-specific fee and spread from any apparent edge. A single day cannot establish mispricing.

@@ -2,33 +2,6 @@
   {
     "number": 1,
     "name": "",
-    "startTime": "2026-10-28T00:00:00-04:00",
-    "endTime": "2026-10-28T01:00:00-04:00",
-    "isDaytime": false,
-    "temperature": 51,
-    "temperatureUnit": "F",
-    "temperatureTrend": null,
-    "probabilityOfPrecipitation": {
-      "unitCode": "wmoUnit:percent",
-      "value": 0
-    },
-    "dewpoint": {
-      "unitCode": "wmoUnit:degC",
-      "value": 3.3333333333333335
-    },
-    "relativeHumidity": {
-      "unitCode": "wmoUnit:percent",
-      "value": 61
-    },
-    "windSpeed": "2 mph",
-    "windDirection": "NE",
-    "icon": "https://api.weather.gov/icons/land/night/sct?size=small",
-    "shortForecast": "Partly Cloudy",
-    "detailedForecast": ""
-  },
-  {
-    "number": 2,
-    "name": "",
     "startTime": "2026-10-28T01:00:00-04:00",
     "endTime": "2026-10-28T02:00:00-04:00",
     "isDaytime": false,
@@ -54,7 +27,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 3,
+    "number": 2,
     "name": "",
     "startTime": "2026-10-28T02:00:00-04:00",
     "endTime": "2026-10-28T03:00:00-04:00",
@@ -81,7 +54,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 4,
+    "number": 3,
     "name": "",
     "startTime": "2026-10-28T03:00:00-04:00",
     "endTime": "2026-10-28T04:00:00-04:00",
@@ -108,7 +81,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 5,
+    "number": 4,
     "name": "",
     "startTime": "2026-10-28T04:00:00-04:00",
     "endTime": "2026-10-28T05:00:00-04:00",
@@ -135,7 +108,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 6,
+    "number": 5,
     "name": "",
     "startTime": "2026-10-28T05:00:00-04:00",
     "endTime": "2026-10-28T06:00:00-04:00",
@@ -162,7 +135,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 7,
+    "number": 6,
     "name": "",
     "startTime": "2026-10-28T06:00:00-04:00",
     "endTime": "2026-10-28T07:00:00-04:00",
@@ -189,7 +162,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 8,
+    "number": 7,
     "name": "",
     "startTime": "2026-10-28T07:00:00-04:00",
     "endTime": "2026-10-28T08:00:00-04:00",
@@ -216,7 +189,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 9,
+    "number": 8,
     "name": "",
     "startTime": "2026-10-28T08:00:00-04:00",
     "endTime": "2026-10-28T09:00:00-04:00",
@@ -243,7 +216,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 10,
+    "number": 9,
     "name": "",
     "startTime": "2026-10-28T09:00:00-04:00",
     "endTime": "2026-10-28T10:00:00-04:00",
@@ -270,7 +243,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 11,
+    "number": 10,
     "name": "",
     "startTime": "2026-10-28T10:00:00-04:00",
     "endTime": "2026-10-28T11:00:00-04:00",
@@ -297,7 +270,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 12,
+    "number": 11,
     "name": "",
     "startTime": "2026-10-28T11:00:00-04:00",
     "endTime": "2026-10-28T12:00:00-04:00",
@@ -324,7 +297,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 13,
+    "number": 12,
     "name": "",
     "startTime": "2026-10-28T12:00:00-04:00",
     "endTime": "2026-10-28T13:00:00-04:00",
@@ -351,7 +324,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 14,
+    "number": 13,
     "name": "",
     "startTime": "2026-10-28T13:00:00-04:00",
     "endTime": "2026-10-28T14:00:00-04:00",
@@ -378,7 +351,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 15,
+    "number": 14,
     "name": "",
     "startTime": "2026-10-28T14:00:00-04:00",
     "endTime": "2026-10-28T15:00:00-04:00",
@@ -405,7 +378,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 16,
+    "number": 15,
     "name": "",
     "startTime": "2026-10-28T15:00:00-04:00",
     "endTime": "2026-10-28T16:00:00-04:00",
@@ -432,7 +405,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 17,
+    "number": 16,
     "name": "",
     "startTime": "2026-10-28T16:00:00-04:00",
     "endTime": "2026-10-28T17:00:00-04:00",
@@ -459,7 +432,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 18,
+    "number": 17,
     "name": "",
     "startTime": "2026-10-28T17:00:00-04:00",
     "endTime": "2026-10-28T18:00:00-04:00",
@@ -486,7 +459,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 19,
+    "number": 18,
     "name": "",
     "startTime": "2026-10-28T18:00:00-04:00",
     "endTime": "2026-10-28T19:00:00-04:00",
@@ -513,7 +486,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 20,
+    "number": 19,
     "name": "",
     "startTime": "2026-10-28T19:00:00-04:00",
     "endTime": "2026-10-28T20:00:00-04:00",
@@ -540,7 +513,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 21,
+    "number": 20,
     "name": "",
     "startTime": "2026-10-28T20:00:00-04:00",
     "endTime": "2026-10-28T21:00:00-04:00",
@@ -567,7 +540,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 22,
+    "number": 21,
     "name": "",
     "startTime": "2026-10-28T21:00:00-04:00",
     "endTime": "2026-10-28T22:00:00-04:00",
@@ -594,7 +567,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 23,
+    "number": 22,
     "name": "",
     "startTime": "2026-10-28T22:00:00-04:00",
     "endTime": "2026-10-28T23:00:00-04:00",
@@ -621,7 +594,7 @@
     "detailedForecast": ""
   },
   {
-    "number": 24,
+    "number": 23,
     "name": "",
     "startTime": "2026-10-28T23:00:00-04:00",
     "endTime": "2026-10-29T00:00:00-04:00",

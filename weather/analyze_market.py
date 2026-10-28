@@ -216,6 +216,40 @@ def model_market_probabilities(ensemble, markets):
     with (ROOT / "model_market_probabilities.csv").open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0]))
         writer.writeheader(); writer.writerows(rows)
+    return rows
+
+
+def write_consolidated_table(markets, member_rows, nbm_rows):
+    model_columns = {
+        "ecmwf_ifs025_ensemble": "ecmwf_p_yes",
+        "icon_seamless_eps": "icon_p_yes",
+        "ncep_gefs_seamless": "gefs_p_yes",
+    }
+    by_ticker_model = {(r["market_ticker"], r["model_key"]): r for r in member_rows}
+    by_ticker_nbm = {r["market_ticker"]: r for r in nbm_rows}
+    rows = []
+    for market in markets:
+        ticker = market["ticker"]
+        components = {key: by_ticker_model[(ticker, key)]["p_yes_member_frequency"]
+                      for key in model_columns}
+        global_avg = sum(components.values()) / len(components)
+        yes_bid, yes_ask = float(market["yes_bid_dollars"]), float(market["yes_ask_dollars"])
+        no_ask = float(market["no_ask_dollars"])
+        nbm = by_ticker_nbm.get(ticker, {}).get("nbm_gaussian_rounded_probability")
+        row = {"market_ticker": ticker, "range": market["yes_sub_title"],
+               "yes_bid": yes_bid, "yes_ask": yes_ask, "yes_mid_implied_probability": (yes_bid + yes_ask) / 2,
+               **components, "global_ensemble_equal_weight_avg": global_avg,
+               "global_avg_yes_edge_at_ask_before_fees": global_avg - yes_ask,
+               "no_ask": no_ask, "global_avg_no_probability": 1 - global_avg,
+               "global_avg_no_edge_at_ask_before_fees": (1 - global_avg) - no_ask,
+               "nbm_gaussian_rounded_probability": nbm,
+               "nbm_yes_edge_at_ask_before_fees": (nbm - yes_ask) if nbm is not None else None,
+               "nbm_no_edge_at_ask_before_fees": (1 - nbm - no_ask) if nbm is not None else None}
+        rows.append(row)
+    with (ROOT / "market_model_comparison.csv").open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader(); writer.writerows(rows)
+    return rows
 
 
 def nws_high(forecast):
@@ -230,37 +264,45 @@ def main():
     nws = nws_data()
     nbm = nbm_data()
     summaries = analyze_ensembles(ensemble)
-    model_market_probabilities(ensemble, markets)
     nws_max, nws_periods = nws_high(nws)
     nbm_fields = nbm["fields_first_valid_column_f"]
     mu, sigma = nbm_fields["TXNMN"], nbm_fields["TXNSD"]
     # Approximate probability that the integer-reported maximum rounds to 60°
     # or 61°F: Gaussian mass on [59.5, 61.5), using NBM's reported mean/SD.
     cdf = lambda x: 0.5 * (1 + math.erf(x / math.sqrt(2)))
-    nbm_p_60_61 = cdf((61.5 - mu) / sigma) - cdf((59.5 - mu) / sigma)
-    nbm_bins = {
-        "59° or below": cdf((59.5 - mu) / sigma),
-        "60° to 61°": nbm_p_60_61,
-        "62° to 63°": cdf((63.5 - mu) / sigma) - cdf((61.5 - mu) / sigma),
-        "64° to 65°": cdf((65.5 - mu) / sigma) - cdf((63.5 - mu) / sigma),
-        "66° or above": 1 - cdf((65.5 - mu) / sigma),
-    }
-    by_range = {m["yes_sub_title"]: m for m in markets}
     nbm_rows = []
-    for range_name, p_yes in nbm_bins.items():
-        m = by_range.get(range_name)
-        if m is None:
-            continue
+    for m in markets:
+        kind = m.get("strike_type")
+        lower, upper = None, None
+        if kind == "between":
+            lower, upper = float(m["floor_strike"]) - 0.5, float(m["cap_strike"]) + 0.5
+        elif kind == "less":
+            upper = float(m["cap_strike"]) - 0.5
+        elif kind == "greater":
+            lower = float(m["floor_strike"]) + 0.5
+        else:
+            raise RuntimeError(f"Unknown strike type {kind}: {m['ticker']}")
+        if lower is None:
+            p_yes = cdf((upper - mu) / sigma)
+        elif upper is None:
+            p_yes = 1 - cdf((lower - mu) / sigma)
+        else:
+            p_yes = cdf((upper - mu) / sigma) - cdf((lower - mu) / sigma)
         yes_bid, yes_ask = float(m["yes_bid_dollars"]), float(m["yes_ask_dollars"])
-        nbm_rows.append({"market_ticker": m["ticker"], "range": range_name,
+        no_ask = float(m["no_ask_dollars"])
+        nbm_rows.append({"market_ticker": m["ticker"], "range": m["yes_sub_title"],
                          "nbm_gaussian_rounded_probability": p_yes,
                          "yes_bid": yes_bid, "yes_ask": yes_ask,
                          "yes_edge_at_ask_before_fees": p_yes - yes_ask,
-                         "no_ask_from_yes_bid": 1 - yes_bid,
-                         "no_edge_at_ask_before_fees": (1 - p_yes) - (1 - yes_bid)})
+                         "no_ask_from_yes_bid": no_ask,
+                         "no_edge_at_ask_before_fees": (1 - p_yes) - no_ask})
     with (ROOT / "nbm_market_probability_approx.csv").open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(nbm_rows[0]))
         writer.writeheader(); writer.writerows(nbm_rows)
+    member_rows = model_market_probabilities(ensemble, markets)
+    write_consolidated_table(markets, member_rows, nbm_rows)
+    nbm_p_60_61 = next(r["nbm_gaussian_rounded_probability"] for r in nbm_rows
+                       if r["range"] == "60° to 61°")
     (ROOT / "nws_target_day_periods.json").write_text(
         json.dumps(nws_periods, indent=2) + "\n", encoding="utf-8")
     quote_fields = ["ticker", "yes_sub_title", "yes_bid_dollars", "yes_ask_dollars",
