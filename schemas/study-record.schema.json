@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xpt.ai/schemas/prediction-market-study-v1.json",
+  "title": "Prediction Market Study Record",
+  "description": "Shared dashboard record with typed domain-specific results. This schema describes study artifacts; it does not make their measures comparable.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "study_id", "study_type", "sector", "title",
+    "research_question", "contract_scope", "data_coverage", "method",
+    "findings", "uncertainty", "limitations", "evidence_status",
+    "updated_at", "sources", "reproducibility", "domain"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "study_id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "study_type": {
+      "type": "string",
+      "enum": ["weather_probability_comparison", "cross_venue_discrepancy", "prediction_market_options_surface"]
+    },
+    "sector": { "type": "string", "minLength": 1, "description": "Market group displayed in sector-first navigation." },
+    "title": { "type": "string", "minLength": 1 },
+    "research_question": { "type": "string", "minLength": 1 },
+    "example_notice": { "type": "string" },
+    "contract_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "markets"],
+      "properties": {
+        "description": { "type": "string", "minLength": 1 },
+        "markets": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["venue", "market_id", "question", "resolution_source", "rule_version", "timezone"],
+            "properties": {
+              "venue": { "type": "string", "minLength": 1 },
+              "market_id": { "type": "string", "minLength": 1 },
+              "question": { "type": "string", "minLength": 1 },
+              "resolution_source": { "type": "string", "minLength": 1 },
+              "rule_version": { "type": "string", "minLength": 1 },
+              "timezone": { "type": "string", "minLength": 1 },
+              "valid_from": { "type": "string", "description": "ISO 8601 date or timestamp, when applicable." },
+              "valid_to": { "type": "string", "description": "ISO 8601 date or timestamp, when applicable." }
+            }
+          }
+        }
+      }
+    },
+    "data_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end", "sample_count", "coverage_summary", "known_gaps"],
+      "properties": {
+        "start": { "type": "string", "description": "Inclusive start of the analyzed data window." },
+        "end": { "type": "string", "description": "Inclusive end of the analyzed data window." },
+        "sample_count": { "type": "integer", "minimum": 0 },
+        "coverage_summary": { "type": "string" },
+        "known_gaps": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "method": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary"],
+      "properties": {
+        "summary": { "type": "string", "minLength": 1 },
+        "benchmark": { "type": "string" },
+        "analysis_version": { "type": "string" },
+        "evaluation_split": { "type": "string", "description": "Describe chronological/event split when results are scored out of sample." }
+      }
+    },
+    "findings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary", "metrics"],
+      "properties": {
+        "summary": { "type": "string", "minLength": 1 },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["name", "value", "unit", "definition"],
+            "properties": {
+              "name": { "type": "string" },
+              "value": { "type": ["number", "string"] },
+              "unit": { "type": "string" },
+              "definition": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "uncertainty": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary", "items"],
+      "properties": {
+        "summary": { "type": "string" },
+        "items": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "limitations": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "evidence_status": {
+      "type": "string",
+      "enum": ["descriptive", "model_estimate", "validated_forecast", "validated_finding", "candidate_discrepancy", "executable_opportunity"],
+      "description": "Machine-readable evidence category; user-facing definitions are maintained separately. A candidate discrepancy is not proof of a tradable edge."
+    },
+    "updated_at": { "type": "string", "description": "ISO 8601 timestamp of the study artifact update." },
+    "sources": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["name", "uri", "role"],
+        "properties": {
+          "name": { "type": "string" },
+          "uri": { "type": "string" },
+          "role": { "type": "string" },
+          "accessed_at": { "type": "string" },
+          "usage_terms": { "type": "string" }
+        }
+      }
+    },
+    "reproducibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repository_uri", "code_path", "data_manifest_uri"],
+      "properties": {
+        "repository_uri": { "type": "string" },
+        "code_path": { "type": "string" },
+        "code_commit": { "type": "string" },
+        "data_manifest_uri": { "type": "string" },
+        "settlement_rules_uri": { "type": "string" }
+      }
+    },
+    "domain": {
+      "oneOf": [
+        { "$ref": "#/$defs/weather_domain" },
+        { "$ref": "#/$defs/cross_venue_domain" },
+        { "$ref": "#/$defs/options_domain" }
+      ]
+    }
+  },
+  "$defs": {
+    "weather_domain": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "market_probabilities", "forecast_probabilities"],
+      "properties": {
+        "kind": { "const": "weather" },
+        "market_probabilities": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["market_id", "outcome", "yes_bid", "yes_ask", "midpoint", "quote_time"],
+            "properties": {
+              "market_id": { "type": "string" },
+              "outcome": { "type": "string" },
+              "yes_bid": { "type": "number", "minimum": 0, "maximum": 1 },
+              "yes_ask": { "type": "number", "minimum": 0, "maximum": 1 },
+              "midpoint": { "type": "number", "minimum": 0, "maximum": 1 },
+              "quote_time": { "type": "string" }
+            }
+          }
+        },
+        "forecast_probabilities": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["model", "issued_at", "valid_time", "outcome", "probability"],
+            "properties": {
+              "model": { "type": "string" },
+              "issued_at": { "type": "string" },
+              "valid_time": { "type": "string" },
+              "outcome": { "type": "string" },
+              "probability": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        },
+        "calibration": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["metric", "value", "sample_count", "split"],
+            "properties": {
+              "metric": { "enum": ["brier_score", "log_loss"] },
+              "value": { "type": "number", "minimum": 0 },
+              "sample_count": { "type": "integer", "minimum": 0 },
+              "split": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "cross_venue_domain": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "matched_pairs", "quote_observations"],
+      "properties": {
+        "kind": { "const": "cross_venue" },
+        "matched_pairs": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["market_a_id", "market_b_id", "equivalence_summary"],
+            "properties": {
+              "market_a_id": { "type": "string" },
+              "market_b_id": { "type": "string" },
+              "equivalence_summary": { "type": "string" }
+            }
+          }
+        },
+        "quote_observations": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["market_id", "venue", "bid", "ask", "midpoint", "observed_at"],
+            "properties": {
+              "market_id": { "type": "string" },
+              "venue": { "type": "string" },
+              "bid": { "type": "number", "minimum": 0, "maximum": 1 },
+              "ask": { "type": "number", "minimum": 0, "maximum": 1 },
+              "midpoint": { "type": "number", "minimum": 0, "maximum": 1 },
+              "observed_at": { "type": "string" },
+              "stale": { "type": "boolean" }
+            }
+          }
+        },
+        "gap_summary": {
+          "type": "object", "additionalProperties": false,
+          "required": ["signed_midpoint_gap", "absolute_midpoint_gap", "quote_basis"],
+          "properties": {
+            "signed_midpoint_gap": { "type": "number" },
+            "absolute_midpoint_gap": { "type": "number", "minimum": 0 },
+            "quote_basis": { "enum": ["midpoint", "executable_side"] }
+          }
+        }
+      }
+    },
+    "options_domain": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "underlying", "expiry", "benchmark_style", "threshold_curve", "surface_points"],
+      "properties": {
+        "kind": { "const": "options" },
+        "underlying": { "type": "string" },
+        "expiry": { "type": "string" },
+        "benchmark_style": { "enum": ["european", "american_adjusted"] },
+        "threshold_curve": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["strike", "yes_bid", "yes_ask", "observed_at"],
+            "properties": {
+              "strike": { "type": "number" },
+              "yes_bid": { "type": "number", "minimum": 0, "maximum": 1 },
+              "yes_ask": { "type": "number", "minimum": 0, "maximum": 1 },
+              "observed_at": { "type": "string" }
+            }
+          }
+        },
+        "surface_points": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["log_moneyness", "maturity_years", "pm_bs_equivalent_iv", "listed_iv", "quote_uncertainty"],
+            "properties": {
+              "log_moneyness": { "type": "number" },
+              "maturity_years": { "type": "number", "exclusiveMinimum": 0 },
+              "pm_bs_equivalent_iv": { "type": "number", "exclusiveMinimum": 0 },
+              "listed_iv": { "type": "number", "exclusiveMinimum": 0 },
+              "quote_uncertainty": { "type": "string" }
+            }
+          }
+        },
+        "reconstruction_assumptions": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

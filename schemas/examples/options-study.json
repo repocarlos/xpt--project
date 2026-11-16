@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "study_id": "options-threshold-surface-example",
+  "study_type": "prediction_market_options_surface",
+  "sector": "equity threshold markets",
+  "title": "Prediction-market-derived surface comparison (fixture)",
+  "research_question": "How does a binary-threshold-derived surface compare with a matched listed European-options surface?",
+  "example_notice": "Illustrative schema fixture only; values are not findings or a current market snapshot.",
+  "contract_scope": {
+    "description": "Terminal close-above-threshold contracts on one underlying and expiry.",
+    "markets": [{"venue": "Example prediction market", "market_id": "EXAMPLE-THRESHOLD-100", "question": "Example underlying closes above threshold 100", "resolution_source": "Example official close", "rule_version": "example-rules-v1", "timezone": "America/New_York", "valid_from": "2026-12-18T16:00:00-05:00", "valid_to": "2026-12-18T16:00:00-05:00"}]
+  },
+  "data_coverage": {"start": "2026-12-18T15:55:00Z", "end": "2026-12-18T15:55:00Z", "sample_count": 1, "coverage_summary": "One illustrative threshold and one aligned listed-options surface point.", "known_gaps": ["No full strike ladder or surface history is represented."]},
+  "method": {"summary": "Convert terminal binary thresholds to digital bounds, reconstruct synthetic calls, then invert European Black–Scholes.", "benchmark": "Contemporaneous listed European-options surface on the same underlying and expiry", "analysis_version": "example-v1"},
+  "findings": {"summary": "Fixture only; no empirical claim.", "metrics": [{"name": "pm_bs_equivalent_iv", "value": 0.25, "unit": "annualized volatility", "definition": "Model-transformed volatility from illustrative binary prices."}]},
+  "uncertainty": {"summary": "Illustrative quote and reconstruction uncertainty only.", "items": ["Tail, interpolation, and quote-quality sensitivity are not estimated in this fixture."]},
+  "limitations": ["A prediction-market-derived Black–Scholes-equivalent IV is not a listed option quote or proof of mispricing."],
+  "evidence_status": "model_estimate",
+  "updated_at": "2026-11-16T00:00:00Z",
+  "sources": [{"name": "Example synchronized quotes", "uri": "https://example.org/options-snapshot", "role": "binary and listed quote fixture", "usage_terms": "Illustrative only."}],
+  "reproducibility": {"repository_uri": "https://example.org/repo", "code_path": "options/example.py", "code_commit": "example", "data_manifest_uri": "https://example.org/options-manifest.json", "settlement_rules_uri": "https://example.org/threshold-rules"},
+  "domain": {
+    "kind": "options",
+    "underlying": "EXAMPLE",
+    "expiry": "2026-12-18",
+    "benchmark_style": "european",
+    "threshold_curve": [{"strike": 100, "yes_bid": 0.45, "yes_ask": 0.5, "observed_at": "2026-12-18T15:55:00Z"}],
+    "surface_points": [{"log_moneyness": 0, "maturity_years": 0.01, "pm_bs_equivalent_iv": 0.25, "listed_iv": 0.24, "quote_uncertainty": "Illustrative; bid/ask and reconstruction bounds not calculated."}],
+    "reconstruction_assumptions": ["Illustrative discounting and tail assumptions only."]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "study_id": "weather-nyc-temperature-example",
+  "study_type": "weather_probability_comparison",
+  "sector": "weather",
+  "title": "Daily high-temperature market and forecast comparison (fixture)",
+  "research_question": "How do market prices compare with forecast probabilities for the same settlement bucket?",
+  "example_notice": "Illustrative schema fixture only; values are not findings or a current market snapshot.",
+  "contract_scope": {
+    "description": "One daily high-temperature bucket resolved from a specified station and local-day window.",
+    "markets": [{
+      "venue": "Kalshi",
+      "market_id": "EXAMPLE-KXHIGHNY-TEMP",
+      "question": "Example: will the NYC high be in the stated temperature bucket?",
+      "resolution_source": "Example settlement source and station",
+      "rule_version": "example-rules-v1",
+      "timezone": "America/New_York",
+      "valid_from": "2026-10-28",
+      "valid_to": "2026-10-28"
+    }]
+  },
+  "data_coverage": {
+    "start": "2026-10-28T05:00:00Z",
+    "end": "2026-10-28T05:00:00Z",
+    "sample_count": 1,
+    "coverage_summary": "Single illustrative quote/forecast alignment row.",
+    "known_gaps": ["Fixture does not represent historical coverage or an out-of-sample evaluation."]
+  },
+  "method": {
+    "summary": "Compare a market-implied bucket-price convention with forecasts issued by the quote time.",
+    "benchmark": "Public forecast probability distributions",
+    "analysis_version": "example-v1"
+  },
+  "findings": {"summary": "Fixture only; no empirical claim.", "metrics": []},
+  "uncertainty": {"summary": "All numbers are illustrative.", "items": ["No calibration or quote-quality inference is possible from this fixture."]},
+  "limitations": ["Illustrative record only; not a research result."],
+  "evidence_status": "descriptive",
+  "updated_at": "2026-11-16T00:00:00Z",
+  "sources": [{"name": "Example market snapshot", "uri": "https://example.org/weather-snapshot", "role": "market quote fixture", "usage_terms": "Illustrative only."}],
+  "reproducibility": {"repository_uri": "https://example.org/repo", "code_path": "weather/example.py", "code_commit": "example", "data_manifest_uri": "https://example.org/weather-manifest.json", "settlement_rules_uri": "https://example.org/weather-rules"},
+  "domain": {
+    "kind": "weather",
+    "market_probabilities": [{"market_id": "EXAMPLE-KXHIGHNY-TEMP", "outcome": "example temperature bucket", "yes_bid": 0.42, "yes_ask": 0.48, "midpoint": 0.45, "quote_time": "2026-10-28T05:00:00Z"}],
+    "forecast_probabilities": [{"model": "Example ensemble", "issued_at": "2026-10-28T00:00:00Z", "valid_time": "2026-10-28T12:00:00Z", "outcome": "example temperature bucket", "probability": 0.5}],
+    "calibration": [{"metric": "brier_score", "value": 0.2, "sample_count": 1, "split": "illustrative only"}]
+  }
+}
