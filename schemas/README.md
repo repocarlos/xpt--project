@@ -18,4 +18,4 @@ The checker validates the schema keywords used by this contract, all example fix
 
 The `schema_version` value is `1.0.0`. Increment the major version for breaking required-field or semantic changes, minor for compatible additions, and patch for clarifying descriptions that do not change validation. Each study record should keep its schema version with its data manifest.
 
-The evidence-state values are initial machine-readable identifiers. Their user-facing definitions and claim language are maintained in the shared study standards work and need review by the three analytics leads before dashboard publication.
+Evidence-state definitions, minimum evidence, and allowed/avoided claim language are in [`evidence-statuses.md`](evidence-statuses.md) and [`evidence-statuses.json`](evidence-statuses.json). They are claim categories, not cross-study scores. The registry and schema enum are checked together. Definitions are ready for the three research leads' review; do not describe them as approved until that review happens.

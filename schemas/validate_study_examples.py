@@ -16,6 +16,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parent
 SCHEMA_PATH = ROOT / "study-record.schema.json"
+STATUS_REGISTRY_PATH = ROOT / "evidence-statuses.json"
 EXAMPLES = sorted((ROOT / "examples").glob("*.json"))
 
 
@@ -113,8 +114,30 @@ def validate(value: Any, rule: dict[str, Any], root: dict[str, Any], path: str =
             raise ValidationError(f"{path}: not above exclusiveMinimum")
 
 
+def validate_status_registry(schema: dict[str, Any], registry: dict[str, Any]) -> None:
+    schema_statuses = set(schema["properties"]["evidence_status"]["enum"])
+    registry_statuses = {entry["key"] for entry in registry.get("statuses", [])}
+    if schema_statuses != registry_statuses:
+        missing = sorted(schema_statuses - registry_statuses)
+        extra = sorted(registry_statuses - schema_statuses)
+        raise ValidationError(f"Evidence status registry mismatch; missing={missing}, extra={extra}")
+    required_fields = {"minimum_evidence", "allowed_wording", "avoid_wording", "example"}
+    for entry in registry["statuses"]:
+        if not required_fields.issubset(entry):
+            raise ValidationError(f"Status {entry.get('key')!r} is missing registry fields")
+
+
+def validate_record_status(record: dict[str, Any], registry: dict[str, Any]) -> None:
+    known = {entry["key"] for entry in registry["statuses"]}
+    if record.get("evidence_status") not in known:
+        raise ValidationError(f"Unknown evidence status: {record.get('evidence_status')!r}")
+
+
 def main() -> None:
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    registry = json.loads(STATUS_REGISTRY_PATH.read_text(encoding="utf-8"))
+    validate_status_registry(schema, registry)
+    print(f"PASS evidence status registry ({len(registry['statuses'])} entries match schema enum)")
     if not EXAMPLES:
         raise SystemExit("No study examples found")
 
@@ -122,6 +145,7 @@ def main() -> None:
     for example_path in EXAMPLES:
         record = json.loads(example_path.read_text(encoding="utf-8"))
         validate(record, schema, schema)
+        validate_record_status(record, registry)
         kinds.add(record["domain"]["kind"])
         print(f"PASS {example_path.relative_to(ROOT)}")
 
@@ -139,7 +163,25 @@ def main() -> None:
     else:
         raise SystemExit("Invalid record unexpectedly passed validation")
 
-    print(f"Validated {len(EXAMPLES)} examples and one negative case.")
+    negative_status = json.loads(EXAMPLES[0].read_text(encoding="utf-8"))
+    negative_status["evidence_status"] = "unreviewed_claim"
+    try:
+        validate_record_status(negative_status, registry)
+    except ValidationError:
+        print("PASS unknown evidence status rejection")
+    else:
+        raise SystemExit("Unknown evidence status unexpectedly passed validation")
+
+    incomplete_registry = copy.deepcopy(registry)
+    incomplete_registry["statuses"].pop()
+    try:
+        validate_status_registry(schema, incomplete_registry)
+    except ValidationError:
+        print("PASS missing registry entry rejection")
+    else:
+        raise SystemExit("Registry missing a schema status unexpectedly passed validation")
+
+    print(f"Validated {len(EXAMPLES)} examples and three negative cases.")
 
 
 if __name__ == "__main__":
