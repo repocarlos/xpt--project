@@ -7,10 +7,10 @@ This is a portable static prototype with no package manager, external API, or bu
 From the repository root:
 
 ```sh
-python3 -m http.server 8000 --directory dashboard/app
+python3 -m http.server 8000 --bind 127.0.0.1 --directory dashboard/app
 ```
 
-Open `http://127.0.0.1:8000/`.
+Open `http://127.0.0.1:8000/`. The server binds to loopback so the preview is not exposed to the local network by default. Stop it with Ctrl-C.
 
 ## Routes
 
@@ -36,7 +36,7 @@ This prototype has no study records or authorized market data. Missing values ar
 
 This prototype deliberately renders no market observations, estimates, charts, or source links. It marks the data unavailable while source-use rights and study inputs are pending. Replace the static unavailable states only when the approved study record, manifest/rights state, and freshness rules are available. Do not put API secrets or credentials in this browser bundle.
 
-The shell is portable, but no persistent staging host, domain, HTTPS configuration, access controls, monitoring, backups, or operational owner is configured here. GRO-69 tracks that separate hosting decision. The harness working directory is not a production host.
+The shell is portable, but no persistent staging host, domain, HTTPS configuration, access controls, monitoring, backups, or operational owner is configured in this repository. Their availability elsewhere is unconfirmed. See [the deployment profile](../deployment-profile.md) and GRO-69 for the decision. The harness working directory is not a production host.
 
 ## Browser checks
 
@@ -46,4 +46,4 @@ From the repository root, run:
 python3 -m unittest dashboard.test_app_shell -v
 ```
 
-The check uses the installed Playwright/Chromium environment and a local static HTTP server.
+The check uses the installed Playwright/Chromium environment and a local static HTTP server. One browser test injects a clearly labeled synthetic chart and table fixture to verify the visualization component; it is test-only and is not loaded by normal dashboard routes.
