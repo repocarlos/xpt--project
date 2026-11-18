@@ -1,190 +1,403 @@
 {
   "inventory_version": "1.0.0",
-  "reviewed_at": "2026-11-16",
+  "reviewed_at": "2026-11-18",
   "purpose": "Document candidate source coverage and constraints before further collection. A documented API is not proof of pilot-ID coverage or a reuse license.",
-  "status_values": ["documented_candidate", "needs_pilot", "permission_required", "owner_confirmation_pending"],
+  "status_values": [
+    "documented_candidate",
+    "needs_pilot",
+    "permission_required",
+    "owner_confirmation_pending"
+  ],
   "capture_policy": {
     "no_raw_data_in_repo": true,
     "venue_data_gate": "Do not collect, cache, store, upload, or display venue/vendor data until terms for this research archive and the intended retail-facing dashboard are confirmed in writing or a licensed source explicitly permits the use.",
     "proposed_start_dates": {
       "rolling_weather_forecasts": "2026-11-16",
-      "prediction_market_quotes_and_trades": "2026-11-17 (conditional on written permission or approved licensed source)",
+      "prediction_market_quotes_and_trades": "2026-11-18 (only after written rights approval or a licensed source covering research, storage, and dashboard display)",
       "listed_options_quotes": "After a product, coverage, and internal/external use license are confirmed"
     },
-    "review_status": "All three research lead confirmations are pending."
+    "review_status": "Alay selected direct Kalshi API + Predexon as Kalshi candidates and Polymarket CLOB as the primary Poly API; pilot coverage, terms, and remaining lead confirmations are pending."
   },
   "sources": [
     {
       "source_id": "kalshi-market-data",
-      "legs": ["weather", "cross_venue"],
-      "owners": ["Carlos López-Ibor Romero", "Adele Palsson"],
+      "legs": [
+        "weather",
+        "cross_venue"
+      ],
+      "owners": [
+        "Carlos López-Ibor Romero",
+        "Adele Palsson"
+      ],
       "role": "Prediction-market contract metadata, rules, quotes, trades, candles, and order books.",
-      "provider": "Kalshi REST/WebSocket APIs",
-      "endpoints_or_identifiers": ["KXHIGHNY series / market tickers", "market ticker and event ticker", "live and historical market, candlestick, trade, and orderbook endpoints"],
-      "documented_coverage": "Live and historical data are separated; older markets, candlesticks, and trades can move to historical endpoints. Old Events and Series remain available on their original endpoints. Exact start dates and selected-pilot quote/depth coverage are not documented here and need a sample check.",
+      "provider": "Kalshi Trade API v2 at Alay-selected https://api.elections.kalshi.com/trade-api/v2",
+      "endpoints_or_identifiers": [
+        "Base URL selected by Alay: https://api.elections.kalshi.com/trade-api/v2",
+        "KXHIGHNY series / market tickers; market and event tickers",
+        "Market metadata, historical markets/trades/candlesticks, and orderbook endpoints; confirm the exact pilot routes"
+      ],
+      "documented_coverage": "Kalshi’s current market-data quick-start documents unauthenticated public market data at https://external-api.kalshi.com/trade-api/v2 and illustrates series, markets, and orderbooks; it says the base serves all market categories. The requested api.elections.kalshi.com host is not the base shown in that current quick-start, so verify it remains supported and equivalent with a permitted pilot request. Historical endpoints and selected-pilot quote/depth coverage still require a sample check.",
       "cadence": "REST snapshots or documented WebSocket market feeds; proposed sampling cadence is not yet approved.",
       "retention_or_limits": "Live/history tier handoff; API rate limits may change without notice. No guaranteed historical depth window established for these pilots.",
       "usage_terms_status": "permission_required",
       "usage_terms": "The Developer Agreement currently limits API use to facilitating the member's own trading and prohibits collecting, caching, aggregating, or storing API data except for that purpose, and sharing it without prior written authorization. The separate website data terms also restrict collection and redistribution. This research/dashboard use must not assume public API access grants archive or display rights.",
-      "material_gaps": ["Written authorization or an expressly licensed archive is needed before project capture/storage/sharing.", "Exact history, settlement-rule versions, historical quote depth, and fee schedule need pilot-level verification.", "The weather pilot's binding rule names The Weather Company; Kalshi metadata alone does not supply its independent resolution series."],
-      "next_verification": "Adele and Carlos: confirm their exact contracts, allowed data-use path, history window, and settlement identifiers. Obtain written permission or select a licensed alternative before collecting.",
-      "proposed_capture_start": "2026-11-17 conditional on written authorization or an approved licensed source; otherwise do not collect.",
+      "material_gaps": [
+        "Written authorization or an expressly licensed archive is needed before project capture/storage/sharing.",
+        "Exact history, settlement-rule versions, historical quote depth, and fee schedule need pilot-level verification.",
+        "The weather pilot's binding rule names The Weather Company; Kalshi metadata alone does not supply its independent resolution series."
+      ],
+      "next_verification": "Adele and Carlos: verify the requested api.elections.kalshi.com base against Kalshi’s currently documented external-api base on a permitted pilot; confirm exact routes, history, settlement identifiers, and rights. Obtain written permission or an expressly licensed alternative before collection.",
+      "proposed_capture_start": "2026-11-18 only after written authorization or an approved licensed source covers research, storage, sharing, and intended dashboard display; otherwise do not collect.",
       "status": "permission_required",
       "references": [
-        {"title": "Historical Data — Kalshi API", "url": "https://docs.kalshi.com/getting_started/historical_data"},
-        {"title": "Kalshi Developer Agreement v1.1", "url": "https://kalshi-public-docs.s3.amazonaws.com/Kalshi-Developer-Agreement.pdf"},
-        {"title": "Kalshi Data Terms of Use", "url": "https://kalshi-public-docs.s3.amazonaws.com/kalshi-data-terms-of-service.pdf"}
+        {
+          "title": "Quick Start: Market Data — Kalshi API",
+          "url": "https://docs.kalshi.com/getting_started/quick_start_market_data"
+        },
+        {
+          "title": "Historical Data — Kalshi API",
+          "url": "https://docs.kalshi.com/getting_started/historical_data"
+        },
+        {
+          "title": "Kalshi Developer Agreement v1.1",
+          "url": "https://kalshi-public-docs.s3.amazonaws.com/Kalshi-Developer-Agreement.pdf"
+        },
+        {
+          "title": "Kalshi Data Terms of Use",
+          "url": "https://kalshi-public-docs.s3.amazonaws.com/kalshi-data-terms-of-service.pdf"
+        }
       ]
     },
     {
       "source_id": "polymarket-market-data",
-      "legs": ["cross_venue", "options"],
-      "owners": ["Adele Palsson", "Alay Patel"],
+      "legs": [
+        "cross_venue",
+        "options"
+      ],
+      "owners": [
+        "Adele Palsson",
+        "Alay Patel"
+      ],
       "role": "Market discovery, contract/resolution metadata, token IDs, price histories, current books, and trades for matched or threshold contracts.",
-      "provider": "Polymarket Gamma, CLOB, and Data API v2",
-      "endpoints_or_identifiers": ["condition_id / market_id", "outcome token_id", "Data API v2 /prices-history", "CLOB current book and market WebSocket"],
-      "documented_coverage": "Market history is endpoint/version-specific. Current docs describe full history at coarse 3h/12h resolutions; finer histories have minimum retention floors (1m at least 7d, 5m at least 60d, 30m at least 90d). Explicit windows are limited to 15d. Verify the exact v2 endpoint, returned resolution_seconds, and history for each token; price history is not historical executable depth.",
-      "cadence": "Current book snapshots or WebSocket updates; price history is bucketed. Pilot polling/stream cadence is not set.",
+      "provider": "Polymarket CLOB API (primary, per Alay); Polymarket Data API v2 only for its documented historical price-history route if needed; Gamma only for market/token metadata and rules discovery.",
+      "endpoints_or_identifiers": [
+        "condition_id / market_id and outcome token_id (or position_id for Protocol V2 markets)",
+        "CLOB REST orderbook and last-trade-price endpoints; CLOB real-time market feed",
+        "Officially documented price history: https://data-api.polymarket.com/v2/prices-history (record endpoint/version and returned resolution_seconds)"
+      ],
+      "documented_coverage": "The CLOB provides outcome-token books and last-trade prices. Polymarket’s current documentation routes bucketed historical price queries through Data API v2; explicit start/end ranges are limited to 15 days, full history defaults to 12-hour buckets, and finer history windows vary by resolution. Verify coverage for the pilot token and distinguish price history from historical executable depth.",
+      "cadence": "CLOB snapshots or WebSocket updates for current books and trades; historical price points are bucketed through the separately documented Data API v2 route. Pilot sampling cadence is not set.",
       "retention_or_limits": "Fine-resolution history decays; exact availability can vary by endpoint and token. No official archived historical full-depth book range established.",
       "usage_terms_status": "permission_required",
       "usage_terms": "The current Terms of Use restrict some data use by capital-market clients and market-data distributors and restrict redistribution/commercial exploitation absent a written agreement. The intended retail analytics dashboard may implicate these definitions; classification and rights must be confirmed before collecting or displaying data. Public endpoints do not themselves establish downstream display rights.",
-      "material_gaps": ["Written terms for the team's research archive and dashboard display need confirmation.", "Exact matched contract rule equivalence, point-in-time history, and settlement outcomes need a pilot sample.", "Current API price history does not establish historical bid/ask depth or executable size."],
-      "next_verification": "Adele and Alay: choose exact IDs, confirm applicable terms and intended distribution, request written rights if needed, and verify returned dates/resolution on a permitted sample.",
-      "proposed_capture_start": "2026-11-17 conditional on written authorization or an approved licensed source; otherwise do not collect.",
+      "material_gaps": [
+        "Written terms for the team's research archive and dashboard display need confirmation.",
+        "Exact matched contract rule equivalence, point-in-time history, and settlement outcomes need a pilot sample.",
+        "Current API price history does not establish historical bid/ask depth or executable size."
+      ],
+      "next_verification": "Adele and Alay: confirm exact IDs and resolution sources; use CLOB as the primary live source, confirm whether the Data API v2 history route is acceptable for historical prices, and verify returned dates/resolution on a permitted sample. Confirm rights for research archive and retail-dashboard display before collecting.",
+      "proposed_capture_start": "2026-11-18 only after written authorization or an approved licensed source covers research, storage, sharing, and intended dashboard display; otherwise do not collect.",
       "status": "permission_required",
       "references": [
-        {"title": "Prices and Order Books — Polymarket Documentation", "url": "https://docs.polymarket.com/market-data/prices-order-books"},
-        {"title": "Real-Time Data — Polymarket Documentation", "url": "https://docs.polymarket.com/market-data/realtime-data"},
-        {"title": "Polymarket Terms of Use", "url": "https://polymarket.com/tos"}
+        {
+          "title": "Prices and Order Books — Polymarket Documentation",
+          "url": "https://docs.polymarket.com/market-data/prices-order-books"
+        },
+        {
+          "title": "Real-Time Data — Polymarket Documentation",
+          "url": "https://docs.polymarket.com/market-data/realtime-data"
+        },
+        {
+          "title": "Polymarket Terms of Use",
+          "url": "https://polymarket.com/tos"
+        }
+      ]
+    },
+    {
+      "source_id": "predexon-kalshi-data",
+      "legs": [
+        "weather",
+        "cross_venue"
+      ],
+      "owners": [
+        "Carlos López-Ibor Romero",
+        "Adele Palsson"
+      ],
+      "role": "Alay-selected alternative/secondary source for Kalshi market data, including candidate historical orderbook tick data; compare with direct Kalshi API coverage.",
+      "provider": "Predexon unified prediction-market API",
+      "endpoints_or_identifiers": [
+        "Kalshi market data and orderbook tick history are advertised; exact API routes, market identifiers, and product plan are to be confirmed from account documentation."
+      ],
+      "documented_coverage": "Predexon documentation lists Kalshi market data and tick history as available product areas. Public docs do not establish exact coverage dates, completeness for the selected markets, sampling, or historical depth quality; verify with a permitted sample and inspect timestamps and gaps.",
+      "cadence": "API access and tick-history downloads; account-specific quotas, billing, cadence, and retention/availability need confirmation.",
+      "retention_or_limits": "Public documentation advertises historical orderbook tick data. Exact Kalshi history window, granularity, request/download limits, and record completeness for the pilot are unverified.",
+      "usage_terms_status": "permission_required",
+      "usage_terms": "Predexon Terms of Service prohibit reselling or redistributing its Services without authorization and disclaim data accuracy/completeness/timeliness. They do not clearly grant rights to archive or redistribute underlying Kalshi data in a retail-facing dashboard. Confirm in writing vendor and underlying venue rights for research, storage, derived data, sharing, and display before any capture.",
+      "material_gaps": [
+        "Written data rights for internal archive and external/retail display are unresolved, including underlying venue rights.",
+        "No sample has established exact pilot identifiers, history dates, granularity, missingness, update latency, or cost.",
+        "Predexon data must not be assumed equivalent to direct Kalshi responses; retain source/provider and retrieval timestamp in provenance."
+      ],
+      "next_verification": "Carlos and Adele: request/inspect a permitted sample for the exact pilot markets, compare timestamps, coverage, and book fields with direct Kalshi data, confirm plan/cost and license rights for archive/dashboard use, and keep collection blocked until rights are clear.",
+      "proposed_capture_start": "After sample validation and written authorization covering research, storage, sharing, and intended dashboard display; otherwise do not collect.",
+      "status": "permission_required",
+      "references": [
+        {
+          "title": "Predexon API documentation",
+          "url": "https://docs.predexon.com/"
+        },
+        {
+          "title": "Predexon Terms of Service",
+          "url": "https://predexon.com/terms"
+        }
       ]
     },
     {
       "source_id": "nws-point-forecast",
-      "legs": ["weather"],
-      "owners": ["Carlos López-Ibor Romero"],
+      "legs": [
+        "weather"
+      ],
+      "owners": [
+        "Carlos López-Ibor Romero"
+      ],
       "role": "Deterministic hourly forecast and location/grid metadata for weather-market comparison.",
       "provider": "National Weather Service API",
-      "endpoints_or_identifiers": ["/points/{lat},{lon}", "gridId/gridX/gridY", "forecastHourly URL", "station IDs"],
+      "endpoints_or_identifiers": [
+        "/points/{lat},{lon}",
+        "gridId/gridX/gridY",
+        "forecastHourly URL",
+        "station IDs"
+      ],
       "documented_coverage": "The point API returns current forecast URLs; hourly forecasts cover the next seven days. The API removes past forecast periods, so it is not a vintage forecast archive.",
       "cadence": "Capture each selected issue/vintage and record fetched_at, issuedAt, valid period, grid, and source URL; suggested daily or per-run capture to confirm with Carlos.",
       "retention_or_limits": "Rolling forecast content expires with its information lifecycle. Reasonable rate limits apply but the numeric limit is not public; the request User-Agent is required.",
       "usage_terms_status": "documented_candidate",
       "usage_terms": "NWS states API data are intended as open data, free for any purpose, subject to reasonable rate limits. Verify attribution and applicable dataset-specific terms before public presentation.",
-      "material_gaps": ["No historical forecast archive from the live endpoint; prior vintages must be captured prospectively or sourced elsewhere.", "Market location/station and local-day window may not match a nearby grid forecast."],
+      "material_gaps": [
+        "No historical forecast archive from the live endpoint; prior vintages must be captured prospectively or sourced elsewhere.",
+        "Market location/station and local-day window may not match a nearby grid forecast."
+      ],
       "next_verification": "Carlos: confirm NWS is retained as a benchmark, choose coordinates/grid and forecast issue cadence, and confirm local-hour matching against each market's settlement rule.",
       "proposed_capture_start": "2026-11-16 for rolling forecast vintages, subject to Carlos confirming this is a benchmark; this inventory does not start a collector.",
       "status": "owner_confirmation_pending",
       "references": [
-        {"title": "NWS API Web Service Documentation", "url": "https://www.weather.gov/documentation/services-web-api"},
-        {"title": "NOWData FAQ", "url": "https://www.weather.gov/climateservices/nowdatafaq"}
+        {
+          "title": "NWS API Web Service Documentation",
+          "url": "https://www.weather.gov/documentation/services-web-api"
+        },
+        {
+          "title": "NOWData FAQ",
+          "url": "https://www.weather.gov/climateservices/nowdatafaq"
+        }
       ]
     },
     {
       "source_id": "open-meteo-ensemble",
-      "legs": ["weather"],
-      "owners": ["Carlos López-Ibor Romero"],
+      "legs": [
+        "weather"
+      ],
+      "owners": [
+        "Carlos López-Ibor Romero"
+      ],
       "role": "Ensemble members for the existing weather pilot's NCEP GEFS, ECMWF IFS, and DWD ICON comparison.",
       "provider": "Open-Meteo Ensemble API (underlying model systems include NCEP, ECMWF, and DWD)",
-      "endpoints_or_identifiers": ["ensemble-api.open-meteo.com/v1/ensemble", "models=gfs_seamless,ecmwf_ifs025,icon_seamless", "latitude/longitude, model run, member, issued/valid time"],
+      "endpoints_or_identifiers": [
+        "ensemble-api.open-meteo.com/v1/ensemble",
+        "models=gfs_seamless,ecmwf_ifs025,icon_seamless",
+        "latitude/longitude, model run, member, issued/valid time"
+      ],
       "documented_coverage": "The current Ensemble API offers individual members, three days of historical data, and forecasts normally for seven days (up to 36 days for supported models). For longer fixed-lead validation, the Previous Runs API has model-specific archive starts; exact model coverage must be checked before use.",
       "cadence": "Live model updates; model issuance varies. Capture run/issue time, member, lead time, and valid time for each snapshot.",
       "retention_or_limits": "Free API limits and permitted use depend on plan; do not assume the live free endpoint is suitable for a public/commercial dashboard.",
       "usage_terms_status": "permission_required",
       "usage_terms": "Open-Meteo's free API is restricted to non-commercial use and carries CC BY 4.0 attribution conditions. The dashboard's intended audience/use must be classified; use an appropriate commercial subscription/license if required. Underlying model source licenses may also apply.",
-      "material_gaps": ["The current weather pilot stores ensemble data; verify retention and terms before extending that archive or publishing it.", "Three-day history is insufficient for a long retrospective test; validate exact Previous Runs coverage for the chosen model versions and lead times.", "The market settlement source is not Open-Meteo; a forecast/model match does not replace resolution outcomes."],
+      "material_gaps": [
+        "The current weather pilot stores ensemble data; verify retention and terms before extending that archive or publishing it.",
+        "Three-day history is insufficient for a long retrospective test; validate exact Previous Runs coverage for the chosen model versions and lead times.",
+        "The market settlement source is not Open-Meteo; a forecast/model match does not replace resolution outcomes."
+      ],
       "next_verification": "Carlos: approve model sources, lead times, and attribution; verify model-specific historical forecast coverage and choose the free/non-commercial or licensed service tier.",
       "proposed_capture_start": "2026-11-16 only after use classification and required license are confirmed; preserve forecast run metadata.",
       "status": "owner_confirmation_pending",
       "references": [
-        {"title": "Open-Meteo Ensemble API", "url": "https://open-meteo.com/en/docs/ensemble-api"},
-        {"title": "Open-Meteo Previous Runs API", "url": "https://open-meteo.com/en/docs/previous-runs-api"},
-        {"title": "Open-Meteo Terms of Use", "url": "https://open-meteo.com/en/terms"},
-        {"title": "Open-Meteo Licence", "url": "https://open-meteo.com/en/licence"}
+        {
+          "title": "Open-Meteo Ensemble API",
+          "url": "https://open-meteo.com/en/docs/ensemble-api"
+        },
+        {
+          "title": "Open-Meteo Previous Runs API",
+          "url": "https://open-meteo.com/en/docs/previous-runs-api"
+        },
+        {
+          "title": "Open-Meteo Terms of Use",
+          "url": "https://open-meteo.com/en/terms"
+        },
+        {
+          "title": "Open-Meteo Licence",
+          "url": "https://open-meteo.com/en/licence"
+        }
       ]
     },
     {
       "source_id": "noaa-nbm-forecast",
-      "legs": ["weather"],
-      "owners": ["Carlos López-Ibor Romero"],
+      "legs": [
+        "weather"
+      ],
+      "owners": [
+        "Carlos López-Ibor Romero"
+      ],
       "role": "Probabilistic station bulletin used in the existing pilot as a separate benchmark.",
       "provider": "NOAA National Blend of Models (NBM) public S3 products / text archives",
-      "endpoints_or_identifiers": ["blend.YYYYMMDD/HH/text/blend_nbptx.tHHz", "station KNYC", "run cycle and target valid period"],
+      "endpoints_or_identifiers": [
+        "blend.YYYYMMDD/HH/text/blend_nbptx.tHHz",
+        "station KNYC",
+        "run cycle and target valid period"
+      ],
       "documented_coverage": "Operational NBM products and text bulletins are available; NOAA points users to a daily NBM archive for archived operational data. The existing pilot fetches the 01Z station bulletin. Exact archive start and retention of the text product need a sample/coverage check.",
       "cadence": "NBM runs hourly; the pilot used a 01Z bulletin. Record run/issue cycle, station, fields, and target valid period.",
       "retention_or_limits": "Public operational files may be transient; exact current S3 retention and backfill availability for the selected product are not guaranteed by the reviewed page.",
       "usage_terms_status": "needs_pilot",
       "usage_terms": "No product-specific reuse or redistribution terms were established from the reviewed archive page. Confirm current NOAA/NBM terms and attribution before building an archive or displaying the bulletin-derived series.",
-      "material_gaps": ["KNYC is near, but not the contract's binding CLINYC/The Weather Company resolution source.", "NBM rounded summaries do not directly give exact contract-bin probabilities; the current pilot reconstructs approximate values.", "Long historical forecast vintages and exact file retention are unverified."],
+      "material_gaps": [
+        "KNYC is near, but not the contract's binding CLINYC/The Weather Company resolution source.",
+        "NBM rounded summaries do not directly give exact contract-bin probabilities; the current pilot reconstructs approximate values.",
+        "Long historical forecast vintages and exact file retention are unverified."
+      ],
       "next_verification": "Carlos: confirm the NBM product and station mapping, obtain exact archive coverage for selected dates, and assess bulletin/derived-data use terms.",
       "proposed_capture_start": "2026-11-16 for selected NBM vintages after source and use review; this inventory does not start a collector.",
       "status": "owner_confirmation_pending",
       "references": [
-        {"title": "NBM Text Product Archives", "url": "https://vlab.noaa.gov/web/mdl/nbm-text-archives"},
-        {"title": "NOAA NBM S3 bulletin example", "url": "https://noaa-nbm-grib2-pds.s3.amazonaws.com/blend.20261028/01/text/blend_nbptx.t01z"}
+        {
+          "title": "NBM Text Product Archives",
+          "url": "https://vlab.noaa.gov/web/mdl/nbm-text-archives"
+        },
+        {
+          "title": "NOAA NBM S3 bulletin example",
+          "url": "https://noaa-nbm-grib2-pds.s3.amazonaws.com/blend.20261028/01/text/blend_nbptx.t01z"
+        }
       ]
     },
     {
       "source_id": "ncei-weather-observations",
-      "legs": ["weather"],
-      "owners": ["Carlos López-Ibor Romero"],
+      "legs": [
+        "weather"
+      ],
+      "owners": [
+        "Carlos López-Ibor Romero"
+      ],
       "role": "Historical station observations for independent outcome checks and station metadata; not a substitute for the contract's named settlement source.",
       "provider": "NOAA/NCEI Climate Data Online (CDO), including GHCN-Daily where available",
-      "endpoints_or_identifiers": ["dataset GHCND", "station_id", "datatype_id (e.g., TMAX)", "Historical Observing Metadata Repository for station history"],
+      "endpoints_or_identifiers": [
+        "dataset GHCND",
+        "station_id",
+        "datatype_id (e.g., TMAX)",
+        "Historical Observing Metadata Repository for station history"
+      ],
       "documented_coverage": "CDO provides historical daily/monthly station data; GHCN-Daily includes long station records with coverage varying by station and element. The existing pilot's exact settlement outcome is The Weather Company, so NCEI is only a validation/reference candidate unless rules are changed.",
       "cadence": "CDO GHCN-Daily updates daily where possible; the API requires a token and permits up to five requests/second and 10,000/day.",
       "retention_or_limits": "Historical record by station/element; latest station metadata reflects current location while HOMR carries historical station metadata. Verify station and final-QC availability for each event.",
       "usage_terms_status": "needs_pilot",
       "usage_terms": "CDO access is free. Dataset documentation notes WMO restrictions may apply to some non-U.S. data and commercial re-export; pilot scope is U.S. Central Park, but verify terms for the chosen dataset and any public redistribution.",
-      "material_gaps": ["NCEI observations do not establish the actual The Weather Company value named in the Kalshi resolution rules.", "Station/day completeness, quality flags, and finalization lag vary; match the exact event window and temperature conversion/rounding."],
+      "material_gaps": [
+        "NCEI observations do not establish the actual The Weather Company value named in the Kalshi resolution rules.",
+        "Station/day completeness, quality flags, and finalization lag vary; match the exact event window and temperature conversion/rounding."
+      ],
       "next_verification": "Carlos: confirm whether NCEI is only a robustness benchmark; select exact station/dataset and test coverage for pilot days against contract rules.",
       "proposed_capture_start": "Historical backfill can be queried after station and dataset are selected; no extra prospective outcome capture is proposed.",
       "status": "owner_confirmation_pending",
       "references": [
-        {"title": "CDO Web Services v2", "url": "https://www.ncei.noaa.gov/cdo-web/webservices/v2"},
-        {"title": "CDO FAQ", "url": "https://www.ncei.noaa.gov/cdo-web/faq"},
-        {"title": "GHCN-Daily Documentation", "url": "https://www.ncei.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf"}
+        {
+          "title": "CDO Web Services v2",
+          "url": "https://www.ncei.noaa.gov/cdo-web/webservices/v2"
+        },
+        {
+          "title": "CDO FAQ",
+          "url": "https://www.ncei.noaa.gov/cdo-web/faq"
+        },
+        {
+          "title": "GHCN-Daily Documentation",
+          "url": "https://www.ncei.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf"
+        }
       ]
     },
     {
       "source_id": "weather-company-settlement",
-      "legs": ["weather"],
-      "owners": ["Carlos López-Ibor Romero"],
+      "legs": [
+        "weather"
+      ],
+      "owners": [
+        "Carlos López-Ibor Romero"
+      ],
       "role": "Binding settlement outcome source named by the existing NYC temperature contract rules.",
       "provider": "The Weather Company, as named in the contract resolution terms",
-      "endpoints_or_identifiers": ["Contract ticker and rule version", "CLINYC station / named Weather Company source", "local reporting day, units, conversion, and rounding instructions"],
+      "endpoints_or_identifiers": [
+        "Contract ticker and rule version",
+        "CLINYC station / named Weather Company source",
+        "local reporting day, units, conversion, and rounding instructions"
+      ],
       "documented_coverage": "The existing weather analysis says the selected contract settles on The Weather Company value for CLINYC. No authorized machine-readable historical outcome feed or coverage period is documented in the repository.",
       "cadence": "Per the contract's reporting and settlement schedule; exact publication time and revision process need verification.",
       "retention_or_limits": "Not documented for project access; verify direct provider terms and whether outcomes can be retained/reproduced.",
       "usage_terms_status": "needs_pilot",
       "usage_terms": "Access, retention, and dashboard display rights are unconfirmed. The contract's cited source is not a blanket license to the underlying data.",
-      "material_gaps": ["No project source/API or allowed reuse path established.", "NWS/NCEI station data may differ from the named settlement provider due to station, quality control, conversion, or revision rules."],
+      "material_gaps": [
+        "No project source/API or allowed reuse path established.",
+        "NWS/NCEI station data may differ from the named settlement provider due to station, quality control, conversion, or revision rules."
+      ],
       "next_verification": "Carlos: preserve the exact contract rule/source and determine how settled values can be obtained and used; compare NCEI only as a secondary check.",
       "proposed_capture_start": "Before scoring the next selected event, after direct source access and reuse terms are confirmed.",
       "status": "owner_confirmation_pending",
       "references": [
-        {"title": "Existing weather pilot notes and contract source", "url": "../weather/analysis.md"},
-        {"title": "Existing weather market record", "url": "../weather/kalshi_market_snapshot.json"}
+        {
+          "title": "Existing weather pilot notes and contract source",
+          "url": "../weather/analysis.md"
+        },
+        {
+          "title": "Existing weather market record",
+          "url": "../weather/kalshi_market_snapshot.json"
+        }
       ]
     },
     {
       "source_id": "cboe-listed-options",
-      "legs": ["options"],
-      "owners": ["Alay Patel"],
+      "legs": [
+        "options"
+      ],
+      "owners": [
+        "Alay Patel"
+      ],
       "role": "Candidate listed-options benchmark quotes, sizes, and IV fields for a matched underlying/expiry/strike ladder.",
       "provider": "Cboe DataShop Option EOD Summary (candidate product; no subscription selected)",
-      "endpoints_or_identifiers": ["underlying symbol", "option root/type", "expiration", "strike", "quote date", "bid/ask and size"],
+      "endpoints_or_identifiers": [
+        "underlying symbol",
+        "option root/type",
+        "expiration",
+        "strike",
+        "quote date",
+        "bid/ask and size"
+      ],
       "documented_coverage": "Cboe describes daily files with NBBO bid/ask and size for option series, with historical data available from January 2012 to present. This is end-of-day, not synchronized intraday depth; exact symbol/date availability must be checked in a sample.",
       "cadence": "Daily file delivery; quote timestamp and snapshot fields must be confirmed for the chosen product.",
       "retention_or_limits": "Paid historical product with symbol/date availability and index data subject to product-specific conditions. No project subscription or entitlement is recorded.",
       "usage_terms_status": "permission_required",
       "usage_terms": "Cboe DataShop has a product license agreement; external redistribution of data requires an additional license/fees, and SIP/OPRA rights may require separate approval. Retail-dashboard display rights and internal storage terms must be confirmed before purchase/use.",
-      "material_gaps": ["No options source, product, subscription, or license has been selected.", "EOD coverage may not satisfy synchronized quote needs; test exact underlying, expiry, strike coverage, and quote quality.", "Prediction-market threshold contract and listed-options payoff/expiry/reference must align."],
+      "material_gaps": [
+        "No options source, product, subscription, or license has been selected.",
+        "EOD coverage may not satisfy synchronized quote needs; test exact underlying, expiry, strike coverage, and quote quality.",
+        "Prediction-market threshold contract and listed-options payoff/expiry/reference must align."
+      ],
       "next_verification": "Alay: choose the benchmark product and market; request a sample/coverage statement and confirm internal/research/external-display license costs before purchase or ingest.",
       "proposed_capture_start": "After product coverage, budget, and applicable usage/display rights are confirmed.",
       "status": "permission_required",
       "references": [
-        {"title": "Cboe Option EOD Summary", "url": "https://datashop.cboe.com/option-eod-summary"},
-        {"title": "Cboe Contracts and Data Policies", "url": "https://datashop.cboe.com/data-policies"}
+        {
+          "title": "Cboe Option EOD Summary",
+          "url": "https://datashop.cboe.com/option-eod-summary"
+        },
+        {
+          "title": "Cboe Contracts and Data Policies",
+          "url": "https://datashop.cboe.com/data-policies"
+        }
       ]
     }
   ]
