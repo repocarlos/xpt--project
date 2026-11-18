@@ -1,5 +1,6 @@
 const studies = {
   weather: {
+    type: "weather_probability_comparison",
     title: "Daily temperature pilot",
     sector: "Weather",
     parentTitle: "Weather markets",
@@ -10,8 +11,11 @@ const studies = {
     analysis: "Market quotes and forecast vintages will be shown as separate series with their own timestamps.",
     chart: "Weather comparison chart unavailable",
     gap: "No authorized study dataset is loaded. No calibration result is claimed.",
+    domainTitle: "Weather study module",
+    domainDetail: "Weather market prices and forecast probabilities will be displayed as separate observations after source and study review.",
   },
   "cross-venue": {
+    type: "cross_venue_discrepancy",
     title: "Polymarket–Kalshi comparison",
     sector: "Cross-cutting studies",
     parentTitle: "Cross-cutting studies",
@@ -22,8 +26,11 @@ const studies = {
     analysis: "Each venue's bid, ask, midpoint basis, timestamp, and spread will be displayed separately.",
     chart: "Matched quote chart unavailable",
     gap: "No matched pairs or authorized quotes are loaded. A price difference is not a validated opportunity.",
+    domainTitle: "Cross-venue study module",
+    domainDetail: "Matched quotes, settlement equivalence, spread, and timestamp alignment will be shown together after the pair set is reviewed.",
   },
   options: {
+    type: "prediction_market_options_surface",
     title: "Prediction-market options feasibility",
     sector: "Cross-cutting studies",
     parentTitle: "Cross-cutting studies",
@@ -34,10 +41,20 @@ const studies = {
     analysis: "Risk-neutral quantities and Black–Scholes-equivalent volatility will be labeled as model-derived estimates.",
     chart: "Threshold and volatility comparison unavailable",
     gap: "No synchronized, licensed quotes are loaded. A model estimate is not a real-world event probability.",
+    domainTitle: "Options study module",
+    domainDetail: "Threshold bounds and any Black–Scholes-equivalent quantities will be labeled as model-derived and kept separate from listed option quotes.",
   },
 };
 
 const app = document.querySelector("#main");
+const evidenceLabels = {
+  descriptive: "Descriptive",
+  model_estimate: "Model estimate",
+  validated_forecast: "Validated forecast",
+  validated_finding: "Validated finding",
+  candidate_discrepancy: "Candidate discrepancy",
+  executable_opportunity: "Executable opportunity",
+};
 const home = `
   <section class="hero" aria-labelledby="page-title">
     <p class="eyebrow">Research overview</p>
@@ -130,48 +147,162 @@ function sectorPage() {
     </section>`;
 }
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  })[character]);
+}
+
+function optionalValue(value, fallback = "Not supplied") {
+  return value === null || value === undefined || value === "" ? fallback : escapeHtml(value);
+}
+
+function renderStringList(items, emptyMessage) {
+  if (!Array.isArray(items) || items.length === 0) return `<p>${escapeHtml(emptyMessage)}</p>`;
+  return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+}
+
+function renderMetrics(metrics) {
+  if (!Array.isArray(metrics) || metrics.length === 0) {
+    return `<p>No metrics are supplied. An absent metric is not a zero result.</p>`;
+  }
+  return `<div class="table-scroll"><table><thead><tr><th scope="col">Measure</th><th scope="col">Value</th><th scope="col">Definition</th></tr></thead><tbody>${metrics.map((metric) => `
+    <tr><th scope="row">${optionalValue(metric.name)}</th><td>${optionalValue(metric.value, "Not reported")} ${optionalValue(metric.unit, "")}</td><td>${optionalValue(metric.definition)}</td></tr>`).join("")}</tbody></table></div>`;
+}
+
+function renderSourceList(sources) {
+  if (!Array.isArray(sources) || sources.length === 0) {
+    return `<p>No source records are available. Source use remains unavailable until rights and provenance are reviewed.</p>`;
+  }
+  return `<ul>${sources.map((source) => {
+    const name = escapeHtml(source.name || "Unnamed source");
+    const uri = typeof source.uri === "string" && /^https:\/\//i.test(source.uri) ? source.uri : null;
+    const label = uri ? `<a href="${escapeHtml(uri)}" rel="noreferrer">${name}</a>` : name;
+    return `<li>${label} · Role: ${optionalValue(source.role)} · Accessed: ${optionalValue(source.accessed_at)} · Usage terms: ${optionalValue(source.usage_terms)}</li>`;
+  }).join("")}</ul>`;
+}
+
+function studyRecordView(study) {
+  return {
+    study_type: study.type,
+    title: study.title,
+    research_question: study.question,
+    example_notice: null,
+    contract_scope: { description: study.resolution, markets: [] },
+    data_coverage: {
+      start: null,
+      end: null,
+      sample_count: null,
+      coverage_summary: "No authorized dataset or coverage audit is loaded.",
+      known_gaps: [study.gap],
+    },
+    method: { summary: study.analysis, benchmark: null, analysis_version: null, evaluation_split: null },
+    findings: { summary: "No study finding is published from this unavailable input set.", metrics: [] },
+    uncertainty: { summary: "Uncertainty has not been quantified for this prototype.", items: [] },
+    limitations: [study.gap, "This page does not establish a trading opportunity."],
+    evidence_status: null,
+    updated_at: null,
+    sources: [],
+    reproducibility: {},
+    domain: { title: study.domainTitle, detail: study.domainDetail, chart: study.chart },
+  };
+}
+
 function studyPage(id) {
   const study = studies[id];
   if (!study) return `<section class="state-panel"><h1>Study not found</h1><p>This study route is not available in the prototype.</p><a href="#/">Return to the catalog</a></section>`;
+
+  const record = studyRecordView(study);
+  const markets = record.contract_scope.markets;
+  const marketContent = markets.length
+    ? `<p>${escapeHtml(record.contract_scope.description)}</p><ul>${markets.map((market) => {
+      const permittedId = market.display_permission === "approved" ? ` · ID: ${optionalValue(market.market_id)}` : " · ID: withheld until display permission is confirmed";
+      const effective = [market.valid_from, market.valid_to].some(Boolean)
+        ? ` · Effective: ${optionalValue(market.valid_from)} to ${optionalValue(market.valid_to)}`
+        : "";
+      return `<li><strong>${optionalValue(market.venue)}:</strong> ${optionalValue(market.question)}${permittedId} · Resolution source: ${optionalValue(market.resolution_source)} · Rule: ${optionalValue(market.rule_version)} · Timezone: ${optionalValue(market.timezone)}${effective}</li>`;
+    }).join("")}</ul>`
+    : `<p>${escapeHtml(study.scope)}</p><p>${escapeHtml(record.contract_scope.description)}</p><p>Exact contract identity and settlement rule are not supplied in this prototype.</p>`;
+  const marketDetails = record.data_coverage;
+  const provenance = record.reproducibility;
+  const provenanceEntries = [
+    ["Schema version", provenance.schema_version],
+    ["Repository", provenance.repository_uri],
+    ["Analysis code", provenance.code_path],
+    ["Code commit", provenance.code_commit],
+    ["Data manifest", provenance.data_manifest_uri],
+    ["Settlement rules", provenance.settlement_rules_uri],
+  ].filter(([, value]) => value !== null && value !== undefined && value !== "");
+
   return `
-    <p class="eyebrow"><a href="#/">Home</a> / <a href="${study.parentHref}">${study.parentTitle}</a> / ${study.title}</p>
-    <section class="hero" aria-labelledby="page-title">
-      <span class="scope-tag">${study.scope}</span>
-      <h1 id="page-title">${study.title}</h1>
-      <span class="evidence-tag">Evidence: not evaluated</span>
-      <p class="lede">${study.question}</p>
-      <p class="status-line">Study updated: not available · Market quote time: not available</p>
+    <p class="eyebrow"><a href="#/">Home</a> / <a href="${study.parentHref}">${escapeHtml(study.parentTitle)}</a> / ${escapeHtml(record.title)}</p>
+    <section class="hero" aria-labelledby="page-title" data-study-section="summary">
+      <span class="scope-tag">${escapeHtml(study.scope)} · ${escapeHtml(study.type)}</span>
+      <h1 id="page-title">${escapeHtml(record.title)}</h1>
+      <span class="evidence-tag">Evidence: ${escapeHtml(evidenceLabels[record.evidence_status] || "not evaluated")}</span>
+      <p class="lede">${escapeHtml(record.research_question)}</p>
+      ${record.example_notice ? `<p class="status-line">${escapeHtml(record.example_notice)}</p>` : ""}
     </section>
     <section class="state-panel" role="status" aria-label="Data availability">
       <h2>Study data unavailable</h2>
-      <p>No market observations or derived values are loaded in this prototype. Source rights, study inputs, and update times need review.</p>
+      <p>No market observations or derived values are loaded. Source rights, study inputs, and update times need review.</p>
     </section>
-    <div class="panel-grid">
-      <section class="panel" aria-labelledby="resolve-title">
-        <h2 id="resolve-title">What does the contract resolve on?</h2>
-        <p>${study.resolution}</p>
-      </section>
-      <section class="panel" aria-labelledby="price-title">
-        <h2 id="price-title">What is the market pricing?</h2>
-        <p>No quote is available. A later view must show quote side, implied-price basis, spread, and timestamp together.</p>
-      </section>
-      <section class="panel" aria-labelledby="estimate-title">
-        <h2 id="estimate-title">What is the comparison evidence?</h2>
-        <p>${study.analysis}</p>
-      </section>
-      <section class="panel" aria-labelledby="chart-title">
-        <h2 id="chart-title">${study.chart}</h2>
-        <p>No chart points are shown without an approved dataset.</p>
-      </section>
-    </div>
-    <section class="panel" aria-labelledby="limits-title">
-      <h2 id="limits-title">Limitations and uncertainty</h2>
-      <p>${study.gap}</p>
-      <p>Nothing on this page establishes a trading opportunity.</p>
+    <section class="panel" aria-labelledby="resolve-title" data-study-section="contract-scope">
+      <h2 id="resolve-title">Contract scope and settlement</h2>
+      ${marketContent}
     </section>
-    <section class="panel" aria-labelledby="sources-title">
+    <section class="panel" aria-labelledby="price-title" data-study-section="market-pricing">
+      <h2 id="price-title">What is the market pricing?</h2>
+      <p>No quote is available. Observed bid, ask, or midpoint values will be labeled separately from model estimates and will include their basis and timestamp.</p>
+    </section>
+    <section class="panel" aria-labelledby="coverage-title" data-study-section="data-coverage">
+      <h2 id="coverage-title">Data period and coverage</h2>
+      <dl class="data-list">
+        <dt>Period start</dt><dd>${optionalValue(marketDetails.start)}</dd>
+        <dt>Period end</dt><dd>${optionalValue(marketDetails.end)}</dd>
+        <dt>Sample count</dt><dd>${optionalValue(marketDetails.sample_count, "Not reported")}</dd>
+        <dt>Coverage summary</dt><dd>${escapeHtml(marketDetails.coverage_summary)}</dd>
+      </dl>
+      <h3>Known gaps</h3>
+      ${renderStringList(marketDetails.known_gaps, "No coverage gaps have been reviewed.")}
+    </section>
+    <section class="panel" aria-labelledby="method-title" data-study-section="method">
+      <h2 id="method-title">Method and benchmark</h2>
+      <p>${escapeHtml(record.method.summary)}</p>
+      <p>Benchmark: ${optionalValue(record.method.benchmark, "Not specified")}</p>
+      <p>Analysis version: ${optionalValue(record.method.analysis_version)}</p>
+      <p>Evaluation split: ${optionalValue(record.method.evaluation_split, "Not reported; no held-out validation is claimed")}</p>
+    </section>
+    <section class="panel" aria-labelledby="domain-title" data-study-section="domain">
+      <h2 id="domain-title">${escapeHtml(record.domain.title)}</h2>
+      <p>${escapeHtml(record.domain.detail)}</p>
+      <h3>${escapeHtml(record.domain.chart)}</h3>
+      <p>No chart points are shown without an approved dataset.</p>
+    </section>
+    <section class="panel" aria-labelledby="findings-title" data-study-section="findings">
+      <h2 id="findings-title">Findings and measures</h2>
+      <p>${escapeHtml(record.findings.summary)}</p>
+      ${renderMetrics(record.findings.metrics)}
+    </section>
+    <section class="panel" aria-labelledby="uncertainty-title" data-study-section="uncertainty">
+      <h2 id="uncertainty-title">Uncertainty</h2>
+      <p>${escapeHtml(record.uncertainty.summary)}</p>
+      ${renderStringList(record.uncertainty.items, "No itemized uncertainty is supplied.")}
+    </section>
+    <section class="panel" aria-labelledby="limits-title" data-study-section="limitations">
+      <h2 id="limits-title">Limitations</h2>
+      ${renderStringList(record.limitations, "No limitations have been supplied.")}
+    </section>
+    <section class="panel" aria-labelledby="freshness-title" data-study-section="freshness">
+      <h2 id="freshness-title">Update time and freshness</h2>
+      <p>Study updated: ${optionalValue(record.updated_at)}. Market quote time: not available.</p>
+    </section>
+    <section class="panel" aria-labelledby="sources-title" data-study-section="provenance">
       <h2 id="sources-title">Sources and reproducibility</h2>
-      <p>No source links or data manifest are published in this prototype. They will appear only after source rights and provenance are confirmed.</p>
+      <h3>Sources</h3>
+      ${renderSourceList(record.sources)}
+      <h3>Reproducibility references</h3>
+      ${provenanceEntries.length ? `<dl class="data-list">${provenanceEntries.map(([label, value]) => `<dt>${escapeHtml(label)}</dt><dd>${optionalValue(value)}</dd>`).join("")}</dl>` : `<p>No code revision, data manifest, or settlement-rule record is linked.</p>`}
     </section>`;
 }
 

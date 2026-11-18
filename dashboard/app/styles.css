@@ -111,6 +111,18 @@ p { max-width: 70ch; }
 .state-panel p:last-child, .panel p:last-child { margin-bottom: 0; }
 .panel-grid .panel { min-width: 0; }
 .status-line { margin: .4rem 0 0; color: var(--muted); font-size: .92rem; }
+.data-list {
+  display: grid;
+  grid-template-columns: minmax(9rem, .4fr) minmax(0, 1fr);
+  gap: .35rem 1rem;
+  margin: .8rem 0;
+}
+.data-list dt { color: var(--muted); font-weight: 700; }
+.data-list dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+.table-scroll { max-width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { padding: .55rem .65rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 700; }
 footer {
   padding: 1.1rem 1.25rem;
   color: var(--muted);
@@ -126,4 +138,6 @@ footer {
   main { width: min(100% - 1.5rem, 560px); margin: 1rem auto 2rem; }
   .card-grid, .panel-grid { grid-template-columns: minmax(0, 1fr); }
   .study-card, .panel, .state-panel { padding: 1rem; }
+  .data-list { grid-template-columns: minmax(0, 1fr); gap: .1rem; }
+  .data-list dd { margin-bottom: .55rem; }
 }

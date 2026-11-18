@@ -24,6 +24,12 @@ Open `http://127.0.0.1:8000/`.
 
 The Weather pilot is reached through the Weather sector. Polymarket–Kalshi and options are reached through the separately labeled cross-cutting collection; the options placement is a proposed MVP choice pending product review. These routes represent individual research pilots, not exhaustive sector catalogs. Add reviewed sectors or studies only after the information architecture and content have been approved.
 
+## Shared study page
+
+The study routes use one shared field order: question and evidence status; contract scope and settlement; market-price context; data period and coverage; method and benchmark; a domain-specific module; findings and measures; uncertainty; limitations; study update/freshness; sources and reproducibility. Domain modules remain separate so weather calibration, venue discrepancies, and options-derived quantities are not merged into a common score.
+
+This prototype has no study records or authorized market data. Missing values are shown as unavailable or not supplied, never as zero. Study update time is distinct from quote time. The current schema/content mapping is still under review; do not replace the empty states with real observations until source rights, provenance, and a reviewed study handoff are available.
+
 ## Data and hosting status
 
 This prototype deliberately renders no market observations, estimates, charts, or source links. It marks the data unavailable while source-use rights and study inputs are pending. Replace the static unavailable states only when the approved study record, manifest/rights state, and freshness rules are available. Do not put API secrets or credentials in this browser bundle.

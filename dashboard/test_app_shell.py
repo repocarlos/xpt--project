@@ -107,9 +107,39 @@ class DashboardShellTests(unittest.TestCase):
         self.page.get_by_role("link", name="Open the study").click()
         self.page.wait_for_url("**#/studies/weather")
         expect(self.page.get_by_role("heading", name="Daily temperature pilot")).to_be_visible()
-        expect(self.page.get_by_role("heading", name="What does the contract resolve on?")).to_be_visible()
-        expect(self.page.get_by_role("heading", name="Limitations and uncertainty")).to_be_visible()
+        expect(self.page.get_by_role("heading", name="Contract scope and settlement")).to_be_visible()
+        expect(self.page.get_by_role("heading", name="Limitations")).to_be_visible()
         expect(self.page.get_by_role("heading", name="Sources and reproducibility")).to_be_visible()
+        self.assertEqual(self.external_requests, [])
+
+    def test_shared_study_sections_have_same_order_and_safe_empty_states(self) -> None:
+        expected_sections = [
+            "summary",
+            "contract-scope",
+            "market-pricing",
+            "data-coverage",
+            "method",
+            "domain",
+            "findings",
+            "uncertainty",
+            "limitations",
+            "freshness",
+            "provenance",
+        ]
+        for route in ("weather", "cross-venue", "options"):
+            with self.subTest(route=route):
+                self.page.goto(self.base_url + f"#/studies/{route}")
+                sections = self.page.locator("[data-study-section]").evaluate_all(
+                    "nodes => nodes.map(node => node.dataset.studySection)"
+                )
+                self.assertEqual(sections, expected_sections)
+                self.assertIn("Evidence: not evaluated", self.page.locator("main").inner_text())
+                self.assertIn("No quote is available", self.page.locator('[data-study-section="market-pricing"]').inner_text())
+                coverage = self.page.locator('[data-study-section="data-coverage"]').inner_text()
+                self.assertIn("Sample count\nNot reported", coverage)
+                self.assertNotRegex(coverage, r"Sample count\s+0(?:\D|$)")
+                self.assertIn("No metrics are supplied", self.page.locator('[data-study-section="findings"]').inner_text())
+                self.assertIn("Source use remains unavailable", self.page.locator('[data-study-section="provenance"]').inner_text())
         self.assertEqual(self.external_requests, [])
 
     def test_unknown_sectors_studies_and_routes_have_catalog_path(self) -> None:
