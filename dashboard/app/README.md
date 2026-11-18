@@ -14,13 +14,15 @@ Open `http://127.0.0.1:8000/`.
 
 ## Routes
 
-* `#/` — study overview
+* `#/` — sector-first catalog
+* `#/sectors` — reviewed sector directory
 * `#/sectors/weather` — Weather sector overview
+* `#/collections/research` — cross-cutting venue and options studies
 * `#/studies/weather` — daily-temperature pilot
 * `#/studies/cross-venue` — Polymarket–Kalshi pilot
 * `#/studies/options` — options feasibility pilot
 
-Add a study route in `app.js` and link it with a hash URL. Keep sector routes separate from cross-cutting study collections.
+The Weather pilot is reached through the Weather sector. Polymarket–Kalshi and options are reached through the separately labeled cross-cutting collection; the options placement is a proposed MVP choice pending product review. These routes represent individual research pilots, not exhaustive sector catalogs. Add reviewed sectors or studies only after the information architecture and content have been approved.
 
 ## Data and hosting status
 

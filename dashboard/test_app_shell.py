@@ -6,7 +6,7 @@ from pathlib import Path
 from threading import Thread
 import unittest
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 
 APP_DIR = Path(__file__).with_name("app")
@@ -49,24 +49,81 @@ class DashboardShellTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.page.close()
 
-    def test_home_has_prototype_notice_and_no_market_data(self) -> None:
+    def test_home_is_sector_first_and_has_no_market_data(self) -> None:
         self.page.goto(self.base_url)
         self.assertEqual(self.page.title(), "Prediction Markets, Explained")
         self.assertTrue(self.page.get_by_role("heading", name="Understand what prediction markets are pricing").is_visible())
         self.assertTrue(self.page.get_by_text("Prototype · no market data loaded.").is_visible())
-        self.assertTrue(self.page.get_by_role("link", name="Open study").first.is_visible())
+        self.assertTrue(self.page.get_by_role("link", name="Open Weather sector").is_visible())
+        self.assertTrue(self.page.get_by_role("link", name="Browse cross-cutting studies").is_visible())
+        self.assertFalse(self.page.get_by_role("link", name="Open study").count())
         self.assertEqual(self.external_requests, [])
 
-    def test_sector_and_study_routes_render_reader_context(self) -> None:
-        self.page.goto(self.base_url + "#/sectors/weather")
-        self.assertTrue(self.page.get_by_role("heading", name="Weather markets").is_visible())
+    def test_weather_catalog_path_and_contextual_return_links(self) -> None:
+        self.page.goto(self.base_url)
+        self.page.get_by_role("link", name="Sectors", exact=True).click()
+        self.page.wait_for_url("**#/sectors")
+        expect(self.page.get_by_role("heading", name="Explore sectors")).to_be_visible()
+        self.page.get_by_role("link", name="Open Weather sector").click()
+        self.page.wait_for_url("**#/sectors/weather")
+        expect(self.page.get_by_role("heading", name="Weather markets")).to_be_visible()
+        self.assertEqual(self.page.url.split("#")[-1], "/sectors/weather")
         self.assertTrue(self.page.get_by_role("heading", name="What weather contracts resolve on").is_visible())
         self.page.get_by_role("link", name="Open the study").click()
-        self.assertTrue(self.page.get_by_role("heading", name="Daily temperature pilot").is_visible())
-        self.assertTrue(self.page.get_by_role("heading", name="What does the contract resolve on?").is_visible())
-        self.assertTrue(self.page.get_by_role("heading", name="Limitations and uncertainty").is_visible())
-        self.assertTrue(self.page.get_by_role("heading", name="Sources and reproducibility").is_visible())
+        self.page.wait_for_url("**#/studies/weather")
+        expect(self.page.get_by_role("heading", name="Daily temperature pilot")).to_be_visible()
+        self.page.get_by_role("link", name="Weather markets").click()
+        self.page.wait_for_url("**#/sectors/weather")
+        expect(self.page.get_by_role("heading", name="Weather markets")).to_be_visible()
+        self.page.get_by_role("navigation", name="Main navigation").get_by_role("link", name="Home", exact=True).click()
+        self.page.wait_for_url("**#/")
+        expect(self.page.get_by_role("heading", name="Understand what prediction markets are pricing")).to_be_visible()
         self.assertEqual(self.external_requests, [])
+
+    def test_cross_cutting_study_paths_and_contextual_return_links(self) -> None:
+        self.page.goto(self.base_url)
+        self.page.get_by_role("link", name="Browse cross-cutting studies").click()
+        self.page.wait_for_url("**#/collections/research")
+        expect(self.page.get_by_role("heading", name="Studies across sectors")).to_be_visible()
+        self.assertTrue(self.page.get_by_text("This collection is not a market sector.").is_visible())
+        expected = {
+            "cross-venue": "Polymarket–Kalshi comparison",
+            "options": "Prediction-market options feasibility",
+        }
+        for route, heading in expected.items():
+            with self.subTest(route=route):
+                self.page.goto(self.base_url + f"#/collections/research")
+                self.page.locator(f'a[href="#/studies/{route}"]').click()
+                self.page.wait_for_url(f"**#/studies/{route}")
+                expect(self.page.get_by_role("heading", name=heading)).to_be_visible()
+                self.page.locator("#main").get_by_role("link", name="Cross-cutting studies").click()
+                self.page.wait_for_url("**#/collections/research")
+                expect(self.page.get_by_role("heading", name="Studies across sectors")).to_be_visible()
+        self.assertEqual(self.external_requests, [])
+
+    def test_study_pages_render_reader_context(self) -> None:
+        self.page.goto(self.base_url + "#/sectors/weather")
+        self.assertTrue(self.page.get_by_role("heading", name="Weather markets").is_visible())
+        self.page.get_by_role("link", name="Open the study").click()
+        self.page.wait_for_url("**#/studies/weather")
+        expect(self.page.get_by_role("heading", name="Daily temperature pilot")).to_be_visible()
+        expect(self.page.get_by_role("heading", name="What does the contract resolve on?")).to_be_visible()
+        expect(self.page.get_by_role("heading", name="Limitations and uncertainty")).to_be_visible()
+        expect(self.page.get_by_role("heading", name="Sources and reproducibility")).to_be_visible()
+        self.assertEqual(self.external_requests, [])
+
+    def test_unknown_sectors_studies_and_routes_have_catalog_path(self) -> None:
+        for route, heading in (
+            ("#/sectors/politics", "Sector not available"),
+            ("#/studies/not-yet-supported", "Study not found"),
+            ("#/not-a-route", "Page not found"),
+        ):
+            with self.subTest(route=route):
+                self.page.goto(self.base_url + route)
+                self.assertTrue(self.page.get_by_role("heading", name=heading).is_visible())
+                self.page.get_by_role("link", name="Return to the catalog").click()
+                self.page.wait_for_url("**#/")
+                expect(self.page.get_by_role("heading", name="Understand what prediction markets are pricing")).to_be_visible()
 
     def test_all_three_study_routes_are_explicitly_unavailable(self) -> None:
         expected = {

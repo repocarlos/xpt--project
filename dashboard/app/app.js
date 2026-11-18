@@ -2,6 +2,8 @@ const studies = {
   weather: {
     title: "Daily temperature pilot",
     sector: "Weather",
+    parentTitle: "Weather markets",
+    parentHref: "#/sectors/weather",
     scope: "Pilot · selected daily temperature markets",
     question: "How do selected daily high-temperature market prices compare with forecast probabilities?",
     resolution: "Contract questions, station, settlement source, local date, and rule version will appear here after review.",
@@ -11,7 +13,9 @@ const studies = {
   },
   "cross-venue": {
     title: "Polymarket–Kalshi comparison",
-    sector: "Cross-cutting study",
+    sector: "Cross-cutting studies",
+    parentTitle: "Cross-cutting studies",
+    parentHref: "#/collections/research",
     scope: "Pilot · selected matched contracts",
     question: "Do reviewed equivalent contracts show synchronized price differences?",
     resolution: "Matched outcomes, payout rules, settlement sources, and rule versions will appear here after review.",
@@ -21,7 +25,9 @@ const studies = {
   },
   options: {
     title: "Prediction-market options feasibility",
-    sector: "Options study",
+    sector: "Cross-cutting studies",
+    parentTitle: "Cross-cutting studies",
+    parentHref: "#/collections/research",
     scope: "Feasibility pilot · selected threshold and expiry",
     question: "Can a prediction-market threshold curve be compared with a matched listed-options benchmark?",
     resolution: "Underlying reference, threshold, expiry, and settlement convention will appear here after review.",
@@ -36,26 +42,72 @@ const home = `
   <section class="hero" aria-labelledby="page-title">
     <p class="eyebrow">Research overview</p>
     <h1 id="page-title">Understand what prediction markets are pricing</h1>
-    <p class="lede">This prototype will explain contract rules, market-implied values, comparison evidence, and study limitations in one place.</p>
+    <p class="lede">Explore research by market sector, then open the studies that explain the evidence and its limits.</p>
     <p class="status-line"><strong>Current data:</strong> unavailable. Source-use review and data capture are pending.</p>
   </section>
-  <section aria-labelledby="studies-title">
-    <h2 id="studies-title">Research pilots</h2>
+  <section aria-labelledby="sectors-title">
+    <h2 id="sectors-title">Sectors</h2>
     <div class="card-grid">
-      ${Object.entries(studies).map(([id, study]) => `
-        <article class="study-card">
-          <span class="scope-tag">${study.scope}</span>
-          <h2>${study.title}</h2>
-          <p>${study.question}</p>
-          <p class="status-line">Evidence: not evaluated in this shell</p>
-          <a class="button-link" href="#/studies/${id}">Open study</a>
-        </article>`).join("")}
+      <article class="study-card">
+        <span class="scope-tag">Sector · pilot study available</span>
+        <h2>Weather</h2>
+        <p>Explore research on selected daily temperature markets and forecast comparisons.</p>
+        <a class="button-link" href="#/sectors/weather">Open Weather sector</a>
+      </article>
     </div>
+  </section>
+  <section aria-labelledby="collection-title">
+    <h2 id="collection-title">Research across sectors</h2>
+    <p>Some analyses compare venues or use another market as a benchmark. They are grouped separately from market sectors.</p>
+    <a class="button-link" href="#/collections/research">Browse cross-cutting studies</a>
   </section>
   <section class="panel" aria-labelledby="interpret-title">
     <h2 id="interpret-title">How to read a study</h2>
     <p>Market observations, external estimates, validated findings, and candidate differences are separate evidence types. This shell contains no market observations.</p>
   </section>`;
+
+function sectorIndexPage() {
+  return `
+    <p class="eyebrow"><a href="#/">Home</a> / Sectors</p>
+    <section class="hero" aria-labelledby="page-title">
+      <span class="scope-tag">Sector directory</span>
+      <h1 id="page-title">Explore sectors</h1>
+      <p class="lede">Browse the sectors with research available in this prototype. Each study covers only its stated sample.</p>
+    </section>
+    <div class="card-grid">
+      <article class="study-card">
+        <span class="scope-tag">Pilot · selected markets and dates</span>
+        <h2>Weather</h2>
+        <p>Weather contracts can depend on a named station, local date, measurement window, and exact bucket boundaries.</p>
+        <a class="button-link" href="#/sectors/weather">Open Weather sector</a>
+      </article>
+    </div>`;
+}
+
+function researchCollectionPage() {
+  const studyIds = ["cross-venue", "options"];
+  return `
+    <p class="eyebrow"><a href="#/">Home</a> / Research across sectors</p>
+    <section class="hero" aria-labelledby="page-title">
+      <span class="scope-tag">Cross-cutting research collection</span>
+      <h1 id="page-title">Studies across sectors</h1>
+      <p class="lede">These pilots compare venues or use another market as a benchmark. This collection is not a market sector.</p>
+      <p class="status-line"><strong>Current data:</strong> unavailable while source-use review and data capture are pending.</p>
+    </section>
+    <div class="card-grid">
+      ${studyIds.map((id) => {
+        const study = studies[id];
+        return `
+          <article class="study-card">
+            <span class="scope-tag">${study.scope}</span>
+            <h2>${study.title}</h2>
+            <p>${study.question}</p>
+            <p class="status-line">Evidence: not evaluated in this shell</p>
+            <a class="button-link" href="#/studies/${id}">Open study</a>
+          </article>`;
+      }).join("")}
+    </div>`;
+}
 
 function sectorPage() {
   return `
@@ -80,9 +132,9 @@ function sectorPage() {
 
 function studyPage(id) {
   const study = studies[id];
-  if (!study) return `<section class="state-panel"><h1>Study not found</h1><p>This route is not part of the prototype.</p><a href="#/">Return home</a></section>`;
+  if (!study) return `<section class="state-panel"><h1>Study not found</h1><p>This study route is not available in the prototype.</p><a href="#/">Return to the catalog</a></section>`;
   return `
-    <p class="eyebrow"><a href="#/">Home</a> / ${study.sector}</p>
+    <p class="eyebrow"><a href="#/">Home</a> / <a href="${study.parentHref}">${study.parentTitle}</a> / ${study.title}</p>
     <section class="hero" aria-labelledby="page-title">
       <span class="scope-tag">${study.scope}</span>
       <h1 id="page-title">${study.title}</h1>
@@ -123,12 +175,20 @@ function studyPage(id) {
     </section>`;
 }
 
+function unavailableRoute(title, description) {
+  return `<section class="state-panel"><h1>${title}</h1><p>${description}</p><a href="#/">Return to the catalog</a></section>`;
+}
+
 function render() {
   const route = window.location.hash || "#/";
   if (route === "#/") app.innerHTML = home;
+  else if (route === "#/sectors") app.innerHTML = sectorIndexPage();
   else if (route === "#/sectors/weather") app.innerHTML = sectorPage();
+  else if (route.startsWith("#/sectors/")) app.innerHTML = unavailableRoute("Sector not available", "This sector has no reviewed content in the prototype.");
+  else if (route === "#/collections/research") app.innerHTML = researchCollectionPage();
+  else if (route.startsWith("#/collections/")) app.innerHTML = unavailableRoute("Collection not available", "This research collection is not part of the prototype.");
   else if (route.startsWith("#/studies/")) app.innerHTML = studyPage(route.slice("#/studies/".length));
-  else app.innerHTML = `<section class="state-panel"><h1>Page not found</h1><p>That route is not available in this prototype.</p><a href="#/">Return to the study overview</a></section>`;
+  else app.innerHTML = unavailableRoute("Page not found", "That route is not available in this prototype.");
 
   for (const link of document.querySelectorAll(".site-header nav a")) {
     if (link.getAttribute("href") === route) link.setAttribute("aria-current", "page");
