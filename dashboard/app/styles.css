@@ -123,6 +123,28 @@ p { max-width: 70ch; }
 table { width: 100%; border-collapse: collapse; text-align: left; }
 th, td { padding: .55rem .65rem; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { font-weight: 700; }
+table caption { padding: .55rem .65rem; color: var(--muted); text-align: left; font-weight: 700; }
+.visualization-component { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.visualization-component h3 { margin: 0 0 .4rem; font-size: 1.1rem; }
+.visualization-component h4 { margin: 1rem 0 .35rem; }
+.chart-frame { margin: .75rem 0; }
+.chart-area {
+  display: grid;
+  min-height: 8rem;
+  place-items: center;
+  padding: 1rem;
+  color: var(--muted);
+  background: #f5f7fa;
+  border: 1px dashed var(--line);
+  text-align: center;
+}
+.chart-area svg, .chart-area canvas { display: block; max-width: 100%; }
+.chart-frame figcaption { margin-top: .35rem; color: var(--muted); font-size: .9rem; }
+.quality-grid { display: grid; grid-template-columns: minmax(9rem, .4fr) minmax(0, 1fr); gap: .35rem 1rem; margin: .7rem 0 1rem; }
+.quality-grid dt { color: var(--muted); font-weight: 700; }
+.quality-grid dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+.quality-flags { margin: 0; padding-left: 1.25rem; }
+.quality-flag { color: #733700; }
 footer {
   padding: 1.1rem 1.25rem;
   color: var(--muted);
@@ -140,4 +162,6 @@ footer {
   .study-card, .panel, .state-panel { padding: 1rem; }
   .data-list { grid-template-columns: minmax(0, 1fr); gap: .1rem; }
   .data-list dd { margin-bottom: .55rem; }
+  .quality-grid { grid-template-columns: minmax(0, 1fr); gap: .1rem; }
+  .quality-grid dd { margin-bottom: .55rem; }
 }

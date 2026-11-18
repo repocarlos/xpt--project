@@ -276,8 +276,7 @@ function studyPage(id) {
     <section class="panel" aria-labelledby="domain-title" data-study-section="domain">
       <h2 id="domain-title">${escapeHtml(record.domain.title)}</h2>
       <p>${escapeHtml(record.domain.detail)}</p>
-      <h3>${escapeHtml(record.domain.chart)}</h3>
-      <p>No chart points are shown without an approved dataset.</p>
+      <div data-visualization-slot="${escapeHtml(id)}"></div>
     </section>
     <section class="panel" aria-labelledby="findings-title" data-study-section="findings">
       <h2 id="findings-title">Findings and measures</h2>
@@ -310,6 +309,30 @@ function unavailableRoute(title, description) {
   return `<section class="state-panel"><h1>${title}</h1><p>${description}</p><a href="#/">Return to the catalog</a></section>`;
 }
 
+function mountStudyVisualizations() {
+  for (const slot of app.querySelectorAll("[data-visualization-slot]")) {
+    const study = studies[slot.dataset.visualizationSlot];
+    if (!study || !window.DashboardComponents) continue;
+    const component = window.DashboardComponents.renderVisualization({
+      title: study.chart,
+      description: study.domainDetail,
+      chartDescription: `${study.chart}; no data loaded`,
+      chartEmptyMessage: "Chart unavailable until approved study data is supplied.",
+      tableEmptyMessage: "No datapoints supplied. Missing observations are unavailable, not zero.",
+      caption: "Study-specific chart; axes and measures depend on this domain's method.",
+      columns: [],
+      rows: [],
+      attribution: null,
+      updatedAt: null,
+      quoteFreshness: null,
+      coverageGaps: [study.gap],
+      uncertainty: "Not quantified until the reviewed study inputs are available.",
+      flags: null,
+    });
+    slot.replaceWith(component);
+  }
+}
+
 function render() {
   const route = window.location.hash || "#/";
   if (route === "#/") app.innerHTML = home;
@@ -320,6 +343,8 @@ function render() {
   else if (route.startsWith("#/collections/")) app.innerHTML = unavailableRoute("Collection not available", "This research collection is not part of the prototype.");
   else if (route.startsWith("#/studies/")) app.innerHTML = studyPage(route.slice("#/studies/".length));
   else app.innerHTML = unavailableRoute("Page not found", "That route is not available in this prototype.");
+
+  mountStudyVisualizations();
 
   for (const link of document.querySelectorAll(".site-header nav a")) {
     if (link.getAttribute("href") === route) link.setAttribute("aria-current", "page");

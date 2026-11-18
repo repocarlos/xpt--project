@@ -142,6 +142,74 @@ class DashboardShellTests(unittest.TestCase):
                 self.assertIn("Source use remains unavailable", self.page.locator('[data-study-section="provenance"]').inner_text())
         self.assertEqual(self.external_requests, [])
 
+    def test_visualization_component_shows_missing_quality_without_zero(self) -> None:
+        self.page.goto(self.base_url + "#/studies/cross-venue")
+        component = self.page.locator(".visualization-component").first
+        self.assertTrue(component.get_by_role("heading", name="Matched quote chart unavailable").is_visible())
+        self.assertIn("Chart unavailable until approved study data is supplied.", component.inner_text())
+        self.assertIn("No datapoints supplied", component.inner_text())
+        self.assertIn("not zero", component.inner_text())
+        self.assertIn("Quote freshness\nNot assessed; no quote is loaded", component.inner_text())
+        self.assertIn("Data-quality flags\nNot assessed", component.inner_text())
+        self.assertIn("Source attribution\nNot supplied", component.inner_text())
+        self.assertNotRegex(component.inner_text(), r"(?:Sample count|Datapoints)\s+0(?:\D|$)")
+        self.assertEqual(self.external_requests, [])
+
+    def test_visualization_component_supports_synthetic_chart_and_accessible_table(self) -> None:
+        self.page.goto(self.base_url + "#/studies/weather")
+        result = self.page.evaluate("""() => {
+          const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          svg.setAttribute("role", "img");
+          svg.setAttribute("aria-label", "Synthetic fixture chart for component test only");
+          const mark = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          mark.setAttribute("cx", "20"); mark.setAttribute("cy", "20"); mark.setAttribute("r", "4");
+          svg.append(mark);
+          const panel = window.DashboardComponents.renderVisualization({
+            title: "Synthetic fixture chart — test only",
+            description: "Synthetic fixture, not market data.",
+            chartNode: svg,
+            chartDescription: "Synthetic fixture chart for component test only",
+            caption: "Synthetic fixture only; no real market values.",
+            tableCaption: "Synthetic fixture data table — test only",
+            columns: [{key: "period", label: "Period"}, {key: "value", label: "Value"}],
+            rows: [
+              {period: "Synthetic point", value: "0.5 (synthetic)"},
+              {period: "Synthetic partial point", value: null},
+            ],
+            attribution: "Synthetic test source",
+            updatedAt: "Synthetic test timestamp",
+            quoteFreshness: "Synthetic test state",
+            coverageGaps: ["Synthetic test gap"],
+            uncertainty: "Synthetic test interval",
+            flags: [
+              {code: "wide_spread", label: "Wide quote", detail: "synthetic test flag"},
+              {code: "stale_quote", label: "Stale quote", detail: "synthetic test flag"},
+            ],
+          });
+          document.querySelector("main").append(panel);
+          return {
+            imageLabel: panel.querySelector("svg").getAttribute("aria-label"),
+            caption: panel.querySelector("figcaption").textContent,
+            tableCaption: panel.querySelector("table caption").textContent,
+            headers: [...panel.querySelectorAll("thead th")].map(cell => [cell.textContent, cell.scope]),
+            rowHeaders: [...panel.querySelectorAll("tbody th")].map(cell => [cell.textContent, cell.scope]),
+            cells: [...panel.querySelectorAll("tbody td")].map(cell => cell.textContent),
+            flag: panel.querySelector("[data-flag-code='wide_spread']").textContent,
+            staleFlag: panel.querySelector("[data-flag-code='stale_quote']").textContent,
+            quality: panel.querySelector(".quality-grid").innerText,
+          };
+        }""")
+        self.assertEqual(result["imageLabel"], "Synthetic fixture chart for component test only")
+        self.assertIn("Synthetic fixture only", result["caption"])
+        self.assertIn("Synthetic fixture data table", result["tableCaption"])
+        self.assertEqual(result["headers"], [["Period", "col"], ["Value", "col"]])
+        self.assertEqual(result["rowHeaders"], [["Synthetic point", "row"], ["Synthetic partial point", "row"]])
+        self.assertEqual(result["cells"], ["0.5 (synthetic)", "Not reported"])
+        self.assertIn("Wide quote: synthetic test flag", result["flag"])
+        self.assertIn("Stale quote: synthetic test flag", result["staleFlag"])
+        self.assertIn("Synthetic test source", result["quality"])
+        self.assertEqual(self.external_requests, [])
+
     def test_unknown_sectors_studies_and_routes_have_catalog_path(self) -> None:
         for route, heading in (
             ("#/sectors/politics", "Sector not available"),
