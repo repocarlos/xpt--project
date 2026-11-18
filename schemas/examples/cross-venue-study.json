@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "study_id": "cross-venue-example-pair",
+  "study_type": "cross_venue_discrepancy",
+  "sector": "cross-venue studies",
+  "title": "Matched binary outcome quote comparison (fixture)",
+  "research_question": "Do synchronized quotes differ for contracts with equivalent settlement rules?",
+  "example_notice": "Illustrative schema fixture only; values are not findings or a current market snapshot.",
+  "contract_scope": {
+    "description": "Two binary contracts matched on event, observation window, resolution source, and payoff.",
+    "markets": [
+      {"venue": "Polymarket", "market_id": "EXAMPLE-PM-YES", "question": "Example event resolves Yes", "resolution_source": "Example source", "rule_version": "example-pm-v1", "timezone": "UTC"},
+      {"venue": "Kalshi", "market_id": "EXAMPLE-KX-YES", "question": "Example event resolves Yes", "resolution_source": "Example source", "rule_version": "example-kx-v1", "timezone": "UTC"}
+    ]
+  },
+  "data_coverage": {"start": "2026-10-01T00:00:00Z", "end": "2026-10-01T00:00:00Z", "sample_count": 1, "coverage_summary": "One illustrative synchronized pair.", "known_gaps": ["No actual history, depth, or settlement outcomes are represented."]},
+  "method": {"summary": "Orient both contracts to the same binary outcome and compare synchronized midpoints and quote sides.", "benchmark": "Matched venue quote", "analysis_version": "example-v1"},
+  "findings": {"summary": "Fixture only; no empirical claim.", "metrics": [{"name": "signed_midpoint_gap", "value": 0.03, "unit": "probability points", "definition": "Venue A midpoint minus Venue B midpoint; illustrative only."}]},
+  "uncertainty": {"summary": "Illustrative quote inputs only.", "items": ["No persistence or outcome scoring is represented."]},
+  "limitations": ["A midpoint difference alone is not executable arbitrage."],
+  "evidence_status": "candidate_discrepancy",
+  "updated_at": "2026-11-16T00:00:00Z",
+  "sources": [{"name": "Example matched quote snapshot", "uri": "https://example.org/cross-venue-snapshot", "role": "quote fixture", "usage_terms": "Illustrative only."}],
+  "reproducibility": {"repository_uri": "https://example.org/repo", "code_path": "cross_venue/example.py", "code_commit": "example", "data_manifest_uri": "https://example.org/cross-venue-manifest.json", "settlement_rules_uri": "https://example.org/matched-rules"},
+  "domain": {
+    "kind": "cross_venue",
+    "matched_pairs": [{"market_a_id": "EXAMPLE-PM-YES", "market_b_id": "EXAMPLE-KX-YES", "equivalence_summary": "Illustrative same-event, same-window, same-source binary outcome."}],
+    "quote_observations": [
+      {"market_id": "EXAMPLE-PM-YES", "venue": "Polymarket", "bid": 0.46, "ask": 0.5, "midpoint": 0.48, "observed_at": "2026-10-01T00:00:00Z", "stale": false},
+      {"market_id": "EXAMPLE-KX-YES", "venue": "Kalshi", "bid": 0.42, "ask": 0.48, "midpoint": 0.45, "observed_at": "2026-10-01T00:00:00Z", "stale": false}
+    ],
+    "gap_summary": {"signed_midpoint_gap": 0.03, "absolute_midpoint_gap": 0.03, "quote_basis": "midpoint"}
+  }
+}

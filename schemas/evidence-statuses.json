@@ -1,0 +1,54 @@
+{
+  "registry_version": "1.0.0",
+  "purpose": "Describe what kind of evidence a study presents. These categories are not a cross-study ranking or an investment recommendation.",
+  "statuses": [
+    {
+      "key": "descriptive",
+      "label": "Descriptive",
+      "minimum_evidence": ["Identified source, contract scope, observation time or period, and the observed value or summary."],
+      "allowed_wording": ["The market was quoted at…", "In this sample, we observed…"],
+      "avoid_wording": ["Unqualified claim that the market expects the true probability", "The market is wrong", "The signal predicts…"],
+      "example": {"domain": "weather", "claim": "The illustrative quote midpoint was 0.45 at the recorded time; this is a fixture, not a forecast or finding."}
+    },
+    {
+      "key": "model_estimate",
+      "label": "Model estimate",
+      "minimum_evidence": ["Named method and inputs, with assumptions and material sensitivity or uncertainty disclosed."],
+      "allowed_wording": ["The model estimates…", "Under these assumptions, the implied quantity is…"],
+      "avoid_wording": ["The true probability is…", "The market is mispriced", "Validated without a separate validation design"],
+      "example": {"domain": "options", "claim": "The model-transformed Black–Scholes-equivalent volatility is an estimate, not a listed option quote or direct real-world probability."}
+    },
+    {
+      "key": "validated_forecast",
+      "label": "Validated forecast",
+      "minimum_evidence": ["Forecasts were timestamped before outcomes were known.", "Evaluation used held-out, preferably chronological and event-grouped outcomes.", "A proper scoring rule, sample size, uncertainty, and relevant baseline are reported."],
+      "allowed_wording": ["On the held-out sample, forecasts scored…", "Forecast calibration/accuracy was… for the stated horizon and market group."],
+      "avoid_wording": ["Profitable", "Tradeable edge", "Unqualified claims across all markets"],
+      "example": {"domain": "weather", "claim": "A forecast can earn this label only after out-of-sample scoring against resolved events; that does not establish trading profitability."}
+    },
+    {
+      "key": "validated_finding",
+      "label": "Validated finding",
+      "minimum_evidence": ["The finding and evaluation method are specified before the held-out assessment where feasible.", "Outcome definitions and data provenance are auditable; dependence, missingness, and uncertainty are addressed.", "The result is reproduced on held-out data or an explicitly justified validation design and compared with an appropriate baseline."],
+      "allowed_wording": ["The analysis found… in the stated sample and design.", "The result held on the stated held-out sample…"],
+      "avoid_wording": ["Causal claims without causal identification", "Profitable", "Universal claims beyond the evaluated scope"],
+      "example": {"domain": "cross_venue", "claim": "A robust held-out result about quote differences may be a validated finding, but is not by itself an executable opportunity."}
+    },
+    {
+      "key": "candidate_discrepancy",
+      "label": "Candidate discrepancy",
+      "minimum_evidence": ["The compared outcomes and payoff orientation are explicitly matched, including settlement rules and resolution sources.", "Quotes are time-aligned and identified as bid, ask, or midpoint, with spread, freshness, and data gaps disclosed."],
+      "allowed_wording": ["A candidate price difference was observed between the matched contracts at…", "The synchronized midpoint gap was…"],
+      "avoid_wording": ["Mispricing", "Arbitrage", "Free money", "Executable edge without additional evidence"],
+      "example": {"domain": "cross_venue", "claim": "A midpoint difference is descriptive of the matched quotes; it does not show executable prices, persistence, or net profitability."}
+    },
+    {
+      "key": "executable_opportunity",
+      "label": "Executable opportunity",
+      "minimum_evidence": ["A specific trade, side, entry and exit/settlement rule, and realistic size are defined.", "Executable bid/ask and size are supported by point-in-time data; fees, slippage, funding, hedging, access, and other relevant costs are included.", "Positive net results survive a chronological, event-aware held-out evaluation with uncertainty, suitable baselines, and capacity/persistence analysis."],
+      "allowed_wording": ["The specified strategy had positive net results on the stated held-out sample and size assumptions…"],
+      "avoid_wording": ["Guaranteed", "Risk-free", "Arbitrage unless both legs are equivalent, executable, and costed", "Actionable now based only on historical evidence"],
+      "example": {"domain": "cross_venue", "claim": "No current fixture qualifies: a candidate gap does not satisfy executable-price, net-cost, held-out, and capacity requirements."}
+    }
+  ]
+}
