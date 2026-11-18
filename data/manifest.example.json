@@ -1,0 +1,56 @@
+{
+  "manifest_version": "1.0.0",
+  "dataset_id": "synthetic-weather-example-001",
+  "dataset_version": "v1",
+  "synthetic_fixture": true,
+  "schema_version": "1.0.0",
+  "source": {
+    "provider": "synthetic_fixture",
+    "source_id": "example-only",
+    "documentation_url": null,
+    "access_method": "generated locally; no external data",
+    "terms_reviewed_at": "2026-11-18"
+  },
+  "collected_at_utc": "2026-11-18T00:00:00Z",
+  "event_time_start_utc": "2026-11-17T00:00:00Z",
+  "event_time_end_utc": "2026-11-18T00:00:00Z",
+  "settlement_timezone": "America/New_York",
+  "identifiers": [
+    {
+      "venue": "synthetic",
+      "event_id": "example-event-001",
+      "market_id": "example-market-001",
+      "contract_id": "example-contract-001",
+      "settlement_rule_version": "example-rule-v1"
+    }
+  ],
+  "transformations": [
+    {
+      "name": "synthetic-fixture-generation",
+      "version": "1.0.0",
+      "parameters": {},
+      "parent_dataset_ids": []
+    }
+  ],
+  "rights": {
+    "access": "not_applicable",
+    "internal_research": "not_applicable",
+    "raw_storage": "not_applicable",
+    "derived_data": "not_applicable",
+    "team_sharing": "not_applicable",
+    "dashboard_display": "not_applicable",
+    "commercial_use": "not_applicable",
+    "basis": "Synthetic example only; no external source or market data is included.",
+    "reviewed_at": "2026-11-18"
+  },
+  "artifact": {
+    "storage_uri": "s3://<team-approved-bucket>/synthetic/example.parquet",
+    "format": "parquet",
+    "row_count": 0,
+    "byte_count": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "checksum_note": "SHA-256 of an empty synthetic placeholder; replace with the exact stored-object checksum for a real dataset."
+  },
+  "code_commit": "0000000000000000000000000000000000000000",
+  "parent_manifests": []
+}
