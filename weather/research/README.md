@@ -76,9 +76,11 @@ source status and validation references; the template contains no findings.
 
 `weather/source-use-inventory-template.md` is a blank provider-neutral register.
 `source_registry.validate_source_register` checks per-use approval, coverage and
-volume evidence, and retention fields. Raw inspection additionally requires
-access, internal-analysis, and raw-retention approval plus an independently
-qualified second reviewer; the validator never approves a source itself.
+volume evidence, and retention fields. Raw inspection additionally requires access, internal-analysis, and
+raw-retention approval for each exact source/family pair plus an independently
+qualified second reviewer; approvals never carry across families. Retention
+approvals require a future timezone-aware expiry. The validator never approves
+a source itself.
 
 ## Cohort selection
 

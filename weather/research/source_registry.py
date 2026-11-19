@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from typing import Any, Mapping
 
 
@@ -38,6 +39,8 @@ def validate_source_register(register: Mapping[str, Any]) -> list[str]:
             errors.append(f"{prefix} approved use requires approval_evidence_ref")
         if use in {"raw_retention", "normalized_retention"} and status == "approved" and not _text(row.get("retention_until")):
             errors.append(f"{prefix} approved retention requires retention_until")
+        if use in {"raw_retention", "normalized_retention"} and status == "approved" and not _future_timestamp(row.get("retention_until")):
+            errors.append(f"{prefix} approved retention requires a non-expired timezone-aware retention_until")
         if row.get("coverage_status") not in COVERAGE_STATUSES:
             errors.append(f"{prefix} has invalid coverage_status")
         if row.get("coverage_status") in {"verified", "claimed"}:
@@ -56,10 +59,10 @@ def validate_source_register(register: Mapping[str, Any]) -> list[str]:
         if not reviewer_ready:
             errors.append("raw inspection requires a qualified second reviewer and evidence")
         required = {"access", "internal_analysis", "raw_retention"}
-        for candidate_ref in {str(row.get("candidate_ref")) for row in records if isinstance(row, Mapping)}:
-            approved = {row.get("intended_use") for row in records if isinstance(row, Mapping) and str(row.get("candidate_ref")) == candidate_ref and row.get("use_status") == "approved"}
+        for candidate_ref, family in {(str(row.get("candidate_ref")), str(row.get("family"))) for row in records if isinstance(row, Mapping)}:
+            approved = {row.get("intended_use") for row in records if isinstance(row, Mapping) and str(row.get("candidate_ref")) == candidate_ref and str(row.get("family")) == family and row.get("use_status") == "approved"}
             if not required.issubset(approved):
-                errors.append(f"raw inspection blocked for {candidate_ref}: required uses are not all approved")
+                errors.append(f"raw inspection blocked for {candidate_ref}/{family}: required uses are not all approved")
     return errors
 
 
@@ -74,8 +77,8 @@ def can_inspect_raw_rows(register: Mapping[str, Any]) -> bool:
         return False
     required = {"access", "internal_analysis", "raw_retention"}
     records = register["source_uses"]
-    for candidate_ref in {str(row["candidate_ref"]) for row in records}:
-        approved = {row["intended_use"] for row in records if str(row["candidate_ref"]) == candidate_ref and row["use_status"] == "approved"}
+    for candidate_ref, family in {(str(row["candidate_ref"]), str(row["family"])) for row in records}:
+        approved = {row["intended_use"] for row in records if str(row["candidate_ref"]) == candidate_ref and str(row["family"]) == family and row["use_status"] == "approved"}
         if not required.issubset(approved):
             return False
     return True
@@ -83,3 +86,13 @@ def can_inspect_raw_rows(register: Mapping[str, Any]) -> bool:
 
 def _text(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
+
+
+def _future_timestamp(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return parsed.tzinfo is not None and parsed.astimezone(timezone.utc) > datetime.now(timezone.utc)

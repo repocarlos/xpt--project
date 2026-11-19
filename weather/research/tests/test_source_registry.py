@@ -58,6 +58,23 @@ class SourceRegistryTests(unittest.TestCase):
         self.assertTrue(any("duplicates" in error for error in errors))
         self.assertFalse(can_inspect_raw_rows(register))
 
+    def test_rights_do_not_carry_from_one_family_to_another(self):
+        records = [row("access"), row("internal_analysis"), row("raw_retention")]
+        records.extend([
+            row("access", family="wind", candidate_ref="synthetic-source-1"),
+            row("internal_analysis", family="wind", candidate_ref="synthetic-source-1"),
+            row("raw_retention", family="wind", candidate_ref="synthetic-source-1", use_status="blocked", approval_evidence_ref=""),
+        ])
+        register = {"source_uses": records, "raw_inspection_allowed": True,
+                    "second_reviewer": {"weather_qualified": True, "reviewer_ref": "synthetic-reviewer",
+                                        "qualification_evidence_ref": "synthetic-qualification"}}
+        self.assertTrue(any("synthetic-source-1/wind" in error for error in validate_source_register(register)))
+        self.assertFalse(can_inspect_raw_rows(register))
+
+    def test_expired_retention_approval_is_rejected(self):
+        errors = validate_source_register({"source_uses": [row("normalized_retention", retention_until="2020-01-01T00:00:00Z")]})
+        self.assertTrue(any("non-expired" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()
