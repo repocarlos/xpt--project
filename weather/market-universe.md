@@ -36,6 +36,8 @@ Keep dimensions normalized: `family` and `variable` come from registries; locati
 
 ## Large-data layout and manifests
 
+For the operational lifecycle, manifest fields, volume sizing, retention, migration, and stop gates, follow [Weather Data Storage and Capture Plan](storage-and-manifest.md).
+
 1. Store only approved sources and permitted fields. The manifest must reference the approval/license and intended uses, not merely a source URL.
 2. Write immutable raw/landing snapshots separately from normalized research tables where retention terms permit. Never mix raw and derived permissions.
 3. Use versioned Parquet partitions such as `source/family/year/month` or `source/family/event_date`; choose partition size from observed query patterns and approved volume. Avoid one tiny file per event and avoid unbounded monolithic files.
