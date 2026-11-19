@@ -98,8 +98,8 @@ or blocked.
 families. It checks selection, source, settlement, and reviewer gates before
 iterating quote or calibration records, then returns per-family comparison rows
 and chronological holdout summaries. Sparse results remain insufficient, and
-the top-level envelope labels the output as research, not profitability or live
-execution.
+the top-level claim stays pending when packages are blocked or absent. The
+envelope labels the output as research, not profitability or live execution.
 
 ## Paper screen
 

@@ -71,6 +71,7 @@ class StudyCoordinatorTests(unittest.TestCase):
     def test_blocked_package_is_rejected_before_market_records_are_iterated(self):
         blocked = package("temperature", "blocked-1")
         blocked["source_use_status"] = "blocked"
+        blocked.pop("fixture_status")
         def unopened():
             raise AssertionError("market pairs were touched before source gate")
             yield {}
@@ -79,6 +80,12 @@ class StudyCoordinatorTests(unittest.TestCase):
                                    min_holdout_events_by_family={"temperature": 2})
         self.assertEqual("blocked", result["families"][0]["status"])
         self.assertIn("source_use_unapproved", result["families"][0]["reasons"])
+        self.assertEqual("pending", result["claim_status"])
+
+    def test_empty_study_has_pending_claim_status(self):
+        result = run_weather_study([], holdout_fraction=0.2,
+                                   min_holdout_events_by_family={})
+        self.assertEqual("pending", result["claim_status"])
 
     def test_sparse_family_is_not_reported_as_ready_or_pooled(self):
         data = package("climate_seasonal", "climate-1")

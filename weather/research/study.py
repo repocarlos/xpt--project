@@ -25,10 +25,7 @@ def run_weather_study(
     """Build separate family outputs; fail closed before touching package records."""
     outputs = []
     seen_cohorts: set[str] = set()
-    synthetic_only = True
     for package in family_packages:
-        if package.get("fixture_status") != "synthetic":
-            synthetic_only = False
         reasons = _gate_reasons(package)
         cohort_id = package.get("cohort_id")
         if not isinstance(cohort_id, str) or not cohort_id:
@@ -111,11 +108,17 @@ def run_weather_study(
             "live_execution": False,
         })
 
+    if not outputs or any(row["status"] == "blocked" for row in outputs):
+        claim_status = "pending"
+    elif all(row.get("claim_status") == "synthetic" for row in outputs):
+        claim_status = "synthetic"
+    else:
+        claim_status = "observed"
     return {
         "schema_version": "weather-study-v1",
         "family_count": len(outputs),
         "families": outputs,
-        "claim_status": "synthetic" if synthetic_only else "observed",
+        "claim_status": claim_status,
         "pooling": "none_family_stratified",
         "interpretation": "research_comparison_and_calibration_not_profitability",
         "live_execution": False,
