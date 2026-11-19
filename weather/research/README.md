@@ -79,6 +79,14 @@ volume evidence, and retention fields. Raw inspection additionally requires
 access, internal-analysis, and raw-retention approval plus an independently
 qualified second reviewer; the validator never approves a source itself.
 
+## Cohort selection
+
+`weather/cohort-selection-template.md` holds the broad candidate families and
+selection-wave rules with no default venue or geography. `cohort_selection`
+allows selection only when source rights, settlement, forecast match, coverage,
+volume, and second-review evidence all pass; otherwise the cohort stays pending
+or blocked.
+
 ## Paper screen
 
 `screen.screen_candidate` accepts an explicit policy for calibration sample
