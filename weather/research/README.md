@@ -18,6 +18,15 @@ Synthetic fixtures can exercise this path. Real mappings and outcome joins remai
 blocked until the source-specific use and retention terms are recorded by the
 authorized owner.
 
+## Coverage reports
+
+`coverage.build_coverage_report` aggregates caller-supplied manifest summaries
+by weather family and data tier. Each denominator must be explicit; an unknown
+denominator remains unknown instead of becoming zero. The report keeps backfill
+and prospective summaries separate and requires source approval evidence before
+classifying complete coverage as ready. It does not inspect market, outcome, or
+forecast observations.
+
 Run the package's synthetic checks with:
 
 ```sh
