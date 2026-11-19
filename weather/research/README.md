@@ -23,9 +23,11 @@ authorized owner.
 `coverage.build_coverage_report` aggregates caller-supplied manifest summaries
 by weather family and data tier. Each denominator must be explicit; an unknown
 denominator remains unknown instead of becoming zero. The report keeps backfill
-and prospective summaries separate and requires source approval evidence before
-classifying complete coverage as ready. It does not inspect market, outcome, or
-forecast observations.
+and prospective summaries separate, distinguishes unknown, partial, and complete
+tier coverage, and blocks on unresolved rights. Complete coverage for one tier
+does not establish family readiness; that requires the separate cohort, settlement,
+forecast, and review gates. It does not inspect market, outcome, or forecast
+observations.
 
 ## Normalized batches
 

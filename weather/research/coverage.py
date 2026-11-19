@@ -47,9 +47,14 @@ def build_coverage_report(records: Iterable[Mapping[str, Any]]) -> list[dict[str
         else:
             estimated_bytes = sum(estimates)  # type: ignore[arg-type]
 
-        status = "blocked_on_rights" if not rights_ok else "limited"
-        if rights_ok and coverage == 1.0:
-            status = "ready"
+        if not rights_ok:
+            status = "blocked_on_rights"
+        elif coverage is None:
+            status = "coverage_unknown"
+        elif coverage == 1.0:
+            status = "coverage_complete"
+        else:
+            status = "limited"
         report.append({
             "family": family,
             "data_tier": tier,
@@ -68,6 +73,7 @@ def build_coverage_report(records: Iterable[Mapping[str, Any]]) -> list[dict[str
             "prospective_summary_count": sum(row.get("capture_mode") == "prospective" for row in rows),
             "retention_days": min((_count(row, "retention_days") for row in rows if _count(row, "retention_days") is not None), default=None),
             "status": status,
+            "family_readiness": "not_assessed",
             "evidence_refs": sorted({str(row["evidence_ref"]) for row in rows if _text(row.get("evidence_ref"))}),
             "denominator_definition": "sum of explicit expected_count across summaries in this family and tier",
         })

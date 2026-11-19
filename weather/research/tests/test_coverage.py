@@ -44,7 +44,12 @@ class CoverageTests(unittest.TestCase):
         report = build_coverage_report([synthetic_summary(expected_count=None)])
         self.assertIsNone(report[0]["expected_count"])
         self.assertIsNone(report[0]["coverage_fraction"])
-        self.assertEqual("limited", report[0]["status"])
+        self.assertEqual("coverage_unknown", report[0]["status"])
+
+    def test_complete_single_tier_does_not_imply_family_readiness(self):
+        report = build_coverage_report([synthetic_summary(expected_count=8, observed_count=8)])
+        self.assertEqual("coverage_complete", report[0]["status"])
+        self.assertEqual("not_assessed", report[0]["family_readiness"])
 
     def test_unresolved_rights_block_even_complete_coverage(self):
         report = build_coverage_report([synthetic_summary(
