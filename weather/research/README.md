@@ -71,6 +71,14 @@ source-use evidence and describe probability calibration only, not profitability
 family requirements, and recommendation. Observed/validated claims need approved
 source status and validation references; the template contains no findings.
 
+## Source-use inventory
+
+`weather/source-use-inventory-template.md` is a blank provider-neutral register.
+`source_registry.validate_source_register` checks per-use approval, coverage and
+volume evidence, and retention fields. Raw inspection additionally requires
+access, internal-analysis, and raw-retention approval plus an independently
+qualified second reviewer; the validator never approves a source itself.
+
 ## Paper screen
 
 `screen.screen_candidate` accepts an explicit policy for calibration sample
