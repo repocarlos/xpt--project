@@ -46,6 +46,15 @@ covers the contract window with matching variable, unit, timezone, and complete
 location set. It reports rejection reasons and lead time; it does not infer
 probabilities from ensemble spread or claim calibrated uncertainty.
 
+## Market/model baseline
+
+`baseline.compare_models` retains Yes/No sides, midpoint, spread, quote age,
+model/run provenance, and family for each model separately. Midpoints remain
+descriptive; executable side comparisons require evidence-backed approval,
+verified settlement mapping, a coherent fresh top-of-book quote, and an eligible
+forecast alignment. Incomplete ladders and data-quality flags stay visible. A
+candidate gap is only a validation candidate, never a trading signal.
+
 Run the package's synthetic checks with:
 
 ```sh
