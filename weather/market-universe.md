@@ -23,7 +23,7 @@ Use normalized entities with stable internal keys and versioned source reference
 | `source_manifest` | One immutable retrieval or licensed data batch | source, license/use reference, intended uses, retrieval time, source version, date range, row count, byte count, checksum, retention date, transformation version |
 | `coverage_summary` | Cohort/source/family/time slice | denominator definition, event count, quote/outcome/forecast counts, missingness, date range, estimated bytes, evidence reference |
 
-Keep dimensions normalized: `family` and `variable` come from registries; location mapping can point to a station, grid cell, polygon, basin, or other explicit spatial support. Preserve both source timestamps and normalized UTC timestamps, plus local timezone and window definitions.
+Keep dimensions normalized: `family` and `variable` come from registries; location mapping can point to a station, grid cell, polygon, basin, or other explicit spatial support. Cross-location and joint-outcome cohorts must retain the complete location set and dependence definition. Preserve both source timestamps and normalized UTC timestamps, plus local timezone and window definitions. Long-horizon climate or seasonal benchmarks must retain their climatology reference period and revisions; short-range daily forecasts are not a substitute.
 
 ## Data quality and analysis rules
 

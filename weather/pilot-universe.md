@@ -6,7 +6,7 @@
 
 ## Purpose and scope
 
-Build a broad, extensible inventory of weather prediction-market events and select research cohorts from evidence. The research is not limited to NYC or daily temperature. Candidate families include temperature, precipitation and rain, snowfall, heat and cold events, wind and severe weather, tropical cyclones, and other hazards when their settlement rules and forecast evidence can be matched.
+Build a broad, extensible inventory of weather prediction-market events and select research cohorts from evidence. The research is not limited to NYC or daily temperature. Candidate families include hourly/daily temperature, precipitation and rain, snowfall and ski-resort snow, heat and cold events, wind and severe weather, tropical cyclones, flood/drought, long-horizon climate and seasonal benchmarks, and cross-location weather events when their settlement rules and forecast evidence can be matched. Some families need specialized models or longer horizons and should remain separate until their evidence supports comparison.
 
 The inventory is a discovery and planning artifact. Listing a family or a source does not mean its data has been accessed, its coverage verified, or its use approved. Do not inspect or extract rows from sources whose intended uses are unresolved.
 
@@ -36,8 +36,10 @@ This is a taxonomy for discovery, not a claim that all families have available o
 | Wind and severe weather | Sustained/gust speed, storm occurrence | Station/grid, gust definition, sustained interval, warning or observation source, event window | Variable, averaging interval, grid, issue and valid times | Gust versus sustained winds, warnings versus observations, spatial resolution |
 | Tropical cyclones | Formation, track, landfall, intensity | Named authority, event identity, basin, landfall definition, intensity scale, time/version | Track/intensity forecast cycle, issue time, lead, geographic definition | Post-event best-track revisions, basin naming, forecast cone versus event point |
 | Other hazards | Flood, drought, fire weather, severe convective event | Authoritative index/observation, spatial unit, threshold, duration, rule version | Matching index or input variables, spatial scale, issue/valid time | Composite indices, retrospective revisions, sparse events, inconsistent geography |
+| Climate and seasonal benchmarks | Monthly or seasonal average/anomaly, counts of hot/cold days, climate records | Climatological reference period, observation source, spatial support, aggregation and revision rules | Seasonal/climate model or outlook, initialization, lead, matching climatology | Long horizons, observation revisions, reference-period changes; do not use short-range daily models as a substitute |
+| Cross-location or joint events | Which city is hottest, where rain occurs, regional totals | Exact location set, joint/relative rule, shared event window, tie handling | Joint or spatial forecast distribution and dependence across locations | Correlated outcomes; marginal city probabilities cannot be multiplied as independent |
 
-Keep unlike settlement definitions separate. Pool cohorts only after equivalence of outcome, event identity, time window, units, and spatial support is documented.
+Keep unlike settlement definitions separate. Pool cohorts only after equivalence of outcome, event identity, time window, units, and spatial support is documented. Long-horizon climate benchmarks and cross-location outcomes are separate study designs, not extensions of a daily station-level temperature ladder.
 
 ## Candidate and cohort record
 
