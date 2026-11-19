@@ -27,6 +27,17 @@ and prospective summaries separate and requires source approval evidence before
 classifying complete coverage as ready. It does not inspect market, outcome, or
 forecast observations.
 
+## Normalized batches
+
+`dataset.require_source_permissions` must run before an adapter opens or iterates
+its input. Normalization requires approved internal analysis and normalized-data
+retention, plus a permission evidence reference. Source IDs are removed unless
+their retention is explicitly permitted. `normalize_batch` canonicalizes UTC
+timestamps, deduplicates identical `(record_type, record_key)` rows, and rejects
+conflicting duplicates. Manifests contain counts and checksums, not record
+payloads; Parquet output is written only after the same approval check. Current
+fixtures use synthetic records only.
+
 Run the package's synthetic checks with:
 
 ```sh
