@@ -26,6 +26,20 @@
 
 Never advance a source through a lifecycle stage based only on a workspace task being marked done; the permission evidence itself must be recorded.
 
+## Capture tiers and static versus prospective data
+
+Separate the resolved historical dataset used for analysis from any prospective recorder. Archived outcomes and coarse price histories support settlement, coverage, and calibration work. Fine-grained candles, trades, and top-of-book history may be available only for a limited period or from licensed archives, so document source-specific retention and backfill limits before deciding cadence. A small prospective recorder can preserve future history, but it still requires explicit rights for access, retention, and derived use.
+
+| Tier | Data | Primary use | Storage/collection posture |
+|---|---|---|---|
+| 0 | Contract metadata, event definitions, settlement rules, resolved outcomes | Universe, mapping, and outcome analysis | Capture or license only when approved; version settlement rules and corrections |
+| 1 | Coarse price history and candles | Historical quote context, market-implied probabilities, descriptive comparisons | Prefer authorized archives/backfill; keep sampling interval and quote limitations explicit |
+| 2 | Trade-level observations | Timing and transaction context; cost analysis where fields support it | Add only when authorized and needed; forecast volume from an approved sample |
+| 3 | Prospective top-of-book snapshots or fine-grained candles/trades | Preserve future quote history that may age out of source archives; future executable-side analysis | Consider a minimal scheduled recorder after rights, cadence, fields, retention, and volume are approved |
+| 4 | Full order-book depth | Executable-size or depth-sensitive analysis | Defer until a later evidence gate shows it is needed and source rights, budget, and storage are approved |
+
+These tiers describe relative collection cost, not a measured volume estimate for the weather project. Metadata and coarse prices are generally much smaller than dense trade or depth histories, but the actual rate must be measured from an approved sample. Do not capture full depth across every market by default. Static backfill and prospective capture have separate permissions, retention, and manifests.
+
 ## Source and dataset manifest
 
 Create one immutable manifest per retrieval batch, licensed dataset version, or exported partition. Use a separate manifest for each source and permission scope; do not combine raw and derived data with different rights.
