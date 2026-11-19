@@ -55,6 +55,15 @@ verified settlement mapping, a coherent fresh top-of-book quote, and an eligible
 forecast alignment. Incomplete ladders and data-quality flags stay visible. A
 candidate gap is only a validation candidate, never a trading signal.
 
+## Calibration validation
+
+`calibration.chronological_event_split` orders events by their latest decision
+time and keeps all records for one event together. `score_probabilities` reports
+Brier score, clipped log loss, reliability-bin counts/rates, and Wilson intervals
+for observed rates. `evaluate_chronological_holdout` requires an explicit
+minimum holdout-event count and flags sparse results. Metrics require approved
+source-use evidence and describe probability calibration only, not profitability.
+
 Run the package's synthetic checks with:
 
 ```sh
