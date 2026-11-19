@@ -64,6 +64,16 @@ for observed rates. `evaluate_chronological_holdout` requires an explicit
 minimum holdout-event count and flags sparse results. Metrics require approved
 source-use evidence and describe probability calibration only, not profitability.
 
+## Paper screen
+
+`screen.screen_candidate` accepts an explicit policy for calibration sample
+size, log loss, quote age, spread, minimum edge, and fill assumption. It requires
+approved sources, verified settlement, aligned forecast, chronological held-out
+calibration, top-of-book price and displayed size, and explicit fees. Results
+can include a one-unit hypothetical settlement payoff, but always set
+`live_execution` to false; candles and midpoint quotes cannot produce a paper
+candidate.
+
 Run the package's synthetic checks with:
 
 ```sh
