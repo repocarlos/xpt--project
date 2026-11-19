@@ -64,6 +64,13 @@ for observed rates. `evaluate_chronological_holdout` requires an explicit
 minimum holdout-event count and flags sparse results. Metrics require approved
 source-use evidence and describe probability calibration only, not profitability.
 
+## Dashboard handoff
+
+`handoff-template.md` is a pending, source-neutral Weather report skeleton.
+`handoff.validate_handoff` checks its family scope, evidence classes, deferred
+family requirements, and recommendation. Observed/validated claims need approved
+source status and validation references; the template contains no findings.
+
 ## Paper screen
 
 `screen.screen_candidate` accepts an explicit policy for calibration sample
