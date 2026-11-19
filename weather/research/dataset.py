@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 
-REQUIRED_USES = {"internal_analysis", "retain_normalized"}
+REQUIRED_USES = {"internal_analysis", "normalized_retention"}
 ALLOWED_RECORD_TYPES = {"event", "contract", "quote", "forecast", "outcome"}
 
 
@@ -25,6 +25,13 @@ def require_source_permissions(approval: Mapping[str, Any], required_uses: Itera
     missing = set(required_uses) - set(permitted)
     if missing:
         raise PermissionError("approval does not cover: " + ", ".join(sorted(missing)))
+    if "normalized_retention" in set(required_uses):
+        try:
+            expiry = _timestamp(approval.get("retention_until"), "retention_until")
+        except ValueError as exc:
+            raise PermissionError("approved normalized retention requires an ISO-8601 expiry") from exc
+        if expiry <= datetime.now(timezone.utc):
+            raise PermissionError("normalized retention approval has expired")
 
 
 def normalize_batch(
@@ -90,6 +97,9 @@ def build_manifest(
     retained_until = _utc_iso(retention_until, "retention_until")
     if datetime.fromisoformat(retained_until) < datetime.fromisoformat(retrieved):
         raise ValueError("retention_until cannot precede retrieval")
+    approved_until = _utc_iso(approval.get("retention_until"), "retention_until")
+    if datetime.fromisoformat(retained_until) > datetime.fromisoformat(approved_until):
+        raise PermissionError("manifest retention exceeds the approved retention window")
     canonical = json.dumps(records, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
     return {
         "manifest_id": manifest_id,
@@ -135,6 +145,18 @@ def _utc_iso(value: Any, field: str) -> str:
     if parsed.tzinfo is None:
         raise ValueError(f"{field} must include a timezone")
     return parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def _timestamp(value: Any, field: str) -> datetime:
+    if not isinstance(value, str):
+        raise ValueError(f"{field} must be an ISO-8601 timestamp")
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ValueError(f"{field} must be an ISO-8601 timestamp") from exc
+    if parsed.tzinfo is None:
+        raise ValueError(f"{field} must include a timezone")
+    return parsed.astimezone(timezone.utc)
 
 
 def _text(value: Any) -> bool:

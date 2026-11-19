@@ -11,7 +11,8 @@ def synthetic_approval(**overrides):
     value = {
         "status": "approved",
         "approval_ref": "synthetic-approval-v1",
-        "permitted_uses": ["internal_analysis", "retain_normalized"],
+        "permitted_uses": ["internal_analysis", "normalized_retention"],
+        "retention_until": "2027-01-02T00:00:00Z",
     }
     value.update(overrides)
     return value
@@ -39,6 +40,10 @@ class DatasetTests(unittest.TestCase):
 
         with self.assertRaises(PermissionError):
             normalize_batch(unopened(), approval=synthetic_approval(status="unresolved"), manifest_id="m1")
+        with self.assertRaises(PermissionError):
+            normalize_batch([], approval=synthetic_approval(retention_until=""), manifest_id="m1")
+        with self.assertRaises(PermissionError):
+            normalize_batch([], approval=synthetic_approval(retention_until="2020-01-01T00:00:00Z"), manifest_id="m1")
 
     def test_normalization_is_stable_and_drops_unpermitted_source_id(self):
         rows = normalize_batch(
@@ -69,6 +74,9 @@ class DatasetTests(unittest.TestCase):
         )
         self.assertEqual(1, manifest["row_count"])
         self.assertFalse(manifest["payload_included"])
+        with self.assertRaises(PermissionError):
+            build_manifest(rows, approval=approval, manifest_id="manifest-2",
+                           retrieved_at_utc="2026-01-02T00:00:00Z", retention_until="2028-01-02T00:00:00Z")
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "source=synthetic/family=temperature/year=2026/part-000.parquet"
             partition = write_parquet_partition(rows, path, approval)

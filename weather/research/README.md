@@ -35,8 +35,9 @@ retention, plus a permission evidence reference. Source IDs are removed unless
 their retention is explicitly permitted. `normalize_batch` canonicalizes UTC
 timestamps, deduplicates identical `(record_type, record_key)` rows, and rejects
 conflicting duplicates. Manifests contain counts and checksums, not record
-payloads; Parquet output is written only after the same approval check. Current
-fixtures use synthetic records only.
+payloads; Parquet output is written only after the same approval check. Every
+normalized write needs a non-expired approved retention date, and a manifest
+cannot extend beyond that date. Current fixtures use synthetic records only.
 
 ## Forecast alignment
 
