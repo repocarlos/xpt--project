@@ -38,6 +38,14 @@ conflicting duplicates. Manifests contain counts and checksums, not record
 payloads; Parquet output is written only after the same approval check. Current
 fixtures use synthetic records only.
 
+## Forecast alignment
+
+`alignment.align_forecast` converts aware timestamps to UTC and accepts a pair
+only when the issue time is no later than the decision time and the forecast
+covers the contract window with matching variable, unit, timezone, and complete
+location set. It reports rejection reasons and lead time; it does not infer
+probabilities from ensemble spread or claim calibrated uncertainty.
+
 Run the package's synthetic checks with:
 
 ```sh
