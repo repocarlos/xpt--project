@@ -87,6 +87,15 @@ allows selection only when source rights, settlement, forecast match, coverage,
 volume, and second-review evidence all pass; otherwise the cohort stays pending
 or blocked.
 
+## Study coordinator
+
+`study.run_weather_study` coordinates approved cohort packages without pooling
+families. It checks selection, source, settlement, and reviewer gates before
+iterating quote or calibration records, then returns per-family comparison rows
+and chronological holdout summaries. Sparse results remain insufficient, and
+the top-level envelope labels the output as research, not profitability or live
+execution.
+
 ## Paper screen
 
 `screen.screen_candidate` accepts an explicit policy for calibration sample
