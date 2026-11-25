@@ -1,0 +1,88 @@
+{
+  "schema_version": "options.recorder_fixture.v1",
+  "fixture_status": "synthetic",
+  "rights_blocker": "No source has confirmed permission for collection, raw storage, derivation, team sharing, and dashboard display; this fixture contains generated example values only.",
+  "records": [
+    {
+      "record_id": "synthetic-pm-msft-k500-001",
+      "venue": "synthetic_pm",
+      "record_type": "pm_terminal_threshold",
+      "market_id": "synthetic-msft-2026-12-18-k500",
+      "source_id": "fixture:pm:token-001",
+      "underlying": "SYNTH-MSFT",
+      "expiry": "2026-12-18T21:00:00Z",
+      "observed_at_utc": "2026-11-25T16:00:00Z",
+      "timezone": "America/New_York",
+      "settlement_rule_version": "synthetic-terminal-close-v1",
+      "settlement_reference": "synthetic fixture rule; no venue/source",
+      "currency": "USD",
+      "strike": 500.0,
+      "bid": 0.42,
+      "ask": 0.48,
+      "bid_size": 20,
+      "ask_size": 15,
+      "source_rights": {
+        "collection": "not_applicable_synthetic_fixture",
+        "raw_storage": "not_applicable_synthetic_fixture",
+        "derivation": "not_applicable_synthetic_fixture",
+        "team_sharing": "not_applicable_synthetic_fixture",
+        "display": "not_applicable_synthetic_fixture"
+      },
+      "transformations": ["generated_example", "no_market_observation"]
+    },
+    {
+      "record_id": "synthetic-option-msft-call-500-001",
+      "venue": "synthetic_options",
+      "record_type": "listed_european_call",
+      "market_id": "synthetic-msft-call-2026-12-18-k500",
+      "source_id": "fixture:options:series-001",
+      "underlying": "SYNTH-MSFT",
+      "expiry": "2026-12-18T21:00:00Z",
+      "observed_at_utc": "2026-11-25T16:00:00Z",
+      "timezone": "America/New_York",
+      "settlement_rule_version": "synthetic-european-option-v1",
+      "settlement_reference": "synthetic fixture contract; no exchange/source",
+      "currency": "USD",
+      "strike": 500.0,
+      "bid": 21.2,
+      "ask": 21.8,
+      "bid_size": 10,
+      "ask_size": 12,
+      "source_rights": {
+        "collection": "not_applicable_synthetic_fixture",
+        "raw_storage": "not_applicable_synthetic_fixture",
+        "derivation": "not_applicable_synthetic_fixture",
+        "team_sharing": "not_applicable_synthetic_fixture",
+        "display": "not_applicable_synthetic_fixture"
+      },
+      "transformations": ["generated_example", "no_market_observation"]
+    },
+    {
+      "record_id": "synthetic-pm-msft-k500-001",
+      "venue": "synthetic_pm",
+      "record_type": "pm_terminal_threshold",
+      "market_id": "synthetic-msft-2026-12-18-k500",
+      "source_id": "fixture:pm:token-001",
+      "underlying": "SYNTH-MSFT",
+      "expiry": "2026-12-18T21:00:00Z",
+      "observed_at_utc": "2026-11-25T16:00:00Z",
+      "timezone": "America/New_York",
+      "settlement_rule_version": "synthetic-terminal-close-v1",
+      "settlement_reference": "synthetic fixture rule; no venue/source",
+      "currency": "USD",
+      "strike": 500.0,
+      "bid": 0.42,
+      "ask": 0.48,
+      "bid_size": 20,
+      "ask_size": 15,
+      "source_rights": {
+        "collection": "not_applicable_synthetic_fixture",
+        "raw_storage": "not_applicable_synthetic_fixture",
+        "derivation": "not_applicable_synthetic_fixture",
+        "team_sharing": "not_applicable_synthetic_fixture",
+        "display": "not_applicable_synthetic_fixture"
+      },
+      "transformations": ["generated_example", "no_market_observation"]
+    }
+  ]
+}
