@@ -110,6 +110,32 @@ class ReconstructCallsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "already-present-value"):
             reconstruct_calls(self.document)
 
+    def test_step_interpolation_scenarios_are_explicit(self):
+        doc = {
+            "schema_version": "options.digital_curve.v1",
+            "fixture_status": "synthetic",
+            "underlying": "SYNTH",
+            "expiry": "T",
+            "event_relation": ">",
+            "price_basis": "present_value_per_unit_payout",
+            "price_convention": "PV per unit payout",
+            "payout": 1,
+            "points": [
+                {"threshold": 0, "bid": 0.8, "ask": 0.8},
+                {"threshold": 10, "bid": 0.4, "ask": 0.4},
+                {"threshold": 20, "bid": 0.0, "ask": 0.0}
+            ],
+            "requested_strikes": [0],
+        }
+        linear = reconstruct_calls(doc)["results"][0]["observed_range_call"]
+        doc["interpolation_method"] = "left_step"
+        left = reconstruct_calls(doc)["results"][0]["observed_range_call"]
+        doc["interpolation_method"] = "right_step"
+        right = reconstruct_calls(doc)["results"][0]["observed_range_call"]
+        self.assertEqual(linear["lower"], 8.0)
+        self.assertEqual(left["lower"], 12.0)
+        self.assertEqual(right["lower"], 4.0)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -33,12 +33,25 @@ def _interpolate(points: list[tuple[float, float]], strike: float) -> float:
     return points[-1][1]
 
 
-def _integrate(points: list[tuple[float, float]], start: float, end: float) -> float:
-    """Trapezoidal integral of the piecewise-linear curve over [start, end]."""
+def _integrate(points: list[tuple[float, float]], start: float, end: float,
+               method: str = "piecewise_linear") -> float:
+    """Integrate one explicit interpolation scenario over [start, end]."""
     if end < start:
         raise ValueError("integration end must be at or above start")
     if end == start:
         return 0.0
+    if method in {"left_step", "right_step"}:
+        cuts = [start, *[x for x, _ in points if start < x < end], end]
+        total = 0.0
+        for left, right in zip(cuts, cuts[1:]):
+            midpoint = (left + right) / 2.0
+            segment = next(i for i in range(len(points) - 1)
+                           if points[i][0] <= midpoint < points[i + 1][0])
+            value_index = segment if method == "left_step" else segment + 1
+            total += (right - left) * points[value_index][1]
+        return total
+    if method != "piecewise_linear":
+        raise ValueError("interpolation_method must be piecewise_linear, left_step, or right_step")
     interior = [(x, y) for x, y in points if start < x < end]
     curve = [(start, _interpolate(points, start)), *interior, (end, _interpolate(points, end))]
     return sum((x1 - x0) * (y0 + y1) / 2.0 for (x0, y0), (x1, y1) in zip(curve, curve[1:]))
@@ -103,6 +116,9 @@ def reconstruct_calls(document: dict[str, Any]) -> dict[str, Any]:
     ask_monotone = _is_nonincreasing([y for _, y in ask_curve])
     curve_monotone = bid_monotone and ask_monotone
     low_strike, high_strike = usable[0]["threshold"], usable[-1]["threshold"]
+    interpolation_method = document.get("interpolation_method", "piecewise_linear")
+    if interpolation_method not in {"piecewise_linear", "left_step", "right_step"}:
+        raise ValueError("interpolation_method must be piecewise_linear, left_step, or right_step")
 
     basis_factor = discount_factor if price_basis == "undiscounted_event_price" and discount_factor is not None else 1.0
     value_kind = (
@@ -156,12 +172,13 @@ def reconstruct_calls(document: dict[str, Any]) -> dict[str, Any]:
             outputs.append(result)
             continue
 
-        observed_low = _integrate(bid_curve, strike, high_strike) * basis_factor
-        observed_high = _integrate(ask_curve, strike, high_strike) * basis_factor
+        observed_low = _integrate(bid_curve, strike, high_strike, interpolation_method) * basis_factor
+        observed_high = _integrate(ask_curve, strike, high_strike, interpolation_method) * basis_factor
         result["observed_range_call"] = {
             "lower": observed_low,
             "upper": observed_high,
             "integration_domain": [strike, high_strike],
+            "interpolation_method": interpolation_method,
             "units": "underlying_price_units_per_underlying_unit",
             "value_kind": value_kind,
         }

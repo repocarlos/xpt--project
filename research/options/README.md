@@ -8,7 +8,7 @@ A terminal digital claim with strike x and unit payout has price p(x). Where the
 
 C(K) = integral from K to infinity of p(x) dx.
 
-The implementation approximates the observed part by integrating piecewise-linear segments with the trapezoidal rule. It carries bid and ask curves separately, so the output is a lower/upper range. It does not fix non-monotone inputs or imply a risk-neutral measure from prediction-market prices.
+The implementation defaults to integrating piecewise-linear segments with the trapezoidal rule. It also exposes left-step and right-step integration as sensitivity scenarios. It carries bid and ask curves separately, so the output is a lower/upper range. It does not fix non-monotone inputs or imply a risk-neutral measure from prediction-market prices.
 
 Input JSON uses `schema_version: options.digital_curve.v1`. Quotes are premiums for the specified cash payout:
 
@@ -39,3 +39,15 @@ python3 research/options/compare_iv_surfaces.py \
   --output /tmp/options-iv-comparison.json \
   --plot /tmp/options-iv-comparison.png
 ```
+
+Run the synthetic assumption stress grid and write the JSON results, Markdown handoff, and optional baseline chart:
+
+```sh
+python3 -m research.options.stress_test_surface \
+  research/options/fixtures/sensitivity_v1.json \
+  --output /tmp/options-stress.json \
+  --report /tmp/options-handoff.md \
+  --plot /tmp/options-stress.png
+```
+
+The committed generated example is in `research/options/artifacts/`; it is synthetic, not observed market data.
