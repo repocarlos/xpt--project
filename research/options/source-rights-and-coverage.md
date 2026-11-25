@@ -1,0 +1,60 @@
+# Options pilot source coverage and use-rights review
+
+**Reviewed:** 2026-11-25
+
+**Status:** feasibility matrix only; no market-data sample was retrieved and no source is approved for project collection.
+
+## Decision
+
+**No-go for collecting or publishing an empirical PM-implied IV surface now.** The official documentation establishes that candidate APIs and option quote products exist, but the project has no documented written authorization or product license for the intended storage, derivation, team-sharing, or dashboard uses. A current, authorized, synchronized market sample was therefore not requested. Pilot coverage, quotes, strike depth, and exact rule matching remain unverified.
+
+The old discovery snapshot is not a current sample: the Polymarket MSFT close-above ladder and Kalshi $INX bins previously recorded for Oct. 30, 2026 are expired. The former had very wide books; the latter used coarse bins and was not the MSFT underlying. No new market listing or quote was queried in this review.
+
+## Source matrix
+
+Evidence labels: **official docs** means a provider's product or API documentation; **terms** means a published agreement; **prior discovery** means an existing historical note, not refreshed this turn; **sample** means an authorized file or observed market-data capture. No sample evidence is available.
+
+| Source / product | Documented access, fields, history, retention | Match / coverage status | Cost and rights by intended use | Decision |
+|---|---|---|---|---|
+| **Polymarket CLOB + Data API v2 history** | Official docs describe outcome-token order books with timestamp, bid/ask levels and sizes, minimum order size, tick size, and last trade. The history route returns price points, not historical depth. Retention floors: 1-minute at least 7 days, 5-minute at least 60 days, 30-minute at least 90 days; 3-hour/12-hour history is permanent. | Direct terminal threshold ladders were discovered for MSFT/AAPL/NVDA/TSLA, but the documented MSFT examples have expired; active ladder, rules, synchronized quote depth, and historical exact-threshold coverage were not rechecked. | Public docs expose API routes but do not establish project rights or a data price. Terms effective Aug. 11, 2026 restrict data use by Capital Market Clients and market-data distributors absent written agreement; whether the project or its audience falls in a restricted class is not determined here. Treat internal research, storage, derived data, team sharing, dashboard display, and commercial use as **unresolved and operationally blocked** pending written determination/permission. | **Blocked** pending written authorization and approved sample route. |
+| **Kalshi Trade API v2 / website data** | Official quick start describes unauthenticated public series, event, market, and order-book endpoints. The reviewed quick start does not establish historical executable-book retention for this pilot. | Prior Oct. 29 discovery recorded a 30-bin $INX close ladder, with coarse ranges; no current ladder, depth, or expiry was checked. It is an index market, not the MSFT event. A PM index close must still be matched to the option settlement calculation. | Developer Agreement v1.1 limits API use to facilitating a member's own trading and prohibits collecting/caching/storing except for that purpose; it bars third-party sharing without prior written authorization. Website Data Terms restrict collection/copying, software development, archived data, and derivative/financial-instrument uses without prior written consent. The intended shared research/dashboard uses are **blocked pending written authorization**. The endpoints being public does not change this. | **Blocked** pending written authorization and an exact candidate contract. |
+| **Cboe DataShop Option Quote Intervals (OPRA U.S. stocks, ETFs, indices)** | Official product page documents 1-minute or custom N-minute summaries; NBBO bid/ask and sizes, OHLC and volume, optional IV/Greeks; a 390-minute interval can target the 4 p.m. ET snapshot. Intraday delivery is 15 minutes delayed; daily files arrive overnight/early morning; history begins Jan. 2012. For ^SPX/^OEX, underlying quotes/active price require a Cboe Global Indices Feed license (posted fee starts at $1,000/month); full-market historical files omit index underlying bid/ask by default. Quote-size convention changed June 22, 2026 and should be versioned. | MSFT equity options are a same-issuer candidate but standard U.S. equity options are American-style, so the European call-slope benchmark is not directly valid. SPX is European and cash-settled, but requires an SPX prediction-market contract with matching expiration and settlement reference. | Product page provides a purchase flow but no product price in the material reviewed. Confirm itemized price, internal research, raw storage, derivation, team sharing, redistribution/display, retention, and any index-data license before purchase or use. All project-use rights **unresolved**. | **Conditional benchmark candidate**; no purchase or sample before license/use approval. |
+| **Cboe SPX/SPXW options** | Official product specs describe European exercise, cash settlement, and daily/weekly/monthly expiries. PM-settled SPXW/EOM exercise-settlement value is based on the last closing reported sales price in the primary market for each component stock. | Cleaner European listed-options method only for a PM event on the same S&P 500 index with the same expiry and settlement calculation. The index level, component-close calculation, observation time, and any PM rule must be verified together. Existing Kalshi $INX discovery is too coarse and not a proven match. | Contract specs do not grant rights to historical quote data. Use Cboe DataShop or another licensed feed; rights and costs remain those of the selected product. | **Potential separate SPX pilot**, subject to an exact PM match and data rights. |
+| **Eurex MSTX Microsoft [EUR] / NVDX Nvidia [EUR]** | The current Eurex contract annex lists Microsoft as MSTX, group DE11, with EUR denomination; standard stock options have multiple expiries. Eurex says historical EOBI/EMDI files can provide trades and visible quotes/order-book data for Eurex products through Deutsche Börse Data Shop. | Same issuer as MSFT/NVDA ladders, but MSTX/NVDX are DE11. Eurex's current exercise rule says stock options are American-style by default; the European-style exception is for group IDs ending in 14. EUR denomination and Xetra reference cash market introduce currency and underlying-reference alignment requirements. This is not a European benchmark. | Data Shop price, specific historical symbol/expiry/strike coverage, quote cadence, and license scope were not confirmed. Internal research, storage, derivation, team sharing, display, and commercial rights are **unresolved** pending product quote and terms. | **American-adjusted fallback candidate only**; not ready for a sample. |
+
+## Intended-use rights summary
+
+| Source | Access / API availability | Internal research | Raw storage | Derived estimates | Team sharing | Retail dashboard display | Commercial use |
+|---|---|---|---|---|---|---|---|
+| Polymarket | Technical access documented; project classification unresolved | Unresolved | Unresolved | Unresolved | Unresolved | Unresolved | Unresolved |
+| Kalshi | Public endpoints documented; API terms restrict non-own-trading use | Blocked pending written authorization | Blocked pending written authorization | Blocked pending written authorization | Blocked pending written authorization | Blocked pending written authorization | Blocked pending written authorization |
+| Cboe DataShop | Product availability documented; purchase needed | Unresolved pending product license | Unresolved pending product license | Unresolved pending product license | Unresolved pending redistribution terms | Unresolved pending display terms | Unresolved pending license |
+| Eurex / Deutsche Börse Data Shop | Product and history channels documented | Unresolved pending product license | Unresolved pending product license | Unresolved pending product license | Unresolved pending redistribution terms | Unresolved pending display terms | Unresolved pending license |
+
+Operational gate: a required use is allowed only after its specific approval is recorded. “Unresolved” is treated as blocked for collection, persistence, transformation, sharing, and display. This is a project control based on the published terms, not a legal classification of the team.
+
+## Pilot fit and next evidence gate
+
+1. **MSFT ladder:** Polymarket's old MSFT close-above discovery ladder plus an American-style benchmark (Cboe OPRA MSFT or Eurex MSTX) could support a future American-adjusted study, with dividend treatment, EUR/USD conversion for MSTX, exchange-session timing, and exact closing-reference alignment. No such model/sample has been approved or collected.
+2. **European benchmark:** SPXW/EOM can support the cleaner European-option method only if a PM contract exists on the same index and its threshold, expiry, and settlement index are identical. The old $INX range bins are insufficient evidence of that match.
+3. **Before any sample request:** the source owner must record written permission or a license for the exact intended uses; choose one PM event and one options feed; obtain an authorized sample/coverage report; check strike/expiry coverage, bid/ask sizes, timestamps, source identifiers, settlement rules, and cost; then reassess go/no-go.
+
+## Sources reviewed (2026-11-25)
+
+### Prediction-market venues
+
+* [Kalshi market-data quick start](https://docs.kalshi.com/getting_started/quick_start_market_data) — unauthenticated public-data endpoint types.
+* [Kalshi Developer Agreement v1.1](https://kalshi-public-docs.s3.amazonaws.com/Kalshi-Developer-Agreement.pdf) — API use restriction and prior-written-authorization condition.
+* [Kalshi Data Terms of Use](https://kalshi-public-docs.s3.amazonaws.com/kalshi-data-terms-of-service.pdf) — website data collection, software, archived dataset, derivative-work restrictions.
+* [Polymarket prices and order books documentation](https://docs.polymarket.com/market-data/prices-order-books) — current orderbook fields and history endpoint/retention limits.
+* [Polymarket Terms of Use](https://polymarket.com/tos) — data-use restrictions and written-agreement condition; effective date shown on page: 2026-08-11.
+
+### Listed-options sources
+
+* [Cboe Option Quote Intervals](https://datashop.cboe.com/option-quote-intervals) — OPRA universe, NBBO/size fields, delivery timing, 2012+ history and index-underlying data caveats.
+* [Cboe SPX overview](https://www.cboe.com/tradable-products/sp-500/spx-options/) and [SPX End-of-Month specifications](https://www.cboe.com/tradable_products/sp_500/spx_end_of_month_options/specifications) — European exercise, settlement style and PM settlement calculation.
+* [OCC U.S. equity options specifications](https://www.theocc.com/clearance-and-settlement/clearing/equity-options-product-specifications) — standard U.S. equity options are American-style.
+* [Eurex contract specifications, effective 2026-11-02](https://www.eurex.com/resource/blob/1637254/c61cfea99bd9081e4295f5314b4d70b5/data/2026_11_02_eurex_d_kontraktspezifikationen%20_en.pdf), [Annex B](https://www.eurex.com/resource/blob/2849966/b8fe04ec354ac8555f4e08bb963f6c15/data/2026_11_02_eurex_d_kontraktspezifikationen_annexe_en.pdf), and [Annexes effective 2026-11-05](https://www.eurex.com/resource/blob/2823918/63e3f4f58422a02251a7e6bbb328ca96/data/2026_11_05_eurex_d_kontraktspezifikationen_annexe.pdf) — exercise-style rule, Microsoft MSTX group, denomination, and contract size.
+* [Eurex historical data](https://sim-new.eurex.com/ex-en/data/historical-data) — EOBI/EMDI historical trade and visible-order data via Deutsche Börse Data Shop.
+
+This review records official documentation and published terms, not legal advice, a product quote, a sample file, or an observed coverage report. Reconfirm agreements, pricing, product symbols, and use rights before any collection.
