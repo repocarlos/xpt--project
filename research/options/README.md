@@ -12,6 +12,16 @@ python3 -m research.options.align_inputs \
   --output /tmp/aligned-options-inputs.json
 ```
 
+## Derive a PM digital event-price curve
+
+`derive_digital_curve.py` orients YES/NO quotes to the strict terminal event S(T) > K, preserves exact rule text and quote bounds, cross-checks opposite-side complement intervals, and reports raw monotonicity and coverage. Inclusive/strict mismatches, stale/wide inputs, complement inconsistencies, and unmatched rows remain flagged; nothing is smoothed. This output is still a PM event-price convention, not an option risk-neutral probability.
+
+```sh
+python3 -m research.options.derive_digital_curve \
+  research/options/artifacts/aligned-synthetic-fixture.json \
+  --output /tmp/synthetic-digital-curve.json
+```
+
 ## Reconstructing call-equivalent values
 
 A terminal digital claim with strike x and unit payout has price p(x). Where the curve can be interpreted as consistently discounted state-claim prices, the call identity is:
