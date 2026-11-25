@@ -26,3 +26,16 @@ python3 research/options/reconstruct_calls.py \
   --output /tmp/options-calls.json
 python3 -m unittest discover -s research/options/tests -v
 ```
+
+## Black–Scholes-equivalent IV comparison
+
+`compare_iv_surfaces.py` inverts only European call present values under a continuous-rate/dividend Black–Scholes convention. It carries PM synthetic call bounds and listed bid/ask prices to IV intervals, then joins only exact underlying/expiry/snapshot/strike/style/type keys with matching spot, time, rate, and dividend inputs. It computes log-moneyness as ln(K/F) using F = S exp((r-q)T). Unmatched or invalid cells are retained with reasons.
+
+The comparison values and heatmap are synthetic fixtures. PM-derived IV is explicitly labeled as a BS-equivalent transformation, while the listed reference has its own label; the displayed ΔIV is a candidate dislocation only. There is no data ingestion, empirical claim, or trade signal in this prototype.
+
+```sh
+python3 research/options/compare_iv_surfaces.py \
+  research/options/fixtures/surface_comparison_v1.json \
+  --output /tmp/options-iv-comparison.json \
+  --plot /tmp/options-iv-comparison.png
+```
