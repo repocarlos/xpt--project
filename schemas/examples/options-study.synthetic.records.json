@@ -1,0 +1,204 @@
+[
+  {
+    "record_id": "SYNTH-PM-001",
+    "record_type": "pm_threshold_quote",
+    "data_status": "synthetic",
+    "source": {
+      "provider": "synthetic_fixture_generator",
+      "source_id": "invented-market-source",
+      "documentation_url": null,
+      "access_method": "generated locally; no external data",
+      "terms_reviewed_at": "2026-11-25",
+      "rights": {
+        "access": "not_applicable",
+        "internal_research": "not_applicable",
+        "raw_storage": "not_applicable",
+        "derived_data": "not_applicable",
+        "team_sharing": "not_applicable",
+        "dashboard_display": "not_applicable",
+        "commercial_use": "not_applicable",
+        "basis": "Invented fixture values only.",
+        "reviewed_at": "2026-11-25"
+      }
+    },
+    "observed_at_utc": "2026-12-18T20:55:00Z",
+    "venue": "SYNTHETIC-VENUE",
+    "event_id": "SYNTH-EVENT-001",
+    "market_id": "SYNTH-MARKET-001",
+    "contract_id": "SYNTH-CONTRACT-ABOVE-100",
+    "underlying": "SYNTH",
+    "strike": 100,
+    "expiry": "2026-12-18",
+    "event_definition": {
+      "comparison": "strictly_above",
+      "observation_time": "2026-12-18T16:00:00-05:00",
+      "timezone": "America/New_York",
+      "resolution_source": "Invented official-close placeholder",
+      "rule_version": "synthetic-rule-v1",
+      "payout": 1
+    },
+    "yes_quote": {
+      "bid": 0.4,
+      "ask": 0.44,
+      "bid_size": 50,
+      "ask_size": 40,
+      "currency": "USD",
+      "quote_time_utc": "2026-12-18T20:55:00Z",
+      "received_at_utc": "2026-12-18T20:55:01Z",
+      "timezone": "UTC"
+    },
+    "no_quote": {
+      "bid": 0.55,
+      "ask": 0.59,
+      "bid_size": 35,
+      "ask_size": 45,
+      "currency": "USD",
+      "quote_time_utc": "2026-12-18T20:55:00Z",
+      "received_at_utc": "2026-12-18T20:55:01Z",
+      "timezone": "UTC"
+    }
+  },
+  {
+    "record_id": "SYNTH-OPT-001",
+    "record_type": "listed_option_quote",
+    "data_status": "synthetic",
+    "source": {
+      "provider": "synthetic_fixture_generator",
+      "source_id": "invented-option-source",
+      "documentation_url": null,
+      "access_method": "generated locally; no external data",
+      "terms_reviewed_at": "2026-11-25",
+      "rights": {
+        "access": "not_applicable",
+        "internal_research": "not_applicable",
+        "raw_storage": "not_applicable",
+        "derived_data": "not_applicable",
+        "team_sharing": "not_applicable",
+        "dashboard_display": "not_applicable",
+        "commercial_use": "not_applicable",
+        "basis": "Invented fixture values only.",
+        "reviewed_at": "2026-11-25"
+      }
+    },
+    "observed_at_utc": "2026-12-18T20:55:00Z",
+    "venue": "SYNTHETIC-OPTIONS-VENUE",
+    "option_id": "SYNTH-EUROPEAN-CALL-100-20261218",
+    "underlying": "SYNTH",
+    "right": "call",
+    "strike": 100,
+    "expiry": "2026-12-18",
+    "exercise_style": "european",
+    "settlement_style": "cash",
+    "multiplier": 1,
+    "quote": {
+      "bid": 0.78,
+      "ask": 0.84,
+      "bid_size": 12,
+      "ask_size": 10,
+      "currency": "USD",
+      "quote_time_utc": "2026-12-18T20:55:00Z",
+      "received_at_utc": "2026-12-18T20:55:02Z",
+      "timezone": "UTC"
+    }
+  },
+  {
+    "record_id": "SYNTH-MATCH-001",
+    "record_type": "normalized_match",
+    "data_status": "synthetic",
+    "source": {
+      "provider": "synthetic_fixture_generator",
+      "source_id": "local-match-transformation",
+      "documentation_url": null,
+      "access_method": "generated locally; no external data",
+      "terms_reviewed_at": "2026-11-25",
+      "rights": {
+        "access": "not_applicable",
+        "internal_research": "not_applicable",
+        "raw_storage": "not_applicable",
+        "derived_data": "not_applicable",
+        "team_sharing": "not_applicable",
+        "dashboard_display": "not_applicable",
+        "commercial_use": "not_applicable",
+        "basis": "Synthetic-only transformation record.",
+        "reviewed_at": "2026-11-25"
+      }
+    },
+    "observed_at_utc": "2026-12-18T20:55:00Z",
+    "pm_record_id": "SYNTH-PM-001",
+    "option_record_ids": [
+      "SYNTH-OPT-001"
+    ],
+    "reference_price": 100.25,
+    "forward_price": 100.3,
+    "rates": {
+      "risk_free_rate": 0.03,
+      "day_count": "ACT/365F"
+    },
+    "dividends_or_carry": {
+      "yield_or_carry": 0.005,
+      "method": "invented continuous yield for illustration"
+    },
+    "max_quote_skew_seconds": 2,
+    "match_status": "matched",
+    "quality_flags": [
+      "synthetic_only",
+      "not_a_surface_point"
+    ]
+  },
+  {
+    "record_id": "SYNTH-DERIVED-001",
+    "record_type": "derived_estimate",
+    "data_status": "synthetic",
+    "source": {
+      "provider": "synthetic_fixture_generator",
+      "source_id": "illustrative-derived-record",
+      "documentation_url": null,
+      "access_method": "generated locally; no external data",
+      "terms_reviewed_at": "2026-11-25",
+      "rights": {
+        "access": "not_applicable",
+        "internal_research": "not_applicable",
+        "raw_storage": "not_applicable",
+        "derived_data": "not_applicable",
+        "team_sharing": "not_applicable",
+        "dashboard_display": "not_applicable",
+        "commercial_use": "not_applicable",
+        "basis": "Illustrative record only; no estimate was calculated from market observations.",
+        "reviewed_at": "2026-11-25"
+      }
+    },
+    "observed_at_utc": "2026-12-18T20:55:00Z",
+    "input_record_ids": [
+      "SYNTH-PM-001",
+      "SYNTH-MATCH-001"
+    ],
+    "claim_type": "pm_event_price_convention",
+    "estimate_type": "illustrative_yes_quote_interval",
+    "value": {
+      "bid": 0.4,
+      "ask": 0.44,
+      "payout": 1
+    },
+    "uncertainty": {
+      "summary": "The invented interval is the displayed quote range, not a statistical confidence interval.",
+      "method": "synthetic value illustration",
+      "lower": 0.4,
+      "upper": 0.44
+    },
+    "assumptions": {
+      "model": "none; quote convention only",
+      "model_version": "not_applicable",
+      "discounting": "not applied",
+      "rates": "recorded in normalized match; not used here",
+      "dividends_or_carry": "not used here",
+      "interpolation": "not applied",
+      "tail": "not applicable",
+      "code_commit": "revision recorded by containing Git commit"
+    },
+    "limitations": [
+      "Synthetic fixture only; not a market quote or a forecast.",
+      "No risk-neutral probability or implied volatility is asserted.",
+      "One threshold and one call quote cannot define a surface."
+    ]
+  }
+]
