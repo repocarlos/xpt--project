@@ -1,0 +1,336 @@
+{
+  "digital_curves": [
+    {
+      "discount_factor": 0.9900498337491681,
+      "dividend_yield": 0.01,
+      "event_relation": ">",
+      "expiry": "2027-03-19",
+      "fixture_status": "synthetic",
+      "payout": 1.0,
+      "points": [
+        {
+          "ask": 1.0,
+          "bid": 0.9939778764882679,
+          "contract_id": "SYN-2027-03-19-60",
+          "quote_status": "usable",
+          "threshold": 60.0
+        },
+        {
+          "ask": 1.0,
+          "bid": 0.9918202130336895,
+          "contract_id": "SYN-2027-03-19-70",
+          "quote_status": "usable",
+          "threshold": 70.0
+        },
+        {
+          "ask": 0.9686782229307083,
+          "bid": 0.9566782229307083,
+          "contract_id": "SYN-2027-03-19-80",
+          "quote_status": "usable",
+          "threshold": 80.0
+        },
+        {
+          "ask": 0.8056534765052838,
+          "bid": 0.7936534765052838,
+          "contract_id": "SYN-2027-03-19-90",
+          "quote_status": "usable",
+          "threshold": 90.0
+        },
+        {
+          "ask": 0.5050026453379076,
+          "bid": 0.4930026453379076,
+          "contract_id": "SYN-2027-03-19-100",
+          "quote_status": "usable",
+          "threshold": 100.0
+        },
+        {
+          "ask": 0.22814129878153744,
+          "bid": 0.21614129878153743,
+          "contract_id": "SYN-2027-03-19-110",
+          "quote_status": "usable",
+          "threshold": 110.0
+        },
+        {
+          "ask": 0.07799777934544405,
+          "bid": 0.06599777934544404,
+          "contract_id": "SYN-2027-03-19-120",
+          "quote_status": "usable",
+          "threshold": 120.0
+        },
+        {
+          "ask": 0.0238023149495492,
+          "bid": 0.011802314949549203,
+          "contract_id": "SYN-2027-03-19-130",
+          "quote_status": "usable",
+          "threshold": 130.0
+        },
+        {
+          "ask": 0.009527066189789652,
+          "bid": 0.0,
+          "contract_id": "SYN-2027-03-19-140",
+          "quote_status": "usable",
+          "threshold": 140.0
+        }
+      ],
+      "price_basis": "undiscounted_event_price",
+      "price_convention": "Synthetic PM-like digital event price generated from a specified normal-tail curve.",
+      "rate": 0.04,
+      "requested_strikes": [
+        85.0,
+        95.0,
+        105.0,
+        115.0
+      ],
+      "schema_version": "options.digital_curve.v1",
+      "snapshot_time": "2026-11-25T16:00:00Z",
+      "spot": 100.0,
+      "tail": {
+        "cap": 160.0,
+        "scenarios": [
+          {
+            "name": "zero_at_cap",
+            "remaining_fraction": 0.0
+          },
+          {
+            "name": "half_at_cap",
+            "remaining_fraction": 0.5
+          },
+          {
+            "name": "held_to_cap",
+            "remaining_fraction": 1.0
+          }
+        ]
+      },
+      "time_years": 0.25,
+      "underlying": "SYNTH"
+    },
+    {
+      "discount_factor": 0.9801986733067553,
+      "dividend_yield": 0.01,
+      "event_relation": ">",
+      "expiry": "2027-06-18",
+      "fixture_status": "synthetic",
+      "payout": 1.0,
+      "points": [
+        {
+          "ask": 1.0,
+          "bid": 0.9900781494062776,
+          "contract_id": "SYN-2027-06-18-60",
+          "quote_status": "usable",
+          "threshold": 60.0
+        },
+        {
+          "ask": 0.9739375170150124,
+          "bid": 0.9619375170150124,
+          "contract_id": "SYN-2027-06-18-70",
+          "quote_status": "usable",
+          "threshold": 70.0
+        },
+        {
+          "ask": 0.8813180009931465,
+          "bid": 0.8693180009931465,
+          "contract_id": "SYN-2027-06-18-80",
+          "quote_status": "usable",
+          "threshold": 80.0
+        },
+        {
+          "ask": 0.7096640988802325,
+          "bid": 0.6976640988802325,
+          "contract_id": "SYN-2027-06-18-90",
+          "quote_status": "usable",
+          "threshold": 90.0
+        },
+        {
+          "ask": 0.4992613893300103,
+          "bid": 0.4872613893300103,
+          "contract_id": "SYN-2027-06-18-100",
+          "quote_status": "usable",
+          "threshold": 100.0
+        },
+        {
+          "ask": 0.3088886786531585,
+          "bid": 0.2968886786531585,
+          "contract_id": "SYN-2027-06-18-110",
+          "quote_status": "usable",
+          "threshold": 110.0
+        },
+        {
+          "ask": 0.1715598639622039,
+          "bid": 0.1595598639622039,
+          "contract_id": "SYN-2027-06-18-120",
+          "quote_status": "usable",
+          "threshold": 120.0
+        },
+        {
+          "ask": 0.08809590181370003,
+          "bid": 0.07609590181370002,
+          "contract_id": "SYN-2027-06-18-130",
+          "quote_status": "usable",
+          "threshold": 130.0
+        },
+        {
+          "ask": 0.04359728638400145,
+          "bid": 0.03159728638400145,
+          "contract_id": "SYN-2027-06-18-140",
+          "quote_status": "usable",
+          "threshold": 140.0
+        }
+      ],
+      "price_basis": "undiscounted_event_price",
+      "price_convention": "Synthetic PM-like digital event price generated from a specified normal-tail curve.",
+      "rate": 0.04,
+      "requested_strikes": [
+        85.0,
+        95.0,
+        105.0,
+        115.0
+      ],
+      "schema_version": "options.digital_curve.v1",
+      "snapshot_time": "2026-11-25T16:00:00Z",
+      "spot": 100.0,
+      "tail": {
+        "cap": 160.0,
+        "scenarios": [
+          {
+            "name": "zero_at_cap",
+            "remaining_fraction": 0.0
+          },
+          {
+            "name": "half_at_cap",
+            "remaining_fraction": 0.5
+          },
+          {
+            "name": "held_to_cap",
+            "remaining_fraction": 1.0
+          }
+        ]
+      },
+      "time_years": 0.5,
+      "underlying": "SYNTH"
+    }
+  ],
+  "fixture_status": "synthetic",
+  "listed_calls": [
+    {
+      "ask": 15.919986816631635,
+      "bid": 15.861753393275038,
+      "dividend_yield": 0.01,
+      "expiry": "2027-03-19",
+      "option_style": "European",
+      "option_type": "call",
+      "rate": 0.04,
+      "snapshot_time": "2026-11-25T16:00:00Z",
+      "source_label": "Synthetic European call quote",
+      "spot": 100.0,
+      "strike": 85.0,
+      "time_years": 0.25,
+      "underlying": "SYNTH"
+    },
+    {
+      "ask": 7.858590583437838,
+      "bid": 7.690320539567679,
+      "dividend_yield": 0.01,
+      "expiry": "2027-03-19",
+      "option_style": "European",
+      "option_type": "call",
+      "rate": 0.04,
+      "snapshot_time": "2026-11-25T16:00:00Z",
+      "source_label": "Synthetic European call quote",
+      "spot": 100.0,
+      "strike": 95.0,
+      "time_years": 0.25,
+      "underlying": "SYNTH"
+    },
+    {
+      "ask": 2.8652605419739245,
+      "bid": 2.675673676354535,
+      "dividend_yield": 0.01,
+      "expiry": "2027-03-19",
+      "option_style": "European",
+      "option_type": "call",
+      "rate": 0.04,
+      "snapshot_time": "2026-11-25T16:00:00Z",
+      "source_label": "Synthetic European call quote",
+      "spot": 100.0,
+      "strike": 105.0,
+      "time_years": 0.25,
+      "underlying": "SYNTH"
+    },
+    {
+      "ask": 0.7601177988624297,
+      "bid": 0.6537988772776249,
+      "dividend_yield": 0.01,
+      "expiry": "2027-03-19",
+      "option_style": "European",
+      "option_type": "call",
+      "rate": 0.04,
+      "snapshot_time": "2026-11-25T16:00:00Z",
+      "source_label": "Synthetic European call quote",
+      "spot": 100.0,
+      "strike": 115.0,
+      "time_years": 0.25,
+      "underlying": "SYNTH"
+    },
+    {
+      "ask": 17.51138270144051,
+      "bid": 17.360033318847783,
+      "dividend_yield": 0.01,
+      "expiry": "2027-06-18",
+      "option_style": "European",
+      "option_type": "call",
+      "rate": 0.04,
+      "snapshot_time": "2026-11-25T16:00:00Z",
+      "source_label": "Synthetic European call quote",
+      "spot": 100.0,
+      "strike": 85.0,
+      "time_years": 0.5,
+      "underlying": "SYNTH"
+    },
+    {
+      "ask": 10.444521954562674,
+      "bid": 10.193108431633242,
+      "dividend_yield": 0.01,
+      "expiry": "2027-06-18",
+      "option_style": "European",
+      "option_type": "call",
+      "rate": 0.04,
+      "snapshot_time": "2026-11-25T16:00:00Z",
+      "source_label": "Synthetic European call quote",
+      "spot": 100.0,
+      "strike": 95.0,
+      "time_years": 0.5,
+      "underlying": "SYNTH"
+    },
+    {
+      "ask": 5.548166344536867,
+      "bid": 5.2691259282634135,
+      "dividend_yield": 0.01,
+      "expiry": "2027-06-18",
+      "option_style": "European",
+      "option_type": "call",
+      "rate": 0.04,
+      "snapshot_time": "2026-11-25T16:00:00Z",
+      "source_label": "Synthetic European call quote",
+      "spot": 100.0,
+      "strike": 105.0,
+      "time_years": 0.5,
+      "underlying": "SYNTH"
+    },
+    {
+      "ask": 2.6430929165059105,
+      "bid": 2.4134640238456164,
+      "dividend_yield": 0.01,
+      "expiry": "2027-06-18",
+      "option_style": "European",
+      "option_type": "call",
+      "rate": 0.04,
+      "snapshot_time": "2026-11-25T16:00:00Z",
+      "source_label": "Synthetic European call quote",
+      "spot": 100.0,
+      "strike": 115.0,
+      "time_years": 0.5,
+      "underlying": "SYNTH"
+    }
+  ],
+  "schema_version": "options.sensitivity.v1"
+}

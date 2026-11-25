@@ -1,0 +1,198 @@
+{
+  "curve_diagnostics": {
+    "ask_curve_nonincreasing": true,
+    "bid_curve_nonincreasing": true,
+    "curve_suitable_for_option_transformation": true,
+    "excluded_points": 2,
+    "monotonicity_violations": {
+      "ask": [],
+      "bid": []
+    },
+    "sparse_coverage_warning": false,
+    "usable_points": 3,
+    "usable_strike_coverage": [
+      80.0,
+      120.0
+    ],
+    "usable_strike_gaps": [
+      20.0,
+      20.0
+    ]
+  },
+  "event_relation": ">",
+  "expiry": "2027-03-19",
+  "fixture_status": "synthetic",
+  "interpretation_warning": "These are PM event-price conventions, not unbiased forecasts or options risk-neutral probabilities.",
+  "payout": 1.0,
+  "points": [
+    {
+      "ask": 0.72,
+      "bid": 0.7,
+      "complement_check": {
+        "complement_from_opposite_book": [
+          0.7,
+          0.72
+        ],
+        "intervals_overlap": true,
+        "target_interval": [
+          0.7,
+          0.72
+        ]
+      },
+      "contract_id": "SYN-PM-080",
+      "contract_rule_version": "synthetic-1",
+      "listed_chain_quality_flags": [
+        "wide_listed_spread"
+      ],
+      "payout_original": 1.0,
+      "quality_flags": [],
+      "quote_status": "usable",
+      "quote_timestamp": "2026-11-25T16:00:02Z",
+      "raw_no_ask": 0.3,
+      "raw_no_bid": 0.28,
+      "raw_yes_ask": 0.72,
+      "raw_yes_bid": 0.7,
+      "side_used": "YES",
+      "target_relation": ">",
+      "threshold": 80.0,
+      "yes_event_relation": ">"
+    },
+    {
+      "ask": 0.57,
+      "bid": 0.55,
+      "complement_check": {
+        "complement_from_opposite_book": [
+          0.55,
+          0.5700000000000001
+        ],
+        "intervals_overlap": true,
+        "target_interval": [
+          0.55,
+          0.57
+        ]
+      },
+      "contract_id": "SYN-PM-090",
+      "contract_rule_version": "synthetic-1",
+      "listed_chain_quality_flags": [],
+      "payout_original": 1.0,
+      "quality_flags": [
+        "unmatched_terms"
+      ],
+      "quote_status": "excluded",
+      "quote_timestamp": "2026-11-25T16:00:10Z",
+      "raw_no_ask": 0.45,
+      "raw_no_bid": 0.43,
+      "raw_yes_ask": 0.57,
+      "raw_yes_bid": 0.55,
+      "side_used": "YES",
+      "target_relation": ">",
+      "threshold": 90.0,
+      "yes_event_relation": ">"
+    },
+    {
+      "ask": 0.45,
+      "bid": 0.4,
+      "complement_check": {
+        "complement_from_opposite_book": [
+          0.41000000000000003,
+          0.45999999999999996
+        ],
+        "intervals_overlap": true,
+        "target_interval": [
+          0.4,
+          0.45
+        ]
+      },
+      "contract_id": "SYN-PM-100",
+      "contract_rule_version": "synthetic-1",
+      "listed_chain_quality_flags": [
+        "wide_listed_spread"
+      ],
+      "payout_original": 1.0,
+      "quality_flags": [],
+      "quote_status": "usable",
+      "quote_timestamp": "2026-11-25T16:00:05Z",
+      "raw_no_ask": 0.59,
+      "raw_no_bid": 0.54,
+      "raw_yes_ask": 0.45,
+      "raw_yes_bid": 0.4,
+      "side_used": "YES",
+      "target_relation": ">",
+      "threshold": 100.0,
+      "yes_event_relation": ">"
+    },
+    {
+      "ask": 0.27,
+      "bid": 0.25,
+      "complement_check": {
+        "complement_from_opposite_book": [
+          0.25,
+          0.27
+        ],
+        "intervals_overlap": true,
+        "target_interval": [
+          0.25,
+          0.27
+        ]
+      },
+      "contract_id": "SYN-PM-110",
+      "contract_rule_version": "synthetic-1",
+      "listed_chain_quality_flags": [
+        "stale_listed_quote"
+      ],
+      "payout_original": 1.0,
+      "quality_flags": [
+        "stale_pm_quote"
+      ],
+      "quote_status": "excluded",
+      "quote_timestamp": "2026-11-25T15:54:00Z",
+      "raw_no_ask": 0.75,
+      "raw_no_bid": 0.73,
+      "raw_yes_ask": 0.27,
+      "raw_yes_bid": 0.25,
+      "side_used": "YES",
+      "target_relation": ">",
+      "threshold": 110.0,
+      "yes_event_relation": ">"
+    },
+    {
+      "ask": 0.17,
+      "bid": 0.15,
+      "complement_check": {
+        "complement_from_opposite_book": [
+          0.15000000000000002,
+          0.17000000000000004
+        ],
+        "intervals_overlap": true,
+        "target_interval": [
+          0.15,
+          0.17
+        ]
+      },
+      "contract_id": "SYN-PM-120",
+      "contract_rule_version": "synthetic-1",
+      "listed_chain_quality_flags": [
+        "wide_listed_spread"
+      ],
+      "payout_original": 1.0,
+      "quality_flags": [],
+      "quote_status": "usable",
+      "quote_timestamp": "2026-11-25T16:00:10Z",
+      "raw_no_ask": 0.85,
+      "raw_no_bid": 0.83,
+      "raw_yes_ask": 0.17,
+      "raw_yes_bid": 0.15,
+      "side_used": "YES",
+      "target_relation": ">",
+      "threshold": 120.0,
+      "yes_event_relation": ">"
+    }
+  ],
+  "price_basis": "undiscounted_event_price",
+  "price_convention": "PM event price per unit cash payout; no discounting or risk-neutral interpretation is applied.",
+  "schema_version": "options.digital_curve.v1",
+  "snapshot_time": "2026-11-25T16:00:00Z",
+  "source_use_status": {},
+  "status": "synthetic_only",
+  "underlying": "SYNTH"
+}

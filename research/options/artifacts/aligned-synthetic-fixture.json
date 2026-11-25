@@ -1,0 +1,382 @@
+{
+  "counts": {
+    "matched": 4,
+    "pm_contracts": 5,
+    "unique_usable_listed_quotes": 2,
+    "unmatched": 1,
+    "usable_for_curve": 3
+  },
+  "fixture_status": "synthetic",
+  "max_listed_relative_spread": 0.15,
+  "max_pm_spread_fraction": 0.1,
+  "quote_tolerance_seconds": 60.0,
+  "real_data_enabled": false,
+  "rows": [
+    {
+      "alignment_status": "matched",
+      "contract_id": "SYN-PM-080",
+      "listed_chain_quality_flags": [
+        "wide_listed_spread"
+      ],
+      "listed_option_chain": [
+        {
+          "ask": 20.3,
+          "ask_size": 15,
+          "bid": 20.1,
+          "bid_size": 20,
+          "dividend_yield": 0.01,
+          "expiry": "2027-03-19",
+          "option_id": "SYN-OPT-080",
+          "option_style": "European",
+          "option_type": "call",
+          "quality_flags": [],
+          "quote_time_delta_seconds": 5.0,
+          "quote_timestamp": "2026-11-25T16:00:07Z",
+          "rate": 0.04,
+          "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+          "spot": 100,
+          "strike": 80,
+          "underlying": "SYNTH",
+          "usable": true
+        },
+        {
+          "ask": 5.2,
+          "ask_size": 25,
+          "bid": 5.0,
+          "bid_size": 30,
+          "dividend_yield": 0.01,
+          "expiry": "2027-03-19",
+          "option_id": "SYN-OPT-100",
+          "option_style": "European",
+          "option_type": "call",
+          "quality_flags": [],
+          "quote_time_delta_seconds": 8.0,
+          "quote_timestamp": "2026-11-25T16:00:10Z",
+          "rate": 0.04,
+          "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+          "spot": 100,
+          "strike": 100,
+          "underlying": "SYNTH",
+          "usable": true
+        },
+        {
+          "ask": 1.4,
+          "ask_size": 4,
+          "bid": 1.0,
+          "bid_size": 5,
+          "dividend_yield": 0.01,
+          "expiry": "2027-03-19",
+          "option_id": "SYN-OPT-120",
+          "option_style": "European",
+          "option_type": "call",
+          "quality_flags": [
+            "wide_listed_spread"
+          ],
+          "quote_time_delta_seconds": 13.0,
+          "quote_timestamp": "2026-11-25T16:00:15Z",
+          "rate": 0.04,
+          "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+          "spot": 100,
+          "strike": 120,
+          "underlying": "SYNTH",
+          "usable": false
+        }
+      ],
+      "pm": {
+        "contract_id": "SYN-PM-080",
+        "contract_rule_version": "synthetic-1",
+        "event_relation": ">",
+        "expiry": "2027-03-19",
+        "no_ask": 0.3,
+        "no_bid": 0.28,
+        "observation_time": "16:00 America/New_York",
+        "payout": 1,
+        "quote_timestamp": "2026-11-25T16:00:02Z",
+        "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+        "threshold": 80,
+        "underlying": "SYNTH",
+        "yes_ask": 0.72,
+        "yes_bid": 0.7
+      },
+      "pm_quality_flags": [],
+      "quality_flags": [
+        "wide_listed_spread"
+      ],
+      "threshold": 80.0,
+      "usable_for_curve": true
+    },
+    {
+      "alignment_status": "unmatched_terms",
+      "contract_id": "SYN-PM-090",
+      "listed_option_chain": [],
+      "pm": {
+        "contract_id": "SYN-PM-090",
+        "contract_rule_version": "synthetic-1",
+        "event_relation": ">",
+        "expiry": "2027-03-19",
+        "no_ask": 0.45,
+        "no_bid": 0.43,
+        "observation_time": "16:00 America/New_York",
+        "payout": 1,
+        "quote_timestamp": "2026-11-25T16:00:10Z",
+        "settlement_reference": "SYNTH_OTHER_CLOSE",
+        "threshold": 90,
+        "underlying": "SYNTH",
+        "yes_ask": 0.57,
+        "yes_bid": 0.55
+      },
+      "pm_quality_flags": [],
+      "quality_flags": [
+        "no_synchronized_listed_chain"
+      ],
+      "threshold": 90.0,
+      "usable_for_curve": false
+    },
+    {
+      "alignment_status": "matched",
+      "contract_id": "SYN-PM-100",
+      "listed_chain_quality_flags": [
+        "wide_listed_spread"
+      ],
+      "listed_option_chain": [
+        {
+          "ask": 20.3,
+          "ask_size": 15,
+          "bid": 20.1,
+          "bid_size": 20,
+          "dividend_yield": 0.01,
+          "expiry": "2027-03-19",
+          "option_id": "SYN-OPT-080",
+          "option_style": "European",
+          "option_type": "call",
+          "quality_flags": [],
+          "quote_time_delta_seconds": 2.0,
+          "quote_timestamp": "2026-11-25T16:00:07Z",
+          "rate": 0.04,
+          "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+          "spot": 100,
+          "strike": 80,
+          "underlying": "SYNTH",
+          "usable": true
+        },
+        {
+          "ask": 5.2,
+          "ask_size": 25,
+          "bid": 5.0,
+          "bid_size": 30,
+          "dividend_yield": 0.01,
+          "expiry": "2027-03-19",
+          "option_id": "SYN-OPT-100",
+          "option_style": "European",
+          "option_type": "call",
+          "quality_flags": [],
+          "quote_time_delta_seconds": 5.0,
+          "quote_timestamp": "2026-11-25T16:00:10Z",
+          "rate": 0.04,
+          "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+          "spot": 100,
+          "strike": 100,
+          "underlying": "SYNTH",
+          "usable": true
+        },
+        {
+          "ask": 1.4,
+          "ask_size": 4,
+          "bid": 1.0,
+          "bid_size": 5,
+          "dividend_yield": 0.01,
+          "expiry": "2027-03-19",
+          "option_id": "SYN-OPT-120",
+          "option_style": "European",
+          "option_type": "call",
+          "quality_flags": [
+            "wide_listed_spread"
+          ],
+          "quote_time_delta_seconds": 10.0,
+          "quote_timestamp": "2026-11-25T16:00:15Z",
+          "rate": 0.04,
+          "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+          "spot": 100,
+          "strike": 120,
+          "underlying": "SYNTH",
+          "usable": false
+        }
+      ],
+      "pm": {
+        "contract_id": "SYN-PM-100",
+        "contract_rule_version": "synthetic-1",
+        "event_relation": ">",
+        "expiry": "2027-03-19",
+        "no_ask": 0.59,
+        "no_bid": 0.54,
+        "observation_time": "16:00 America/New_York",
+        "payout": 1,
+        "quote_timestamp": "2026-11-25T16:00:05Z",
+        "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+        "threshold": 100,
+        "underlying": "SYNTH",
+        "yes_ask": 0.45,
+        "yes_bid": 0.4
+      },
+      "pm_quality_flags": [],
+      "quality_flags": [
+        "wide_listed_spread"
+      ],
+      "threshold": 100.0,
+      "usable_for_curve": true
+    },
+    {
+      "alignment_status": "matched",
+      "contract_id": "SYN-PM-110",
+      "listed_chain_quality_flags": [
+        "stale_listed_quote"
+      ],
+      "listed_option_chain": [
+        {
+          "ask": 2.2,
+          "ask_size": 10,
+          "bid": 2.0,
+          "bid_size": 10,
+          "dividend_yield": 0.01,
+          "expiry": "2027-03-19",
+          "option_id": "SYN-OPT-110",
+          "option_style": "European",
+          "option_type": "call",
+          "quality_flags": [
+            "stale_listed_quote"
+          ],
+          "quote_time_delta_seconds": 2.0,
+          "quote_timestamp": "2026-11-25T15:54:02Z",
+          "rate": 0.04,
+          "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+          "spot": 100,
+          "strike": 110,
+          "underlying": "SYNTH",
+          "usable": false
+        }
+      ],
+      "pm": {
+        "contract_id": "SYN-PM-110",
+        "contract_rule_version": "synthetic-1",
+        "event_relation": ">",
+        "expiry": "2027-03-19",
+        "no_ask": 0.75,
+        "no_bid": 0.73,
+        "observation_time": "16:00 America/New_York",
+        "payout": 1,
+        "quote_timestamp": "2026-11-25T15:54:00Z",
+        "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+        "threshold": 110,
+        "underlying": "SYNTH",
+        "yes_ask": 0.27,
+        "yes_bid": 0.25
+      },
+      "pm_quality_flags": [
+        "stale_pm_quote"
+      ],
+      "quality_flags": [
+        "stale_listed_quote",
+        "stale_pm_quote"
+      ],
+      "threshold": 110.0,
+      "usable_for_curve": false
+    },
+    {
+      "alignment_status": "matched",
+      "contract_id": "SYN-PM-120",
+      "listed_chain_quality_flags": [
+        "wide_listed_spread"
+      ],
+      "listed_option_chain": [
+        {
+          "ask": 20.3,
+          "ask_size": 15,
+          "bid": 20.1,
+          "bid_size": 20,
+          "dividend_yield": 0.01,
+          "expiry": "2027-03-19",
+          "option_id": "SYN-OPT-080",
+          "option_style": "European",
+          "option_type": "call",
+          "quality_flags": [],
+          "quote_time_delta_seconds": -3.0,
+          "quote_timestamp": "2026-11-25T16:00:07Z",
+          "rate": 0.04,
+          "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+          "spot": 100,
+          "strike": 80,
+          "underlying": "SYNTH",
+          "usable": true
+        },
+        {
+          "ask": 5.2,
+          "ask_size": 25,
+          "bid": 5.0,
+          "bid_size": 30,
+          "dividend_yield": 0.01,
+          "expiry": "2027-03-19",
+          "option_id": "SYN-OPT-100",
+          "option_style": "European",
+          "option_type": "call",
+          "quality_flags": [],
+          "quote_time_delta_seconds": 0.0,
+          "quote_timestamp": "2026-11-25T16:00:10Z",
+          "rate": 0.04,
+          "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+          "spot": 100,
+          "strike": 100,
+          "underlying": "SYNTH",
+          "usable": true
+        },
+        {
+          "ask": 1.4,
+          "ask_size": 4,
+          "bid": 1.0,
+          "bid_size": 5,
+          "dividend_yield": 0.01,
+          "expiry": "2027-03-19",
+          "option_id": "SYN-OPT-120",
+          "option_style": "European",
+          "option_type": "call",
+          "quality_flags": [
+            "wide_listed_spread"
+          ],
+          "quote_time_delta_seconds": 5.0,
+          "quote_timestamp": "2026-11-25T16:00:15Z",
+          "rate": 0.04,
+          "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+          "spot": 100,
+          "strike": 120,
+          "underlying": "SYNTH",
+          "usable": false
+        }
+      ],
+      "pm": {
+        "contract_id": "SYN-PM-120",
+        "contract_rule_version": "synthetic-1",
+        "event_relation": ">",
+        "expiry": "2027-03-19",
+        "no_ask": 0.85,
+        "no_bid": 0.83,
+        "observation_time": "16:00 America/New_York",
+        "payout": 1,
+        "quote_timestamp": "2026-11-25T16:00:10Z",
+        "settlement_reference": "SYNTH_OFFICIAL_CLOSE",
+        "threshold": 120,
+        "underlying": "SYNTH",
+        "yes_ask": 0.17,
+        "yes_bid": 0.15
+      },
+      "pm_quality_flags": [],
+      "quality_flags": [
+        "wide_listed_spread"
+      ],
+      "threshold": 120.0,
+      "usable_for_curve": true
+    }
+  ],
+  "schema_version": "options.aligned_inputs.v1",
+  "snapshot_time": "2026-11-25T16:00:00Z",
+  "source_use_status": {},
+  "status": "synthetic_only"
+}
