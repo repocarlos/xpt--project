@@ -1,0 +1,27 @@
+{
+  "schema_version": "options.digital_curve.v1",
+  "fixture_status": "synthetic",
+  "underlying": "SYNTH",
+  "expiry": "synthetic-expiry",
+  "event_relation": ">",
+  "price_basis": "undiscounted_event_price",
+  "price_convention": "Synthetic PM-like YES bid/ask prices per cash payout; no market data or risk-neutral assumption.",
+  "payout": 1.0,
+  "discount_factor": 0.98,
+  "requested_strikes": [80, 90, 100, 110, 120],
+  "points": [
+    {"contract_id": "SYN-080", "threshold": 80, "bid": 0.72, "ask": 0.76, "quote_status": "usable"},
+    {"contract_id": "SYN-090", "threshold": 90, "bid": 0.58, "ask": 0.62, "quote_status": "usable"},
+    {"contract_id": "SYN-100", "threshold": 100, "bid": 0.42, "ask": 0.46, "quote_status": "usable"},
+    {"contract_id": "SYN-110", "threshold": 110, "bid": 0.27, "ask": 0.31, "quote_status": "usable"},
+    {"contract_id": "SYN-120", "threshold": 120, "bid": 0.15, "ask": 0.19, "quote_status": "usable"}
+  ],
+  "tail": {
+    "cap": 140,
+    "scenarios": [
+      {"name": "zero_at_cap", "remaining_fraction": 0.0},
+      {"name": "half_at_cap", "remaining_fraction": 0.5},
+      {"name": "held_to_cap", "remaining_fraction": 1.0}
+    ]
+  }
+}
