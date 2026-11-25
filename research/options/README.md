@@ -2,6 +2,16 @@
 
 This directory contains a synthetic-only numerical prototype for the options leg. It does not collect or persist live prediction-market or listed-options data. Empirical work remains gated on source rights and an approved, synchronized sample.
 
+## Normalize and align inputs
+
+`align_inputs.py` first checks that any real source is approved separately for collection, raw storage, derivation, team sharing, and dashboard display. If any permission is unresolved it emits a blocker with no rows. Synthetic fixtures can be aligned for method testing. A matched record requires the same underlying, expiry, settlement reference, European call chain, and quote timestamps within the configured tolerance. It preserves the full listed strike chain beside each PM threshold and reports PM-side and option-side quality flags separately. A threshold with no exact listed strike can still be aligned to the same-expiry chain; later surface estimation must account for coverage and interpolation.
+
+```sh
+python3 -m research.options.align_inputs \
+  research/options/fixtures/alignment_v1.json \
+  --output /tmp/aligned-options-inputs.json
+```
+
 ## Reconstructing call-equivalent values
 
 A terminal digital claim with strike x and unit payout has price p(x). Where the curve can be interpreted as consistently discounted state-claim prices, the call identity is:
